@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import type { UsuarioSessao } from '@/lib/sessao';
 import { iniciais } from '@/lib/formato';
 
@@ -24,7 +24,6 @@ const NAV: { t: string; items: Item[] }[] = [
 export function EquipeShell({ usuario, sairAction, children }: { usuario: UsuarioSessao; sairAction: () => Promise<void>; children: React.ReactNode }) {
   const path = usePathname();
   const [menu, setMenu] = useState(false);
-  useEffect(() => { setMenu(false); }, [path]);
   const gestor = usuario.cargo === 'gestor';
   return (
     <>
@@ -49,7 +48,7 @@ export function EquipeShell({ usuario, sairAction, children }: { usuario: Usuari
               <div className="grp" key={g.t}>
                 <div className="grp-t">{g.t}</div>
                 {items.map((i) => (
-                  <Link key={i.href} href={i.href} aria-current={path.startsWith(i.href) ? 'page' : undefined}><span className="icon">{i.icon}</span>{i.label}</Link>
+                  <Link key={i.href} href={i.href} onClick={() => setMenu(false)} aria-current={path.startsWith(i.href) ? 'page' : undefined}><span className="icon">{i.icon}</span>{i.label}</Link>
                 ))}
               </div>
             );

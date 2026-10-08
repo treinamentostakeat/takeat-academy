@@ -18,7 +18,6 @@ const MENU = [
 export function HeaderCliente({ restaurante }: { restaurante?: { nome: string; iniciais: string } | null }) {
   const path = usePathname();
   const [aberto, setAberto] = useState(false);
-  useEffect(() => { setAberto(false); }, [path]);
   useEffect(() => {
     const esc = (e: KeyboardEvent) => e.key === 'Escape' && setAberto(false);
     document.addEventListener('keydown', esc);
@@ -56,7 +55,7 @@ export function HeaderCliente({ restaurante }: { restaurante?: { nome: string; i
             <button className="x" onClick={() => setAberto(false)} aria-label="Fechar menu"><span className="icon">close</span></button>
           </div>
           {itens.map((m) => (
-            <Link key={m.href} href={m.href} aria-current={atual(m.href) ? 'page' : undefined}><span className="icon">{m.icon}</span>{m.label}</Link>
+            <Link key={m.href} href={m.href} onClick={() => setAberto(false)} aria-current={atual(m.href) ? 'page' : undefined}><span className="icon">{m.icon}</span>{m.label}</Link>
           ))}
         </nav>
       </div>
