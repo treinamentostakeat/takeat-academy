@@ -1,0 +1,54 @@
+/* Base do app. Cores só por tokens (styles/tokens.css); componentes do protótipo em styles/sala.css e styles/equipe.css. */
+
+/* Faixa do modo demonstração (integrações sem chave) */
+.demo-bar { background: var(--yellow-tint); color: var(--yellow-ink); font-size: 12px; line-height: 16px; letter-spacing: .4px; padding: 8px 16px; display: flex; gap: 8px; align-items: center; justify-content: center; text-align: center; }
+.demo-bar .icon { font-size: 16px; width: 16px; height: 16px; }
+
+/* Tile de tema com SVG (componente <TemaTile>) */
+.ti svg { width: 24px; height: 24px; }
+.ti.sm svg { width: 20px; height: 20px; }
+.ti.xs svg { width: 18px; height: 18px; }
+.ti.lg svg { width: 32px; height: 32px; }
+
+/* Cabeçalho do cliente (igual ao protótipo) */
+.header { position: sticky; top: 0; z-index: 30; background: var(--surface-raised); border-bottom: 1px solid var(--stroke-default); }
+.header-in { max-width: 1600px; margin: 0 auto; padding: 0 24px; height: 64px; display: flex; align-items: center; gap: 24px; }
+.header .nav { display: flex; align-items: stretch; height: 100%; gap: 4px; flex: 1; min-width: 0; }
+.header .nav a { display: flex; align-items: center; padding: 0 12px; text-decoration: none; position: relative; color: var(--text-secondary); white-space: nowrap; }
+.header .nav a:hover { color: var(--text-primary); }
+.header .nav a[aria-current="page"] { color: var(--gestor); font-weight: 600; letter-spacing: .1px; }
+.header .nav a[aria-current="page"]::after { content: ""; position: absolute; left: 12px; right: 12px; bottom: 0; height: 2px; border-radius: 2px 2px 0 0; background: var(--gestor); }
+.header .who { margin-left: auto; flex: none; }
+.who-id { display: flex; align-items: center; gap: 8px; padding: 4px 12px 4px 4px; border: 1px solid var(--stroke-default); border-radius: 9999px; background: var(--surface-raised); text-decoration: none; color: var(--text-primary); font-weight: 600; }
+.who-id:hover { border-color: var(--stroke-medium); }
+.who-id .avatar { width: 32px; height: 32px; border-radius: 9999px; background: var(--gestor-tint); color: var(--gestor-ink); display: grid; place-items: center; font-size: 12px; font-weight: 600; }
+.menu-btn { display: none; }
+.drawer { position: fixed; inset: 0; z-index: 70; display: none; }
+.drawer.on { display: block; }
+.drawer .bg { position: absolute; inset: 0; background: var(--scrim); }
+.drawer nav { position: absolute; top: 0; left: 0; bottom: 0; width: min(320px, 86vw); background: var(--surface-raised); box-shadow: var(--shadow-05); padding: 16px; display: flex; flex-direction: column; gap: 4px; }
+.drawer nav .top-d { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.drawer nav a { display: flex; align-items: center; gap: 12px; height: 48px; padding: 0 12px; border-radius: 12px; text-decoration: none; color: var(--text-secondary); font-size: 16px; line-height: 24px; letter-spacing: .5px; font-weight: 500; }
+.drawer nav a[aria-current="page"] { background: var(--gestor-tint); color: var(--gestor); font-weight: 600; }
+.drawer .x { width: 48px; height: 48px; border-radius: 16px; border: 0; background: transparent; color: var(--text-secondary); cursor: pointer; display: grid; place-items: center; }
+
+/* Página do cliente */
+.page { max-width: 1200px; margin: 0 auto; padding: 32px 24px 56px; display: grid; gap: 16px; }
+.page-h { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.page-h h1 { font-size: 22px; line-height: 28px; font-weight: 600; color: var(--text-primary); margin: 0; }
+.page-h p { margin: 4px 0 0; color: var(--text-secondary); }
+
+@media (max-width: 1023px) {
+  .header .nav { display: none; }
+  .header-in { height: 56px; gap: 12px; padding: 0 16px; }
+  .header .brand span { display: none; }
+  .menu-btn { display: grid; place-items: center; width: 48px; height: 48px; margin-left: -12px; border: 0; background: transparent; color: var(--text-primary); border-radius: 16px; cursor: pointer; }
+  .who-id .n { display: none; }
+  .who-id { padding: 4px; }
+}
+@media (max-width: 900px) {
+  .page { padding: 24px 16px 40px; }
+}
+
+/* Sem a barra do protótipo no app real */
+:root { --proto-h: 0px; }

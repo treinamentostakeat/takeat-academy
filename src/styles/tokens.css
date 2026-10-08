@@ -1,0 +1,189 @@
+/* Takeat UI Kit — tokens (foundations.md) usados na Takeat Academy.
+   Único lugar com valores brutos. As telas usam só var(--token).
+   Marca = gestor/* (reports.md · I13). red/* só para ação destrutiva e erro. */
+
+:root {
+  color-scheme: light;
+  /* surface */
+  --surface-background: #F6F6F6;
+  --surface-raised: #FFFFFF;
+  --surface-nested: #F6F6F6;
+  --surface-fill: #EDEDED;
+  /* text */
+  --text-primary: #222222;
+  --text-secondary: #545454;
+  --text-tertiary: #7A7A7A;
+  --text-disabled: #C6C6C6;
+  --text-inverted: #FFFFFF;
+  /* stroke */
+  --stroke-default: #EDEDED;
+  --stroke-medium: #C6C6C6;
+  --stroke-strong: #7A7A7A;
+  --scrim: rgba(0, 0, 0, .20);
+  --focus: #016999;
+
+  /* gestor (marca) */
+  --gestor: #A82743;
+  --gestor-tint: rgba(168, 39, 67, .10);
+  --gestor-40: rgba(168, 39, 67, .40);
+  --gestor-60: rgba(168, 39, 67, .60);
+  --gestor-80: rgba(168, 39, 67, .80);
+  --gestor-dark: #5C1525;
+  /* red (destrutivo / erro) */
+  --red: #C8131B;
+  --red-tint: rgba(200, 19, 27, .10);
+  --red-dark: #7A0D12;
+  /* teal */
+  --teal: #1D9688;
+  --teal-tint: rgba(29, 150, 136, .10);
+  --teal-dark: #0E4F46;
+  /* blue */
+  --blue: #018CCC;
+  --blue-tint: rgba(1, 140, 204, .10);
+  --blue-dark: #015A85;
+  /* yellow */
+  --yellow: #F0A118;
+  --yellow-tint: rgba(240, 161, 24, .10);
+  --yellow-dark: #8B5E0E;
+  /* orange (terciária) */
+  --orange: #E66812;
+  --orange-tint: rgba(230, 104, 18, .10);
+  --orange-dark: #843B0A;
+  /* green (terciária) */
+  --green: #167532;
+  --green-tint: rgba(22, 117, 50, .10);
+  --green-dark: #0A421A;
+
+  /* texto sobre tint (chips, links): X/dark no claro */
+  --gestor-ink: #5C1525; --red-ink: #7A0D12; --teal-ink: #0E4F46; --blue-ink: #015A85;
+  --yellow-ink: #8B5E0E; --orange-ink: #843B0A; --green-ink: #0A421A;
+
+  /* shadow */
+  --shadow-01: 0 1px 2px rgba(0,0,0,.14), 0 0 2px rgba(0,0,0,.12);
+  --shadow-02: 0 2px 4px rgba(0,0,0,.14), 0 0 2px rgba(0,0,0,.12);
+  --shadow-03: 0 4px 8px rgba(0,0,0,.14), 0 0 2px rgba(0,0,0,.12);
+  --shadow-04: 0 8px 16px rgba(0,0,0,.14), 0 0 2px rgba(0,0,0,.12);
+  --shadow-05: 0 10px 25px rgba(0,0,0,.14), 0 0 8px rgba(0,0,0,.12);
+
+  /* área de mídia (vídeo/tela compartilhada): sempre a superfície escura do kit */
+  --media: #121212;
+  --media-raised: #1E1E1E;
+  --media-fill: #2A2A2A;
+  --on-media: #FFFFFF;
+  --on-media-muted: rgba(255, 255, 255, .64);
+  --on-media-chip: rgba(255, 255, 255, .12);
+  --media-gestor: #CE4E6B;
+  --media-teal: #34C4B2;
+}
+
+/* Escuro — por escolha explícita */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --surface-background: #121212;
+  --surface-raised: #1E1E1E;
+  --surface-nested: #262626;
+  --surface-fill: #2A2A2A;
+  --text-primary: rgba(255, 255, 255, .92);
+  --text-secondary: rgba(255, 255, 255, .64);
+  --text-tertiary: rgba(255, 255, 255, .38);
+  --text-disabled: rgba(255, 255, 255, .30);
+  --text-inverted: #FFFFFF;
+  --stroke-default: rgba(255, 255, 255, .12);
+  --stroke-medium: rgba(255, 255, 255, .16);
+  --stroke-strong: rgba(255, 255, 255, .24);
+  --focus: #38B6FA;
+  --gestor: #CE4E6B;
+  --gestor-tint: rgba(206, 78, 107, .16);
+  --gestor-40: rgba(206, 78, 107, .40);
+  --gestor-60: rgba(206, 78, 107, .60);
+  --gestor-80: rgba(206, 78, 107, .80);
+  --gestor-dark: #8E3348;
+  --red: #E23B41;
+  --red-tint: rgba(226, 59, 65, .16);
+  --red-dark: #AE2C33;
+  --teal: #34C4B2;
+  --teal-tint: rgba(52, 196, 178, .16);
+  --teal-dark: #228074;
+  --blue: #38B6FA;
+  --blue-tint: rgba(56, 182, 250, .16);
+  --blue-dark: #1F7CAC;
+  --yellow: #FFC24D;
+  --yellow-tint: rgba(255, 194, 77, .16);
+  --yellow-dark: #BE882D;
+  --orange: #FF934D;
+  --orange-tint: rgba(255, 147, 77, .16);
+  --orange-dark: #B75E27;
+  --green: #27A84C;
+  --green-tint: rgba(39, 168, 76, .16);
+  --green-dark: #27753E;
+
+  /* texto sobre tint no escuro: X/default (versão elevada do escuro) */
+  --gestor-ink: #CE4E6B; --red-ink: #E23B41; --teal-ink: #34C4B2; --blue-ink: #38B6FA;
+  --yellow-ink: #FFC24D; --orange-ink: #FF934D; --green-ink: #27A84C;
+  --shadow-01: 0 1px 2px rgba(0,0,0,.45), 0 0 2px rgba(0,0,0,.40);
+  --shadow-02: 0 2px 4px rgba(0,0,0,.45), 0 0 2px rgba(0,0,0,.40);
+  --shadow-03: 0 4px 8px rgba(0,0,0,.50), 0 0 2px rgba(0,0,0,.40);
+  --shadow-04: 0 8px 16px rgba(0,0,0,.50), 0 0 2px rgba(0,0,0,.40);
+  --shadow-05: 0 10px 25px rgba(0,0,0,.55), 0 0 8px rgba(0,0,0,.40);
+  --media: #0B0B0B;
+}
+
+/* Escuro — seguindo o sistema, quando não há escolha explícita */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --surface-background: #121212;
+    --surface-raised: #1E1E1E;
+    --surface-nested: #262626;
+    --surface-fill: #2A2A2A;
+    --text-primary: rgba(255, 255, 255, .92);
+    --text-secondary: rgba(255, 255, 255, .64);
+    --text-tertiary: rgba(255, 255, 255, .38);
+    --text-disabled: rgba(255, 255, 255, .30);
+    --text-inverted: #FFFFFF;
+    --stroke-default: rgba(255, 255, 255, .12);
+    --stroke-medium: rgba(255, 255, 255, .16);
+    --stroke-strong: rgba(255, 255, 255, .24);
+    --focus: #38B6FA;
+    --gestor: #CE4E6B;
+    --gestor-tint: rgba(206, 78, 107, .16);
+    --gestor-40: rgba(206, 78, 107, .40);
+    --gestor-60: rgba(206, 78, 107, .60);
+    --gestor-80: rgba(206, 78, 107, .80);
+    --gestor-dark: #8E3348;
+    --red: #E23B41;
+    --red-tint: rgba(226, 59, 65, .16);
+    --red-dark: #AE2C33;
+    --teal: #34C4B2;
+    --teal-tint: rgba(52, 196, 178, .16);
+    --teal-dark: #228074;
+    --blue: #38B6FA;
+    --blue-tint: rgba(56, 182, 250, .16);
+    --blue-dark: #1F7CAC;
+    --yellow: #FFC24D;
+    --yellow-tint: rgba(255, 194, 77, .16);
+    --yellow-dark: #BE882D;
+    --orange: #FF934D;
+    --orange-tint: rgba(255, 147, 77, .16);
+    --orange-dark: #B75E27;
+    --green: #27A84C;
+    --green-tint: rgba(39, 168, 76, .16);
+    --green-dark: #27753E;
+
+  /* texto sobre tint no escuro: X/default (versão elevada do escuro) */
+  --gestor-ink: #CE4E6B; --red-ink: #E23B41; --teal-ink: #34C4B2; --blue-ink: #38B6FA;
+  --yellow-ink: #FFC24D; --orange-ink: #FF934D; --green-ink: #27A84C;
+    --shadow-01: 0 1px 2px rgba(0,0,0,.45), 0 0 2px rgba(0,0,0,.40);
+    --shadow-02: 0 2px 4px rgba(0,0,0,.45), 0 0 2px rgba(0,0,0,.40);
+    --shadow-03: 0 4px 8px rgba(0,0,0,.50), 0 0 2px rgba(0,0,0,.40);
+    --shadow-04: 0 8px 16px rgba(0,0,0,.50), 0 0 2px rgba(0,0,0,.40);
+    --shadow-05: 0 10px 25px rgba(0,0,0,.55), 0 0 8px rgba(0,0,0,.40);
+    --media: #0B0B0B;
+  }
+}
+
+/* Logo oficial: padrão no claro, branco no escuro (foundations.md · Brand Assets) */
+:root[data-theme="dark"] .brand img { content: url("/brand/takeat-logo-white.svg"); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .brand img { content: url("/brand/takeat-logo-white.svg"); }
+}

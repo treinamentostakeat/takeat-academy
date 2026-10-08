@@ -1,0 +1,114 @@
+// Takeat Academy · banco de dados
+// Local: SQLite (arquivo prisma/dev.db). Produção: trocar provider para "postgresql" (Supabase) e DATABASE_URL.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+/// Pessoas da equipe de treinamentos. cargo: "gestor" | "instrutor"
+model Usuario {
+  id         String   @id @default(cuid())
+  nome       String
+  email      String   @unique
+  senhaHash  String
+  cargo      String   @default("instrutor")
+  ativo      Boolean  @default(true)
+  criadoEm   DateTime @default(now())
+  ultimoAcesso DateTime?
+
+  aulas      Turma[]     @relation("instrutor")
+  plantoes   Turma[]     @relation("plantao")
+  gradeAulas GradeSlot[] @relation("gradeInstrutor")
+  gradePlant GradeSlot[] @relation("gradePlantao")
+}
+
+/// Grade modelo: a semana padrão que se repete. diaSemana 1 = segunda … 5 = sexta. hora = 9, 11, 13, 15 ou 17.
+model GradeSlot {
+  id          String   @id @default(cuid())
+  diaSemana   Int
+  hora        Int
+  tema        String
+  instrutorId String
+  plantaoId   String
+  valeDesde   String   // AAAA-MM-DD
+  criadoEm    DateTime @default(now())
+
+  instrutor Usuario @relation("gradeInstrutor", fields: [instrutorId], references: [id])
+  plantao   Usuario @relation("gradePlantao", fields: [plantaoId], references: [id])
+
+  @@unique([diaSemana, hora, valeDesde])
+}
+
+/// Turma concreta (uma aula ao vivo num dia e horário). Gerada a partir da grade modelo.
+/// status: "agendada" | "cancelada". A situação "ao vivo"/"realizada" vem de iniciadaEm/encerradaEm e do horário.
+model Turma {
+  id           String    @id @default(cuid())
+  data         String    // AAAA-MM-DD
+  hora         Int
+  tema         String
+  instrutorId  String
+  plantaoId    String
+  status       String    @default("agendada")
+  canceladaEm  DateTime?
+  motivoCancel String?
+  iniciadaEm   DateTime?
+  encerradaEm  DateTime?
+  maosLiberadas Int      @default(0) // "dúvidas tiradas": quantos levantaram a mão e foram liberados para falar
+  criadoEm     DateTime  @default(now())
+
+  instrutor  Usuario     @relation("instrutor", fields: [instrutorId], references: [id])
+  plantao    Usuario     @relation("plantao", fields: [plantaoId], references: [id])
+  inscricoes Inscricao[]
+
+  @@unique([data, hora])
+}
+
+/// Restaurante cliente, identificado pelo CNPJ (só números).
+model Restaurante {
+  id         String      @id @default(cuid())
+  cnpj       String      @unique
+  nome       String
+  hubspotId  String?
+  criadoEm   DateTime    @default(now())
+  inscricoes Inscricao[]
+}
+
+/// Inscrição de uma pessoa de um restaurante numa turma.
+/// canal: "grupo" (link do grupo/CNPJ) | "botao" (botão no sistema) | "avulso" (link avulso)
+model Inscricao {
+  id            String    @id @default(cuid())
+  turmaId       String
+  restauranteId String
+  nome          String
+  whatsapp      String    // só números, com DDD
+  canal         String    @default("avulso")
+  codigo        String    @unique // código do link pessoal de entrada na sala
+  criadoEm      DateTime  @default(now())
+  entrouEm      DateTime?
+  saiuEm        DateTime?
+  presente      Boolean   @default(false)
+  nota          Int?
+  comentario    String?
+
+  turma       Turma       @relation(fields: [turmaId], references: [id])
+  restaurante Restaurante @relation(fields: [restauranteId], references: [id])
+
+  @@unique([turmaId, whatsapp])
+}
+
+/// Fila de saída para integrações (HubSpot, WhatsApp). Em modo demonstração fica só registrado aqui.
+/// status: "pendente" | "enviado" | "demo" | "erro"
+model Integracao {
+  id        String   @id @default(cuid())
+  canal     String   // "hubspot" | "whatsapp"
+  tipo      String   // ex.: "inscricao", "presenca", "cancelamento", "lembrete"
+  payload   String   // JSON
+  status    String   @default("pendente")
+  erro      String?
+  criadoEm  DateTime @default(now())
+}
