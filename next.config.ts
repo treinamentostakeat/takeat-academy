@@ -1,9 +1,7 @@
 import type { NextConfig } from "next";
 
-const nextConfig: NextConfig = {
-  /* config options here */
-  cacheComponents: true,
-  partialPrefetching: true,
-};
+/* Todas as páginas são personalizadas (cookie do restaurante/equipe, relógio e banco),
+   então renderizam na hora do pedido; Cache Components fica desligado. */
+const nextConfig: NextConfig = {};
 
 export default nextConfig;

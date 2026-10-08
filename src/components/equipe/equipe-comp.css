@@ -1,0 +1,9 @@
+/* Peças compartilhadas da área da equipe (modais e ações). Só tokens. */
+.btn-danger-o { background: transparent; border-color: var(--red); color: var(--red-ink); }
+.btn-danger-o:hover { background: var(--red-tint); }
+.md .forte { color: var(--text-primary); font-weight: 600; }
+.md .err, .fld .err { font-size: 12px; line-height: 16px; letter-spacing: .4px; color: var(--red-ink); }
+.fld .info.aviso { display: flex; gap: 4px; align-items: center; color: var(--yellow-ink); }
+.fld .info.aviso .icon { color: inherit; }
+.md p { color: var(--text-secondary); }
+.toast.eq-toast { z-index: 95; }

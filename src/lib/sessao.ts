@@ -1,6 +1,7 @@
 import 'server-only';
 import { createHmac, timingSafeEqual } from 'node:crypto';
 import { cookies } from 'next/headers';
+import { connection } from 'next/server';
 import { redirect } from 'next/navigation';
 import bcrypt from 'bcryptjs';
 import { db } from './db';
@@ -41,6 +42,7 @@ export async function entrar(email: string, senha: string): Promise<UsuarioSessa
 export async function sair() { (await cookies()).delete(COOKIE_EQUIPE); }
 
 export async function usuarioAtual(): Promise<UsuarioSessao | null> {
+  await connection(); // sessão e validade dependem da hora do pedido
   const s = abrir<{ id: string; exp: number }>((await cookies()).get(COOKIE_EQUIPE)?.value);
   if (!s || s.exp < Date.now()) return null;
   const u = await db.usuario.findUnique({ where: { id: s.id } });

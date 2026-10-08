@@ -1,0 +1,29 @@
+/* Complementos da sala ao vivo (as classes base vêm de styles/sala.css, iguais ao protótipo). Só tokens. */
+
+/* Avisos de página inteira (link inválido, aula cancelada, sem inscrição) */
+.aviso-ic { width: 64px; height: 64px; border-radius: 9999px; background: var(--yellow-tint); color: var(--yellow-ink); display: grid; place-items: center; margin: 0 auto 16px; }
+.aviso-ic .icon { font-size: 36px; width: 36px; height: 36px; }
+.aviso-ic.neutro { background: var(--surface-fill); color: var(--text-secondary); }
+
+/* Vídeo real (LiveKit): tela compartilhada no palco e câmera da instrutora */
+.stage > video.tela { position: absolute; top: 56px; left: 24px; width: calc(100% - 48px); height: calc(100% - 80px); object-fit: contain; }
+.cam > video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.stage-off .icon + p { max-width: 360px; }
+
+/* Ativar som quando o navegador bloqueia o áudio automático */
+.som-bloqueado { position: absolute; left: 50%; bottom: 16px; transform: translateX(-50%); z-index: 4; background: var(--surface-raised); }
+
+/* Contagem em dias (aula em outro dia) */
+.count b.longe { font-size: 22px; line-height: 28px; }
+
+/* Texto sobre fundo --text-primary: no escuro --text-inverted continua branco (ficava branco no branco).
+   --surface-raised é branco no claro e escuro no escuro. */
+.side .msg.mine .tx, .top-r .role-tag { color: var(--surface-raised); }
+
+.sala-carregando { min-height: 60vh; display: grid; place-items: center; color: var(--text-tertiary); }
+
+@media (max-width: 1023px) {
+  .stage > video.tela { top: 40px; left: 8px; width: calc(100% - 16px); height: calc(100% - 48px); }
+  .cam > video { position: static; width: 96px; height: 54px; border-radius: 8px; flex: none; }
+  .cam:has(> video) .face { display: none; }
+}

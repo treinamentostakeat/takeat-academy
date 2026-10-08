@@ -1,0 +1,104 @@
+/* Aulas ao vivo (protótipo aulas.html), escopado em .cl-aulas.
+   Sobrescreve por completo .filters/.fchip/.sel, que também existem na área da equipe. */
+
+/* Ao vivo agora */
+.cl-aulas .live { display: flex; align-items: center; gap: 16px; padding: 16px; border-radius: 16px; background: var(--gestor-tint); }
+.cl-aulas .live .txt { flex: 1; min-width: 0; }
+.cl-aulas .live .k { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; line-height: 16px; letter-spacing: .5px; font-weight: 600; color: var(--gestor-ink); }
+.cl-aulas .live .t { margin-top: 2px; font-size: 16px; line-height: 24px; letter-spacing: .15px; font-weight: 600; color: var(--text-primary); }
+.cl-aulas .live .m { font-size: 12px; line-height: 16px; letter-spacing: .4px; color: var(--text-secondary); display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+.cl-aulas .live .ti { background: var(--surface-raised); }
+
+/* Filtro por tema */
+.cl-aulas .filters { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin: 0; }
+.cl-aulas .fchip {
+  display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px 0 6px; border-radius: 9999px; cursor: pointer; text-decoration: none;
+  border: 1px solid var(--stroke-default); background: var(--surface-raised); color: var(--text-secondary);
+  font-size: 14px; line-height: 20px; letter-spacing: .1px; font-weight: 600; white-space: nowrap; transition: border-color .15s ease-out, background-color .15s ease-out;
+}
+.cl-aulas .fchip.all { padding: 0 16px; }
+.cl-aulas .fchip:hover { border-color: var(--stroke-medium); }
+.cl-aulas .fchip .ti.xs { width: 28px; height: 28px; border-radius: 9999px; }
+.cl-aulas .fchip .ti.xs svg { width: 18px; height: 18px; }
+.cl-aulas .fchip[aria-current="true"] { border-color: var(--gestor); background: var(--gestor-tint); color: var(--gestor-ink); }
+
+/* Navegação de semana */
+.cl-aulas .wk { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.cl-aulas .nb { width: 40px; height: 40px; border-radius: 12px; border: 1px solid var(--stroke-medium); background: var(--surface-raised); color: var(--text-primary); cursor: pointer; display: grid; place-items: center; flex: none; transition: border-color .15s ease-out; text-decoration: none; }
+.cl-aulas .nb:hover { border-color: var(--text-primary); }
+.cl-aulas .nb:disabled { color: var(--text-disabled); border-color: var(--stroke-default); cursor: not-allowed; }
+.cl-aulas .sel { position: relative; display: flex; align-items: center; min-width: 260px; }
+.cl-aulas .sel select {
+  appearance: none; -webkit-appearance: none; width: 100%; height: 40px; padding: 0 40px 0 16px; border: 1px solid var(--stroke-strong); border-radius: 12px;
+  background: var(--surface-raised); color: var(--text-primary); font: inherit; font-weight: 600; letter-spacing: .1px; cursor: pointer; outline: 0;
+}
+.cl-aulas .sel select:hover { border-color: var(--text-primary); }
+.cl-aulas .sel select:focus-visible { border-color: var(--focus); }
+.cl-aulas .sel .icon { position: absolute; right: 12px; pointer-events: none; color: var(--text-secondary); }
+.cl-aulas .wk .sp { flex: 1; }
+.cl-aulas .wk .n { font-size: 12px; line-height: 16px; letter-spacing: .4px; color: var(--text-tertiary); }
+
+/* Calendário da semana: dias nas colunas, horários nas linhas */
+.cl-aulas .cal { display: grid; grid-template-columns: 64px repeat(var(--ndias, 5), minmax(0, 1fr)); background: var(--surface-raised); border: 1px solid var(--stroke-default); border-radius: 16px; overflow: hidden; }
+.cl-aulas .cal .ch { padding: 12px 8px; text-align: center; border-bottom: 1px solid var(--stroke-default); border-left: .5px solid var(--stroke-default); }
+.cl-aulas .cal .ch.corner { border-left: 0; }
+.cl-aulas .cal .ch .wd { display: block; font-size: 12px; line-height: 16px; letter-spacing: .5px; font-weight: 500; text-transform: uppercase; color: var(--text-tertiary); }
+.cl-aulas .cal .ch .dt { display: inline-grid; place-items: center; min-width: 32px; height: 32px; padding: 0 6px; margin-top: 2px; border-radius: 9999px; font-size: 18px; line-height: 24px; font-weight: 600; color: var(--text-primary); font-variant-numeric: tabular-nums; }
+.cl-aulas .cal .ch.today .wd { color: var(--gestor-ink); }
+.cl-aulas .cal .ch.today .dt { background: var(--gestor); color: var(--text-inverted); }
+.cl-aulas .cal .ch.past .dt, .cl-aulas .cal .ch.past .wd { color: var(--text-disabled); }
+.cl-aulas .cal .hl { padding: 12px 8px; font-size: 12px; line-height: 16px; letter-spacing: .4px; font-weight: 600; color: var(--text-secondary); text-align: right; font-variant-numeric: tabular-nums; }
+.cl-aulas .cal .hl, .cl-aulas .cal .c { border-top: .5px solid var(--stroke-default); }
+.cl-aulas .cal .hl.first, .cl-aulas .cal .c.first { border-top: 0; }
+.cl-aulas .cal .c { border-left: .5px solid var(--stroke-default); padding: 6px; min-height: 104px; display: flex; }
+.cl-aulas .cal .c.past { background: var(--surface-nested); }
+.cl-aulas .ev {
+  flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; padding: 10px; text-align: left;
+  border-radius: 12px; border: 1px solid transparent; background: var(--tt); color: var(--text-primary); font: inherit; text-decoration: none;
+  transition: border-color .15s ease-out, box-shadow .15s ease-out;
+}
+.cl-aulas button.ev, .cl-aulas a.ev { cursor: pointer; }
+.cl-aulas button.ev:hover, .cl-aulas a.ev:hover { border-color: var(--tc); box-shadow: var(--shadow-01); }
+.cl-aulas .ev .evt { display: flex; align-items: center; gap: 8px; min-width: 0; width: 100%; }
+.cl-aulas .ev .ti.sm { background: var(--surface-raised); flex: none; }
+.cl-aulas .ev .n { font-size: 14px; line-height: 20px; letter-spacing: .1px; font-weight: 600; min-width: 0; overflow-wrap: anywhere; }
+.cl-aulas .ev .ft { margin-top: auto; display: flex; align-items: center; gap: 4px; font-size: 12px; line-height: 16px; letter-spacing: .4px; font-weight: 600; color: var(--gestor-ink); }
+.cl-aulas .ev .ft .icon { font-size: 16px; width: 16px; height: 16px; }
+.cl-aulas .ev.mine .ft { color: var(--teal-ink); }
+.cl-aulas .ev.live { background: var(--gestor-tint); border-color: var(--gestor); }
+.cl-aulas .ev.off { background: transparent; border: 1px dashed var(--stroke-default); color: var(--text-disabled); }
+.cl-aulas .ev.off .ti.sm { opacity: .45; background: transparent; }
+.cl-aulas .ev.off .n { font-weight: 500; }
+.cl-aulas .ev.off .ft { color: var(--text-disabled); }
+.cl-aulas .dtabs { display: none; }
+
+@media (max-width: 900px) {
+  .cl-aulas .hello .btn { width: 100%; }
+  .cl-aulas .live { flex-wrap: wrap; }
+  .cl-aulas .live .btn { width: 100%; }
+  .cl-aulas .filters { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 4px; }
+  .cl-aulas .fchip { height: 48px; flex: none; border-radius: 16px; }
+  /* Semana: seletor ocupa a largura */
+  .cl-aulas .wk { display: grid; grid-template-columns: 48px minmax(0, 1fr) 48px; }
+  .cl-aulas .wk .sel { min-width: 0; }
+  .cl-aulas .nb, .cl-aulas .sel select { height: 48px; border-radius: 16px; }
+  .cl-aulas .nb { width: 48px; }
+  .cl-aulas .sel select { font-size: 16px; }
+  .cl-aulas .wk .sp { display: none; }
+  .cl-aulas .wk .n { grid-column: 1 / -1; order: 5; }
+  .cl-aulas .wk .n:empty { display: none; }
+  .cl-aulas .wk .btn { grid-column: 1 / -1; width: 100%; }
+  /* Calendário: um dia por vez, escolhido nas abas */
+  .cl-aulas .dtabs { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; }
+  .cl-aulas .dtab { flex: 1 0 56px; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 4px; min-height: 56px; border: 1px solid var(--stroke-default); border-radius: 16px; background: var(--surface-raised); color: var(--text-secondary); cursor: pointer; font: inherit; }
+  .cl-aulas .dtab .wd { font-size: 12px; line-height: 16px; letter-spacing: .5px; font-weight: 500; text-transform: uppercase; }
+  .cl-aulas .dtab .dt { font-size: 16px; line-height: 24px; font-weight: 600; color: var(--text-primary); font-variant-numeric: tabular-nums; }
+  .cl-aulas .dtab[aria-selected="true"] { border-color: var(--gestor); background: var(--gestor-tint); }
+  .cl-aulas .dtab[aria-selected="true"] .wd { color: var(--gestor-ink); }
+  .cl-aulas .dtab:disabled { background: var(--surface-nested); border-color: transparent; cursor: not-allowed; }
+  .cl-aulas .dtab:disabled .dt, .cl-aulas .dtab:disabled .wd { color: var(--text-disabled); }
+  .cl-aulas .cal { grid-template-columns: 56px minmax(0, 1fr); }
+  .cl-aulas .cal .ch { display: none; }
+  .cl-aulas .cal .c:not(.sel-col) { display: none; }
+  .cl-aulas .cal .c { min-height: 88px; }
+}

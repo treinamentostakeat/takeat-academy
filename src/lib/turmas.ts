@@ -1,6 +1,7 @@
 import 'server-only';
 import { db } from './db';
 import { diasUteis, diaSemana, hoje, somaDias } from './datas';
+import { finalizarAulasPendentes } from './presenca';
 
 /** Até onde as turmas ficam abertas para inscrição */
 export const FIM_AGENDA = '2026-12-31';
@@ -36,6 +37,7 @@ export async function garantirTurmas(de: string, ate: string) {
 /** Turmas de um período com instrutor, plantão e contagem de inscritos */
 export async function turmasDoPeriodo(de: string, ate: string) {
   await garantirTurmas(de, ate);
+  await finalizarAulasPendentes();
   return db.turma.findMany({
     where: { data: { gte: de, lte: ate } },
     orderBy: [{ data: 'asc' }, { hora: 'asc' }],

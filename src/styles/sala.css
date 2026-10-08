@@ -87,7 +87,7 @@ a { color: var(--blue-ink); text-underline-offset: 3px; }
 .class-id .m { font-size: 12px; line-height: 16px; letter-spacing: .4px; color: var(--text-tertiary); }
 .top-r { display: flex; align-items: center; gap: 12px; flex: none; }
 .people { display: inline-flex; align-items: center; gap: 4px; color: var(--text-secondary); font-weight: 500; }
-.role-tag { display: inline-flex; align-items: center; gap: 4px; height: 24px; padding: 4px 8px; border-radius: 8px; background: var(--text-primary); color: var(--text-inverted); font-size: 12px; line-height: 16px; letter-spacing: .5px; font-weight: 600; }
+.role-tag { display: inline-flex; align-items: center; gap: 4px; height: 24px; padding: 4px 8px; border-radius: 8px; background: var(--text-primary); color: var(--surface-raised); font-size: 12px; line-height: 16px; letter-spacing: .5px; font-weight: 600; }
 
 /* Cards & shared blocks */
 .card { background: var(--surface-raised); border: 1px solid var(--stroke-default); border-radius: 16px; }
@@ -225,7 +225,7 @@ a { color: var(--blue-ink); text-underline-offset: 3px; }
 .msg.host .tx { background: var(--gestor-tint); color: var(--text-primary); }
 .msg.mine { flex-direction: row-reverse; }
 .msg.mine .bd { text-align: right; }
-.msg.mine .tx { border-radius: 12px 4px 12px 12px; background: var(--text-primary); color: var(--text-inverted); text-align: left; }
+.msg.mine .tx { border-radius: 12px 4px 12px 12px; background: var(--text-primary); color: var(--surface-raised); text-align: left; }
 .chat-f { padding: 12px 16px 16px; border-top: 1px solid var(--stroke-default); flex: none; }
 .composer { display: flex; align-items: center; gap: 8px; }
 .composer input { flex: 1; min-width: 0; height: 40px; padding: 10px 16px; border: 1px solid var(--stroke-strong); border-radius: 12px; outline: 0; color: var(--text-secondary); font-size: 14px; line-height: 20px; }

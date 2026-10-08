@@ -1,0 +1,53 @@
+/* Início do cliente (protótipo inicio.html), escopado em .cl-inicio */
+.cl-inicio .panel { background: var(--surface-raised); border: 1px solid var(--stroke-default); border-radius: 16px; }
+.cl-inicio .panel-h { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 16px 0; }
+.cl-inicio .panel-h h2 { font-size: 16px; line-height: 24px; letter-spacing: .15px; font-weight: 600; color: var(--text-primary); display: flex; align-items: center; gap: 8px; }
+.cl-inicio .panel-h h2 .icon { color: var(--gestor); }
+.cl-inicio .panel-b { padding: 12px 16px 16px; }
+
+/* Ao vivo agora */
+.cl-inicio .feature {
+  display: flex; align-items: center; justify-content: space-between; gap: 24px;
+  padding: 16px; border-radius: 12px; margin-bottom: 16px; background: var(--gestor-tint); color: var(--text-secondary);
+}
+.cl-inicio .feature .meta { display: flex; align-items: center; gap: 8px; font-size: 12px; line-height: 16px; letter-spacing: .5px; font-weight: 600; }
+.cl-inicio .feature h3 { margin-top: 8px; font-size: 22px; line-height: 28px; font-weight: 600; color: var(--text-primary); }
+.cl-inicio .feature .sub { margin-top: 2px; font-size: 14px; line-height: 20px; }
+.cl-inicio .feature .live-pill { display: inline-flex; align-items: center; gap: 8px; height: 24px; padding: 4px 8px; border-radius: 9999px; background: var(--gestor); color: var(--text-inverted); }
+.cl-inicio .feature .live-pill .dot { background: var(--text-inverted); }
+.cl-inicio .feature .live-pill .dot::after { content: ""; position: absolute; inset: 0; border-radius: inherit; background: inherit; animation: pulse 1.6s cubic-bezier(.16,1,.3,1) infinite; }
+
+/* Temas: branco com borda do tema; hover/foco preenche com a cor do tema */
+.cl-inicio .lead-s { margin: 0 0 12px; color: var(--text-secondary); }
+.cl-inicio .tgrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.cl-inicio .ttile {
+  aspect-ratio: 16 / 9; border: 1px solid var(--tc); border-radius: 16px; padding: 16px; cursor: pointer; text-align: left;
+  display: flex; flex-direction: column; justify-content: space-between; gap: 8px;
+  background: var(--surface-raised); color: var(--tc); font: inherit;
+  transition: background-color .2s ease-out, color .2s ease-out, transform .2s cubic-bezier(.16,1,.3,1), box-shadow .2s ease-out;
+}
+.cl-inicio .ttile svg { width: 40px; height: 40px; }
+.cl-inicio .ttile .n { display: block; font-size: 18px; line-height: 24px; font-weight: 600; color: var(--text-primary); transition: color .2s ease-out; }
+.cl-inicio .ttile .nx { display: block; margin-top: 4px; font-size: 12px; line-height: 16px; letter-spacing: .4px; font-weight: 500; color: var(--text-secondary); transition: color .2s ease-out; }
+.cl-inicio .ttile:hover, .cl-inicio .ttile:focus-visible { background: var(--tc); color: var(--text-inverted); transform: translateY(-2px); box-shadow: var(--shadow-03); }
+.cl-inicio .ttile:hover .n, .cl-inicio .ttile:hover .nx, .cl-inicio .ttile:focus-visible .n, .cl-inicio .ttile:focus-visible .nx { color: var(--text-inverted); }
+.cl-inicio .ttile:disabled { opacity: .5; cursor: not-allowed; transform: none; box-shadow: none; background: var(--surface-raised); color: var(--tc); }
+.cl-inicio .ttile:disabled .n { color: var(--text-primary); }
+.cl-inicio .ttile:disabled .nx { color: var(--text-secondary); }
+.cl-inicio .ttile-sk { aspect-ratio: 16 / 9; border-radius: 16px; }
+
+@media (max-width: 1023px) {
+  .cl-inicio .tgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cl-inicio .ttile, .cl-inicio .ttile-sk { aspect-ratio: auto; min-height: 128px; }
+  .cl-inicio .panel-h { flex-wrap: wrap; }
+  .cl-inicio .panel-b { padding: 16px; }
+  .cl-inicio .enroll-btn { width: 100%; }
+  .cl-inicio .feature { flex-direction: column; align-items: stretch; gap: 16px; }
+  .cl-inicio .feature .meta { flex-wrap: wrap; }
+  .cl-inicio .feature h3 { font-size: 18px; line-height: 24px; }
+  .cl-inicio .feature .btn { width: 100%; }
+}
+@media (max-width: 420px) {
+  .cl-inicio .ttile { padding: 12px; }
+  .cl-inicio .ttile .n { font-size: 16px; }
+}

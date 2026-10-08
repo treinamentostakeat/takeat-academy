@@ -28,7 +28,7 @@ const sala = () => new RoomServiceClient(process.env.LIVEKIT_URL!.replace(/^wss?
 /** Libera (ou recolhe) o microfone e a tela de um cliente */
 export async function liberarFala(turmaId: string, identidade: string, liberar: boolean) {
   await sala().updateParticipant(nomeSala(turmaId), identidade, undefined, {
-    canPublish: liberar, canSubscribe: true, canPublishData: true,
+    canPublish: liberar, canSubscribe: true, canPublishData: true, canUpdateMetadata: true,
     // Cliente liberado fala e pode mostrar a tela; câmera do cliente fica de fora (só a instrutora aparece)
     canPublishSources: liberar ? [TrackSource.MICROPHONE, TrackSource.SCREEN_SHARE, TrackSource.SCREEN_SHARE_AUDIO] : [],
   });

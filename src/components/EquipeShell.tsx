@@ -16,6 +16,9 @@ const NAV: { t: string; items: Item[] }[] = [
   { t: 'Administração', items: [
     { href: '/equipe/usuarios', icon: 'group', label: 'Usuários e cargos', gestor: true },
   ] },
+  { t: 'Conta', items: [
+    { href: '/equipe/conta', icon: 'person', label: 'Minha conta' },
+  ] },
 ];
 
 export function EquipeShell({ usuario, sairAction, children }: { usuario: UsuarioSessao; sairAction: () => Promise<void>; children: React.ReactNode }) {

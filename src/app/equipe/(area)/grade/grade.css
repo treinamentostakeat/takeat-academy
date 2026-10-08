@@ -1,0 +1,70 @@
+/* Grade modelo — visual do protótipo equipe-grade.html, escopado em .gr-pg */
+.gr-pg .gr-vig { margin: -8px 0 16px; font-size: 12px; line-height: 16px; letter-spacing: .4px; color: var(--text-secondary); }
+.gr-pg .gr-note { margin-bottom: 16px; }
+.gr-pg .gr-note b { margin-bottom: 2px; }
+.gr-pg .gr-err { display: flex; gap: 8px; align-items: center; margin-bottom: 16px; padding: 12px 16px; border-radius: 12px; background: var(--red-tint); color: var(--red-ink); font-weight: 500; }
+.gr-pg .gr-err .icon { color: inherit; }
+
+.gr-pg .gr-layout { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; align-items: start; }
+.gr-pg .gr-scroll { overflow-x: auto; border: 1px solid var(--stroke-default); border-radius: 16px; background: var(--surface-raised); }
+.gr-pg .gr { display: grid; grid-template-columns: 56px repeat(5, minmax(176px, 1fr)); min-width: 960px; }
+.gr-pg .gr .hd { padding: 12px; background: var(--surface-fill); border-bottom: .5px solid var(--stroke-default); font-weight: 600; color: var(--text-secondary); }
+.gr-pg .gr .hr { padding: 16px 8px; font-weight: 600; color: var(--text-secondary); border-bottom: .5px solid var(--stroke-default); text-align: right; }
+.gr-pg .gr .cell { padding: 8px; border-bottom: .5px solid var(--stroke-default); border-left: .5px solid var(--stroke-default); min-width: 0; }
+.gr-pg .gr .last { border-bottom: 0; }
+.gr-pg .gc { border: 1px solid var(--stroke-default); border-radius: 12px; padding: 8px; display: grid; gap: 6px; position: relative; background: var(--surface-raised); }
+.gr-pg .gc.chg { border-color: var(--yellow); background: color-mix(in srgb, var(--yellow) 8%, var(--surface-raised)); }
+.gr-pg .gc .tag { position: absolute; top: -8px; right: 8px; height: 16px; padding: 0 6px; border-radius: 9999px; background: var(--yellow-tint); color: var(--yellow-ink); font-size: 11px; line-height: 16px; font-weight: 600; letter-spacing: .5px; display: none; }
+.gr-pg .gc.chg .tag { display: inline-block; }
+.gr-pg .gc .row { display: grid; grid-template-columns: 44px minmax(0, 1fr); align-items: center; gap: 6px; }
+.gr-pg .gc .row > span { font-size: 11px; line-height: 16px; letter-spacing: .5px; color: var(--text-tertiary); font-weight: 500; }
+.gr-pg .gc .row.tema { grid-template-columns: 24px minmax(0, 1fr); }
+.gr-pg .sw { width: 24px; height: 24px; border-radius: 8px; display: grid; place-items: center; background: var(--tt); color: var(--tc); }
+.gr-pg .sw svg { width: 16px; height: 16px; }
+.gr-pg .gc select { width: 100%; min-width: 0; height: 32px; padding: 0 28px 0 8px; border: 1px solid var(--stroke-strong); border-radius: 8px; background: var(--surface-raised); color: var(--text-primary); font: inherit; font-size: 12px; line-height: 16px; letter-spacing: .4px; appearance: none; cursor: pointer;
+  background-image: linear-gradient(45deg, transparent 50%, var(--text-tertiary) 50%), linear-gradient(135deg, var(--text-tertiary) 50%, transparent 50%);
+  background-position: calc(100% - 14px) 14px, calc(100% - 9px) 14px; background-size: 5px 5px; background-repeat: no-repeat; }
+.gr-pg .gc select:hover { border-color: var(--text-primary); }
+.gr-pg .gc select:focus { border-color: var(--focus); outline: 0; }
+.gr-pg .gc select.chg { border-color: var(--yellow-ink); }
+.gr-pg .gc .warn { font-size: 11px; line-height: 16px; letter-spacing: .4px; color: var(--red-ink); display: flex; gap: 4px; align-items: center; }
+.gr-pg .gc .warn .icon { color: inherit; }
+
+.gr-pg .gr-side { display: grid; gap: 16px; position: sticky; top: calc(64px + 16px); }
+.gr-pg .sum-l { display: grid; gap: 8px; }
+.gr-pg .sum-r { display: grid; grid-template-columns: 24px minmax(0, 1fr) auto; gap: 8px; align-items: center; color: var(--text-secondary); }
+.gr-pg .sum-r .n { font-weight: 600; color: var(--text-primary); font-variant-numeric: tabular-nums; }
+.gr-pg .gr-side .d { font-size: 11px; line-height: 16px; letter-spacing: .5px; font-weight: 600; margin-left: 6px; }
+.gr-pg .gr-side .d.up { color: var(--green-ink); }
+.gr-pg .gr-side .d.dn { color: var(--red-ink); }
+.gr-pg .sum-r .sbar { grid-column: 2 / 4; height: 4px; border-radius: 9999px; background: var(--surface-fill); overflow: hidden; margin-top: -4px; }
+.gr-pg .sum-r .sbar i { display: block; height: 100%; background: var(--tc); }
+.gr-pg .sum-tot { display: flex; justify-content: space-between; padding-top: 12px; border-top: .5px solid var(--stroke-default); font-weight: 600; color: var(--text-primary); }
+.gr-pg .pi-t { width: 100%; border-collapse: collapse; }
+.gr-pg .pi-t th { text-align: left; font-size: 12px; line-height: 16px; letter-spacing: .4px; color: var(--text-secondary); font-weight: 600; padding: 4px 0; }
+.gr-pg .pi-t td { padding: 8px 0; color: var(--text-primary); font-weight: 500; }
+.gr-pg .pi-t .num { text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.gr-pg .foot-bar { display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; justify-content: space-between; margin-bottom: 16px; }
+.gr-pg .foot-bar .fld { width: 260px; max-width: 100%; }
+.gr-pg .foot-bar .fld input { color: var(--text-primary); }
+.gr-pg .foot-bar .acts { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+.gr-pg .chgcount { font-size: 12px; line-height: 16px; letter-spacing: .4px; color: var(--text-secondary); }
+.gr-pg .chgcount b { color: var(--yellow-ink); }
+.gr-pg .gr .cell .dl { display: none; }
+
+@media (max-width: 1599px) { .gr-pg .gr-layout { grid-template-columns: minmax(0, 1fr); } .gr-pg .gr-side { position: static; grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 900px) {
+  .gr-pg .gr-side { grid-template-columns: minmax(0, 1fr); }
+  .gr-pg .foot-bar .fld { width: 100%; }
+  .gr-pg .foot-bar .acts { width: 100%; }
+  .gr-pg .foot-bar .acts .btn { flex: 1; }
+  .gr-pg .chgcount { width: 100%; }
+  /* no celular, a grade vira lista por dia */
+  .gr-pg .gr { grid-template-columns: minmax(0, 1fr); min-width: 0; }
+  .gr-pg .gr .hd.corner, .gr-pg .gr .hd.col { display: none; }
+  .gr-pg .gr .hr { display: none; }
+  .gr-pg .gr .cell { border-left: 0; padding: 8px 12px; order: var(--o); }
+  .gr-pg .gr .cell.last { border-bottom: .5px solid var(--stroke-default); }
+  .gr-pg .gr .cell .dl { display: block; font-size: 12px; line-height: 16px; letter-spacing: .5px; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px; }
+  .gr-pg .gr-scroll { overflow: visible; }
+}
