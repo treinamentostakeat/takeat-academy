@@ -1,13 +1,15 @@
-// Takeat Academy · banco de dados
-// Local: SQLite (arquivo prisma/dev.db). Produção: trocar provider para "postgresql" (Supabase) e DATABASE_URL.
+// Takeat Academy · banco de dados (Postgres no Supabase)
+// DATABASE_URL = conexão "Transaction pooler" (porta 6543, com ?pgbouncer=true) — usada pelo app
+// DIRECT_URL   = conexão "Session pooler"/direta (porta 5432) — usada só para criar/alterar tabelas
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 /// Pessoas da equipe de treinamentos. cargo: "gestor" | "instrutor"

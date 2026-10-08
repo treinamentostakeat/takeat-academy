@@ -4,18 +4,19 @@ Plataforma de aulas ao vivo da Takeat para restaurantes: inscrição, agenda, sa
 
 ## Rodar no computador
 
-Precisa do Node.js 20 ou mais novo.
+Precisa do Node.js 20 ou mais novo e do `.env` preenchido (copie de `.env.example`).
+O banco é o Postgres do Supabase: em **Project Settings → Database → Connection string**, copie a do
+**Transaction pooler** para `DATABASE_URL` (acrescente `?pgbouncer=true&connection_limit=1`) e a do
+**Session pooler** para `DIRECT_URL`, trocando `[YOUR-PASSWORD]` pela senha do banco.
 
 ```bash
 npm install
-npm run setup
 npm run dev
 ```
 
 Abra http://localhost:3000 (lado do cliente) e http://localhost:3000/equipe (área da equipe).
-
-- `npm run setup` cria o banco local (`prisma/dev.db`) e as contas iniciais: o gestor (`onboarding@takeat.app`) e duas instrutoras de exemplo. A senha inicial está em `SEED_SENHA_INICIAL` no `.env`; troque em **Minha conta** depois de entrar.
-- Copie `.env.example` para `.env` se ainda não existir e preencha `SESSION_SECRET` e `SEED_SENHA_INICIAL`.
+O banco já está criado no Supabase com a conta do gestor (`onboarding@takeat.app`) e a grade modelo.
+Mudanças de tabela ficam em `prisma/migrations` e são aplicadas com `npm run db:migrate`.
 
 ## Modo demonstração
 
@@ -47,10 +48,12 @@ Em produção o app precisa estar em HTTPS (o navegador só libera microfone e c
 - A **sala** abre 10 minutos antes. Quem entrou na sala fica com presença; ao encerrar a aula (ou automaticamente 30 minutos depois do fim, se ninguém encerrar), a presença vai para o HubSpot.
 - **Cancelar turma** avisa cada inscrito pelo WhatsApp com o link para escolher outro horário.
 
-## Para produção
+## Publicar (Vercel)
 
-- Banco: trocar `provider` em `prisma/schema.prisma` para `postgresql` e `DATABASE_URL` para o Postgres (ex.: Supabase).
-- Deixar `DEV_LOGIN` vazio (a rota `/api/dev/entrar` só existe para testes automáticos em desenvolvimento).
+Variáveis no Vercel (**Settings → Environment Variables**): `DATABASE_URL`, `DIRECT_URL`, `SESSION_SECRET`,
+`APP_URL` (endereço público), `TZ_AULAS`, e as das integrações. Não defina `DEV_LOGIN` nem `RELOGIO` em produção.
+No ar, a sala de aula precisa das chaves do LiveKit (o modo demonstração guarda chat e mãos na memória do servidor,
+o que não funciona com várias instâncias).
 
 ## Próximas fases
 
