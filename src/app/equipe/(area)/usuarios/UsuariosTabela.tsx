@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState, useTransition } from 'react';
 import { createPortal } from 'react-dom';
 import { iniciais } from '@/lib/formato';
+import { DESCRICAO_CARGO, ROTULO_CARGO, ehEquipe, loginDe, type Cargo } from '@/lib/permissoes';
 import { Dropdown } from '@/components/Dropdown';
 import { BotaoExportar, Paginacao, usePaginacao } from '@/components/equipe/Tabela';
 import { Modal } from '@/components/equipe/Modal';
@@ -9,18 +10,33 @@ import { toast } from '@/components/equipe/Toast';
 import '@/components/equipe/equipe-comp.css';
 import { criarUsuario, definirAtivo, gerarNovaSenha, trocarCargo, type ResultadoUsuario } from './acoes';
 
-export type Linha = { id: string; nome: string; email: string; cargo: 'gestor' | 'instrutor'; ativo: boolean; acesso: string | null; eu: boolean; futuras: number };
-type Filtro = { q: string; cargo: '' | 'gestor' | 'instrutor'; sit: '' | 'ativo' | 'off' };
+export type Linha = { id: string; nome: string; email: string; cargo: Cargo; ativo: boolean; departamento: string | null; acesso: string | null; eu: boolean; futuras: number; gerenciavel: boolean };
+type Filtro = { q: string; cargo: '' | Cargo; sit: '' | 'ativo' | 'off' };
 type Aberto =
   | { t: 'novo' }
   | { t: 'cargo' | 'senha' | 'desativar'; u: Linha }
-  | { t: 'senhaGerada'; nome: string; email: string; senha: string; nova: boolean }
+  | { t: 'senhaGerada'; nome: string; email: string; cargo: Cargo; senha: string; nova: boolean }
   | null;
 
-const CARGO = { gestor: { l: 'Gestor', cls: 'chip-gestor' }, instrutor: { l: 'Instrutor', cls: 'chip-blue' } };
+const CARGO: Record<Cargo, { l: string; cls: string }> = {
+  gestor: { l: ROTULO_CARGO.gestor, cls: 'chip-gestor' },
+  instrutor: { l: ROTULO_CARGO.instrutor, cls: 'chip-blue' },
+  rh: { l: ROTULO_CARGO.rh, cls: 'chip-teal' },
+  colaborador: { l: ROTULO_CARGO.colaborador, cls: 'chip-neutral' },
+};
 const norm = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
 
-export function UsuariosTabela({ linhas, filtro }: { linhas: Linha[]; filtro: Filtro }) {
+/* Lista de contas com filtros e ações. Usada pelo gestor (todos os cargos) e pelo RH (só os cargos que ele administra). */
+export function UsuariosTabela({ linhas, filtro, cargos, titulo, subtitulo, rotuloTabela, comDepartamento }: {
+  linhas: Linha[];
+  filtro: Filtro;
+  /** Cargos que quem está vendo pode dar */
+  cargos: Cargo[];
+  titulo: string;
+  subtitulo: string;
+  rotuloTabela: string;
+  comDepartamento?: boolean;
+}) {
   const [f, setF] = useState<Filtro>(filtro);
   const [aberto, setAberto] = useState<Aberto>(null);
   const [menu, setMenu] = useState<{ u: Linha; btn: HTMLButtonElement } | null>(null);
@@ -57,8 +73,8 @@ export function UsuariosTabela({ linhas, filtro }: { linhas: Linha[]; filtro: Fi
 
   const sitChip = (u: Linha) => <span className={`chip ${u.ativo ? 'chip-teal' : 'chip-neutral'}`}>{u.ativo ? 'Ativo' : 'Desativado'}</span>;
   const cargoChip = (u: Linha) => <span className={`chip ${CARGO[u.cargo].cls}`}>{CARGO[u.cargo].l}</span>;
-  const kebab = (u: Linha) => u.eu
-    ? <span className="dash" aria-label="Sem ações para você mesmo">–</span>
+  const kebab = (u: Linha) => !u.gerenciavel
+    ? <span className="dash" aria-label={u.eu ? 'Sem ações para você mesmo' : 'Sem ações disponíveis'}>–</span>
     : (
       <button type="button" className="kb" aria-haspopup="menu" aria-expanded={menu?.u.id === u.id} aria-label={`Ações para ${u.nome}`} disabled={pend}
         onClick={(e) => { const btn = e.currentTarget; setMenu((m) => (m?.u.id === u.id ? null : { u, btn })); }}>
@@ -71,8 +87,8 @@ export function UsuariosTabela({ linhas, filtro }: { linhas: Linha[]; filtro: Fi
     <>
       <div className="rp-head">
         <div>
-          <h1>Usuários e cargos</h1>
-          <p>Quem acessa a área da equipe e o que cada cargo pode fazer.</p>
+          <h1>{titulo}</h1>
+          <p>{subtitulo}</p>
         </div>
         <div className="rp-actions">
           <button type="button" className="btn btn-l btn-filled" onClick={() => setAberto({ t: 'novo' })}><span className="icon">person_add</span>Adicionar pessoa</button>
@@ -81,22 +97,24 @@ export function UsuariosTabela({ linhas, filtro }: { linhas: Linha[]; filtro: Fi
 
       <section className="tcard users" aria-labelledby="t-h">
         <div className="tbar">
-          <div><h2 id="t-h">Equipe</h2><p className="t-sub">{linhas.length} {linhas.length === 1 ? 'usuário' : 'usuários'}: {ativos} {ativos === 1 ? 'ativo' : 'ativos'}.</p></div>
+          <div><h2 id="t-h">{rotuloTabela}</h2><p className="t-sub">{linhas.length} {linhas.length === 1 ? 'usuário' : 'usuários'}: {ativos} {ativos === 1 ? 'ativo' : 'ativos'}.</p></div>
           <div className="tools">
             <label className="search"><span className="icon">search</span><input type="search" value={f.q} onChange={(e) => setF({ ...f, q: e.target.value })} placeholder="Buscar na tabela" aria-label="Buscar por nome ou e-mail" /></label>
-            <span className="sel">
-              <Dropdown ariaLabel="Cargo" className={f.cargo ? 'on' : ''} value={f.cargo} onChange={(v) => setF({ ...f, cargo: v as Filtro['cargo'] })}
-                opcoes={[{ value: '', label: 'Todos os cargos' }, { value: 'gestor', label: 'Gestor' }, { value: 'instrutor', label: 'Instrutor' }]} />
-            </span>
+            {cargos.length > 1 && (
+              <span className="sel">
+                <Dropdown ariaLabel="Cargo" className={f.cargo ? 'on' : ''} value={f.cargo} onChange={(v) => setF({ ...f, cargo: v as Filtro['cargo'] })}
+                  opcoes={[{ value: '', label: 'Todos os cargos' }, ...cargos.map((c) => ({ value: c, label: CARGO[c].l }))]} />
+              </span>
+            )}
             <span className="sel">
               <Dropdown ariaLabel="Situação" className={f.sit ? 'on' : ''} value={f.sit} onChange={(v) => setF({ ...f, sit: v as Filtro['sit'] })}
                 opcoes={[{ value: '', label: 'Todas as situações' }, { value: 'ativo', label: 'Ativo' }, { value: 'off', label: 'Desativado' }]} />
             </span>
             <BotaoExportar dados={{
-              titulo: 'Equipe',
+              titulo: rotuloTabela,
               subtitulo: `${lista.length} de ${linhas.length} ${linhas.length === 1 ? 'usuário' : 'usuários'}`,
-              colunas: ['Nome', 'E-mail', 'Cargo', 'Situação', 'Último acesso'],
-              linhas: lista.map((u) => [u.nome, u.email, CARGO[u.cargo].l, u.ativo ? 'Ativo' : 'Desativado', u.acesso ?? 'Nunca entrou']),
+              colunas: ['Nome', 'E-mail', 'Cargo', 'Departamento', 'Situação', 'Último acesso'],
+              linhas: lista.map((u) => [u.nome, u.email, CARGO[u.cargo].l, u.departamento ?? '—', u.ativo ? 'Ativo' : 'Desativado', u.acesso ?? 'Nunca entrou']),
             }} />
           </div>
         </div>
@@ -120,13 +138,14 @@ export function UsuariosTabela({ linhas, filtro }: { linhas: Linha[]; filtro: Fi
           <>
             <div className="tframe t-cartoes">
               <table>
-                <thead><tr><th scope="col">Nome</th><th scope="col" className="mail">E-mail</th><th scope="col" className="c">Cargo</th><th scope="col" className="c">Situação</th><th scope="col" className="num">Último acesso</th><th scope="col" className="c">Ações</th></tr></thead>
+                <thead><tr><th scope="col">Nome</th><th scope="col" className="mail">E-mail</th><th scope="col" className="c">Cargo</th>{comDepartamento && <th scope="col" className="dep">Departamento</th>}<th scope="col" className="c">Situação</th><th scope="col" className="num">Último acesso</th><th scope="col" className="c">Ações</th></tr></thead>
                 <tbody>
                   {visiveis.map((u) => (
                     <tr key={u.id}>
                       <td><span className="idc">{av(u)}<span><span className="t">{u.nome}</span>{u.eu && <span className="you">(você)</span>}<span className="s ms">{u.email}</span></span></span></td>
                       <td className="mail">{u.email}</td>
                       <td className="c">{cargoChip(u)}</td>
+                      {comDepartamento && <td className={u.departamento ? 'dep' : 'dep dim'}>{u.departamento ?? '—'}</td>}
                       <td className="c">{sitChip(u)}</td>
                       <td className={`num${u.acesso ? '' : ' dim'}`}>{u.acesso ?? 'Nunca entrou'}</td>
                       <td className="c">{kebab(u)}</td>
@@ -140,9 +159,9 @@ export function UsuariosTabela({ linhas, filtro }: { linhas: Linha[]; filtro: Fi
                 <article className="mc" key={u.id}>
                   <div className="mc-h">
                     <div className="idc">{av(u)}<div className="mc-n"><b>{u.nome}{u.eu && <span className="you">(você)</span>}</b><small>{u.email}</small></div></div>
-                    <div className="r">{sitChip(u)}{!u.eu && kebab(u)}</div>
+                    <div className="r">{sitChip(u)}{u.gerenciavel && kebab(u)}</div>
                   </div>
-                  <dl><dt>Cargo</dt><dd>{cargoChip(u)}</dd><dt>Último acesso</dt><dd className={u.acesso ? '' : 'dash'}>{u.acesso ?? 'Nunca entrou'}</dd></dl>
+                  <dl><dt>Cargo</dt><dd>{cargoChip(u)}</dd>{comDepartamento && <><dt>Departamento</dt><dd>{u.departamento ?? '—'}</dd></>}<dt>Último acesso</dt><dd className={u.acesso ? '' : 'dash'}>{u.acesso ?? 'Nunca entrou'}</dd></dl>
                 </article>
               ))}
             </div>
@@ -151,18 +170,18 @@ export function UsuariosTabela({ linhas, filtro }: { linhas: Linha[]; filtro: Fi
         )}
       </section>
 
-      {menu && <MenuAcoes u={menu.u} btn={menu.btn} onFechar={() => setMenu(null)} onAcao={acao} />}
-      {aberto?.t === 'novo' && <ModalNovo onFechar={() => setAberto(null)} onCriado={(r) => setAberto({ t: 'senhaGerada', nome: r.nome, email: r.email, senha: r.senha, nova: false })} />}
-      {aberto?.t === 'cargo' && <ModalCargo u={aberto.u} onFechar={() => setAberto(null)} />}
+      {menu && <MenuAcoes u={menu.u} btn={menu.btn} podeTrocarCargo={cargos.length > 1} onFechar={() => setMenu(null)} onAcao={acao} />}
+      {aberto?.t === 'novo' && <ModalNovo cargos={cargos} onFechar={() => setAberto(null)} onCriado={(r) => setAberto({ t: 'senhaGerada', nome: r.nome, email: r.email, cargo: r.cargo, senha: r.senha, nova: false })} />}
+      {aberto?.t === 'cargo' && <ModalCargo u={aberto.u} cargos={cargos} onFechar={() => setAberto(null)} />}
       {aberto?.t === 'desativar' && <ModalDesativar u={aberto.u} onFechar={() => setAberto(null)} />}
-      {aberto?.t === 'senha' && <ModalNovaSenha u={aberto.u} onFechar={() => setAberto(null)} onGerada={(senha) => setAberto({ t: 'senhaGerada', nome: aberto.u.nome, email: aberto.u.email, senha, nova: true })} />}
+      {aberto?.t === 'senha' && <ModalNovaSenha u={aberto.u} onFechar={() => setAberto(null)} onGerada={(senha) => setAberto({ t: 'senhaGerada', nome: aberto.u.nome, email: aberto.u.email, cargo: aberto.u.cargo, senha, nova: true })} />}
       {aberto?.t === 'senhaGerada' && <ModalSenha {...aberto} onFechar={() => setAberto(null)} />}
     </>
   );
 }
 
 /* ---------- Menu de ações (kebab) ---------- */
-function MenuAcoes({ u, btn, onFechar, onAcao }: { u: Linha; btn: HTMLButtonElement; onFechar: () => void; onAcao: (a: 'cargo' | 'senha' | 'desativar' | 'reativar', u: Linha) => void }) {
+function MenuAcoes({ u, btn, podeTrocarCargo, onFechar, onAcao }: { u: Linha; btn: HTMLButtonElement; podeTrocarCargo: boolean; onFechar: () => void; onAcao: (a: 'cargo' | 'senha' | 'desativar' | 'reativar', u: Linha) => void }) {
   const ref = useRef<HTMLDivElement>(null);
   const [pos, setPos] = useState<{ left: number; top: number } | null>(null);
   useEffect(() => {
@@ -193,7 +212,7 @@ function MenuAcoes({ u, btn, onFechar, onAcao }: { u: Linha; btn: HTMLButtonElem
     <div className="us-km" role="menu" aria-label={`Ações para ${u.nome}`} ref={ref} style={pos ?? { visibility: 'hidden', left: 0, top: 0 }}>
       {u.ativo ? (
         <>
-          <button role="menuitem" type="button" onClick={() => onAcao('cargo', u)}><span className="icon">badge</span>Trocar cargo</button>
+          {podeTrocarCargo && <button role="menuitem" type="button" onClick={() => onAcao('cargo', u)}><span className="icon">badge</span>Trocar cargo</button>}
           <button role="menuitem" type="button" onClick={() => onAcao('senha', u)}><span className="icon">key</span>Gerar nova senha provisória</button>
           <hr />
           <button role="menuitem" type="button" className="red" onClick={() => onAcao('desativar', u)}><span className="icon">person_off</span>Desativar</button>
@@ -223,23 +242,26 @@ function useAcao() {
   return { pend, erro, setErro, rodar };
 }
 
-function Cargos({ valor, onChange, nome }: { valor: string; onChange: (v: 'gestor' | 'instrutor') => void; nome: string }) {
+function Cargos({ opcoes, valor, onChange, nome }: { opcoes: Cargo[]; valor: string; onChange: (v: Cargo) => void; nome: string }) {
   return (
     <div className="roles" role="radiogroup" aria-label="Cargo">
-      <label className="role"><input type="radio" name={nome} value="instrutor" checked={valor === 'instrutor'} onChange={() => onChange('instrutor')} /><span><b>Instrutor</b><small>Vê a agenda e o detalhe das turmas, abre a sala e dá aula e plantão.</small></span></label>
-      <label className="role"><input type="radio" name={nome} value="gestor" checked={valor === 'gestor'} onChange={() => onChange('gestor')} /><span><b>Gestor</b><small>Tudo do instrutor, mais trocar instrutor, cancelar turma, grade modelo e usuários.</small></span></label>
+      {opcoes.map((c) => (
+        <label className="role" key={c}><input type="radio" name={nome} value={c} checked={valor === c} onChange={() => onChange(c)} /><span><b>{ROTULO_CARGO[c]}</b><small>{DESCRICAO_CARGO[c]}</small></span></label>
+      ))}
     </div>
   );
 }
 
-function ModalNovo({ onFechar, onCriado }: { onFechar: () => void; onCriado: (r: { nome: string; email: string; senha: string }) => void }) {
+function ModalNovo({ cargos, onFechar, onCriado }: { cargos: Cargo[]; onFechar: () => void; onCriado: (r: { nome: string; email: string; cargo: Cargo; senha: string }) => void }) {
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
-  const [cargo, setCargo] = useState<'gestor' | 'instrutor'>('instrutor');
+  const [departamento, setDepartamento] = useState('');
+  const [cargo, setCargo] = useState<Cargo>(cargos.includes('colaborador') ? 'colaborador' : cargos[0]);
   const { pend, erro, rodar } = useAcao();
+  const interno = !ehEquipe(cargo);
   const enviar = (e?: React.FormEvent) => {
     e?.preventDefault();
-    rodar(() => criarUsuario({ nome, email, cargo }), (r) => { toast(r.msg, 'person_add'); onCriado({ nome: nome.trim(), email: r.email!, senha: r.senha! }); });
+    rodar(() => criarUsuario({ nome, email, cargo, departamento: interno ? departamento : undefined }), (r) => { toast(r.msg, 'person_add'); onCriado({ nome: nome.trim(), email: r.email!, cargo, senha: r.senha! }); });
   };
   return (
     <Modal titulo="Adicionar pessoa" onFechar={onFechar} rodape={<>
@@ -247,7 +269,7 @@ function ModalNovo({ onFechar, onCriado }: { onFechar: () => void; onCriado: (r:
       <button type="submit" form="nv-f" className="btn btn-l btn-filled" disabled={pend}><span className="icon">person_add</span>{pend ? 'Adicionando…' : 'Adicionar pessoa'}</button>
     </>}>
       <form id="nv-f" className="nv-f" onSubmit={enviar} noValidate>
-        <p>O sistema gera uma senha provisória que aparece uma única vez, para você repassar. Ainda não enviamos e-mail automático de convite.</p>
+        <p>O sistema gera uma senha provisória que aparece uma única vez, para você repassar. No primeiro acesso, a pessoa cria uma senha própria.</p>
         <div className="fld">
           <label htmlFor="nv-n">Nome</label>
           <input id="nv-n" autoComplete="off" placeholder="Nome e sobrenome" value={nome} onChange={(e) => setNome(e.target.value)} aria-invalid={erro?.campo === 'nome'} />
@@ -255,17 +277,24 @@ function ModalNovo({ onFechar, onCriado }: { onFechar: () => void; onCriado: (r:
         </div>
         <div className="fld">
           <label htmlFor="nv-e">E-mail</label>
-          <input id="nv-e" type="email" autoComplete="off" placeholder="nome@takeat.app" value={email} onChange={(e) => setEmail(e.target.value)} aria-invalid={erro?.campo === 'email'} />
+          <input id="nv-e" type="email" autoComplete="off" placeholder="nome@email.com" value={email} onChange={(e) => setEmail(e.target.value)} aria-invalid={erro?.campo === 'email'} />
           {erro?.campo === 'email' && <div className="err">{erro.msg}</div>}
         </div>
-        <div className="fld"><label id="nv-cl">Cargo</label><Cargos valor={cargo} onChange={setCargo} nome="nv-c" /></div>
+        {interno && (
+          <div className="fld">
+            <label htmlFor="nv-d">Departamento (opcional)</label>
+            <input id="nv-d" autoComplete="off" maxLength={60} placeholder="Ex.: Financeiro" value={departamento} onChange={(e) => setDepartamento(e.target.value)} aria-invalid={erro?.campo === 'departamento'} />
+            {erro?.campo === 'departamento' && <div className="err">{erro.msg}</div>}
+          </div>
+        )}
+        {cargos.length > 1 && <div className="fld"><label id="nv-cl">Cargo</label><Cargos opcoes={cargos} valor={cargo} onChange={setCargo} nome="nv-c" /></div>}
         {erro && !erro.campo && <p className="err" role="alert">{erro.msg}</p>}
       </form>
     </Modal>
   );
 }
 
-function ModalSenha({ nome, email, senha, nova, onFechar }: { nome: string; email: string; senha: string; nova: boolean; onFechar: () => void }) {
+function ModalSenha({ nome, email, cargo, senha, nova, onFechar }: { nome: string; email: string; cargo: Cargo; senha: string; nova: boolean; onFechar: () => void }) {
   const [copiado, setCopiado] = useState(false);
   const copiar = async () => {
     try { await navigator.clipboard.writeText(senha); setCopiado(true); toast('Senha copiada.', 'content_copy'); }
@@ -278,16 +307,16 @@ function ModalSenha({ nome, email, senha, nova, onFechar }: { nome: string; emai
     </>}>
       <p>Passe o acesso de <b className="forte">{nome}</b> por um canal seguro (por exemplo, mensagem direta). Ainda não há envio automático por e-mail.</p>
       <dl className="cred">
-        <dt>Endereço</dt><dd>{typeof window !== 'undefined' ? `${location.origin}/equipe/entrar` : '/equipe/entrar'}</dd>
+        <dt>Endereço</dt><dd>{typeof window !== 'undefined' ? `${location.origin}${loginDe(cargo)}` : loginDe(cargo)}</dd>
         <dt>E-mail</dt><dd>{email}</dd>
         <dt>Senha provisória</dt><dd><code className="pw">{senha}</code></dd>
       </dl>
-      <div className="notice"><span className="icon">visibility_off</span><div><b>Esta senha aparece só agora</b>Depois de fechar, não dá para ver de novo; gere outra se precisar. Peça para a pessoa trocar a senha em Minha conta no primeiro acesso.</div></div>
+      <div className="notice"><span className="icon">visibility_off</span><div><b>Esta senha aparece só agora</b>Depois de fechar, não dá para ver de novo; gere outra se precisar. No primeiro acesso, a pessoa precisa criar uma senha própria.</div></div>
     </Modal>
   );
 }
 
-function ModalCargo({ u, onFechar }: { u: Linha; onFechar: () => void }) {
+function ModalCargo({ u, cargos, onFechar }: { u: Linha; cargos: Cargo[]; onFechar: () => void }) {
   const [cargo, setCargo] = useState(u.cargo);
   const { pend, erro, rodar } = useAcao();
   return (
@@ -296,7 +325,7 @@ function ModalCargo({ u, onFechar }: { u: Linha; onFechar: () => void }) {
       <button type="button" className="btn btn-l btn-filled" disabled={pend} onClick={() => rodar(() => trocarCargo(u.id, cargo), (r) => { onFechar(); toast(r.msg, 'badge'); })}>{pend ? 'Salvando…' : 'Salvar cargo'}</button>
     </>}>
       <p>O novo cargo vale na hora. Turmas, presenças e avaliações continuam no histórico.</p>
-      <Cargos valor={cargo} onChange={setCargo} nome="cg-c" />
+      <Cargos opcoes={cargos} valor={cargo} onChange={setCargo} nome="cg-c" />
       {erro && <p className="err" role="alert">{erro.msg}</p>}
     </Modal>
   );

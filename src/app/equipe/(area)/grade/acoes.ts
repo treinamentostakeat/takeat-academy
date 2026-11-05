@@ -2,6 +2,7 @@
 import { z } from 'zod';
 import { refresh } from 'next/cache';
 import { db } from '@/lib/db';
+import { CARGOS_EQUIPE } from '@/lib/permissoes';
 import { exigirUsuario } from '@/lib/sessao';
 import { diaSemana, hoje, parse } from '@/lib/datas';
 import { HORARIOS, isTema } from '@/lib/temas';
@@ -41,7 +42,7 @@ export async function salvarGrade(dados: z.input<typeof Grade>): Promise<Resulta
   if (!completas) return { ok: false, erro: 'A grade precisa ter os 25 horários preenchidos.' };
 
   const ids = [...new Set(celulas.flatMap((c) => [c.instrutorId, c.plantaoId]))];
-  const ativos = await db.usuario.count({ where: { id: { in: ids }, ativo: true } });
+  const ativos = await db.usuario.count({ where: { id: { in: ids }, ativo: true, cargo: { in: CARGOS_EQUIPE } } });
   if (ativos !== ids.length) return { ok: false, erro: 'Há pessoa desativada na grade. Troque por alguém ativo da equipe.' };
 
   const porChave = new Map(celulas.map((c) => [`${c.dia}|${c.hora}`, c]));

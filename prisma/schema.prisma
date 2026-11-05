@@ -12,16 +12,20 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-/// Pessoas da equipe de treinamentos. cargo: "gestor" | "instrutor"
+/// Pessoas com conta. cargo: "gestor" | "instrutor" (equipe de treinamentos) | "rh" | "colaborador" (área interna)
 model Usuario {
   id         String   @id @default(cuid())
   nome       String
   email      String   @unique
   senhaHash  String
-  cargo      String   @default("instrutor")
+  cargo      String   @default("colaborador")
+  departamento String?
   ativo      Boolean  @default(true)
   criadoEm   DateTime @default(now())
   ultimoAcesso DateTime?
+  trocarSenha Boolean @default(false) // senha provisória: precisa criar a própria no próximo acesso
+  falhasLogin Int     @default(0)
+  bloqueadoAte DateTime?
 
   aulas      Turma[]     @relation("instrutor")
   plantoes   Turma[]     @relation("plantao")

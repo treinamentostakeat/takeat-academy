@@ -7,7 +7,7 @@
 .us .tframe td.mail { color: var(--text-secondary); font-weight: 400; }
 .us .users .idc .t, .us .users td.num { white-space: nowrap; }
 .us .users .idc .ms { display: none; }
-@media (max-width: 1250px) { .us .users .mail { display: none; } .us .users .idc .ms { display: block; } }
+@media (max-width: 1250px) { .us .users .mail, .us .users .dep { display: none; } .us .users .idc .ms { display: block; } }
 .us .idc .av { flex: none; }
 .us .av.off { background: var(--surface-fill); color: var(--text-disabled); }
 .us .you { font-size: 12px; line-height: 16px; letter-spacing: .4px; font-weight: 500; color: var(--text-tertiary); margin-left: 4px; }

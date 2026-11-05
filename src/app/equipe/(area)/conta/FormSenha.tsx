@@ -1,21 +1,24 @@
 'use client';
+import { useRouter } from 'next/navigation';
 import { useActionState, useEffect, useRef } from 'react';
 import { toast } from '@/components/equipe/Toast';
 import { trocarSenha, type EstadoSenha } from './acoes';
 
-export function FormSenha() {
+export function FormSenha({ obrigatoria }: { obrigatoria?: boolean }) {
   const [estado, acao, pend] = useActionState<EstadoSenha, FormData>(trocarSenha, null);
   const form = useRef<HTMLFormElement>(null);
+  const router = useRouter();
   useEffect(() => {
-    if (estado?.ok) { form.current?.reset(); toast('Senha alterada. Use a nova senha no próximo acesso.', 'lock'); }
+    if (estado?.ok && obrigatoria && estado.destino) router.replace(estado.destino);
+    else if (estado?.ok) { form.current?.reset(); toast('Senha alterada. Use a nova senha no próximo acesso.', 'lock'); }
     else if (estado?.campo) form.current?.querySelector<HTMLInputElement>(`[name="${estado.campo}"]`)?.focus();
-  }, [estado]);
+  }, [estado, obrigatoria, router]);
   const err = (c: 'atual' | 'nova' | 'confirma') => estado?.campo === c ? <div className="err" id={`e-${c}`}>{estado.erro}</div> : null;
   const inv = (c: string) => estado?.campo === c || undefined;
   return (
     <form ref={form} action={acao} className="ct-form" noValidate>
       <div className="fld">
-        <label htmlFor="s-atual">Senha atual</label>
+        <label htmlFor="s-atual">{obrigatoria ? 'Senha provisória' : 'Senha atual'}</label>
         <input id="s-atual" name="atual" type="password" autoComplete="current-password" required aria-invalid={inv('atual')} aria-describedby={inv('atual') && 'e-atual'} />
         {err('atual')}
       </div>

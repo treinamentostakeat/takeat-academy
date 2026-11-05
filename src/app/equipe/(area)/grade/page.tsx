@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { cargoValido, ehEquipe } from '@/lib/permissoes';
 import { exigirUsuario } from '@/lib/sessao';
 import { hoje, segundaDe, somaDias } from '@/lib/datas';
 import { TEMAS } from '@/lib/temas';
@@ -17,12 +18,13 @@ export default async function Grade() {
   const hj = hoje();
   const [{ celulas, vigente, futura }, pessoas] = await Promise.all([
     gradeAtual(),
-    db.usuario.findMany({ orderBy: { nome: 'asc' }, select: { id: true, nome: true, ativo: true } }),
+    db.usuario.findMany({ orderBy: { nome: 'asc' }, select: { id: true, nome: true, ativo: true, cargo: true } }),
   ]);
   const proxSegunda = somaDias(segundaDe(hj), 7);
   const usados = new Set(celulas.flatMap((c) => [c.instrutorId, c.plantaoId]));
-  // Na lista: pessoas ativas + desativadas que ainda estão na grade (para aparecerem marcadas)
-  const opcoes = pessoas.filter((p) => p.ativo || usados.has(p.id)).map((p) => ({ id: p.id, nome: p.ativo ? p.nome : `${p.nome} (desativado)`, ativo: p.ativo }));
+  // Na lista: equipe ativa + quem saiu da equipe mas ainda está na grade (para aparecer marcado)
+  const naEquipe = (p: (typeof pessoas)[number]) => p.ativo && ehEquipe(cargoValido(p.cargo));
+  const opcoes = pessoas.filter((p) => naEquipe(p) || usados.has(p.id)).map((p) => ({ id: p.id, nome: naEquipe(p) ? p.nome : `${p.nome} (desativado)`, ativo: naEquipe(p) }));
 
   return (
     <div className="gr-pg">

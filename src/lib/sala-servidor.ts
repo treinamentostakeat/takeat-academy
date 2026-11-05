@@ -1,6 +1,7 @@
 import 'server-only';
 import { db } from './db';
 import { agora, faixa, hoje, rotuloDia, salaAberta } from './datas';
+import { ehEquipe } from './permissoes';
 import { clienteAtual, usuarioAtual } from './sessao';
 import { RoomServiceClient } from 'livekit-server-sdk';
 import { nomeSala } from './integracoes/livekit';
@@ -32,7 +33,7 @@ export async function inscricaoDoCliente(turmaId: string) {
 export async function quemNaSala(turmaId: string, papel: PapelSala) {
   if (papel === 'instrutor') {
     const u = await usuarioAtual();
-    if (!u) return null;
+    if (!u || !ehEquipe(u.cargo)) return null;
     return { papel, identidade: identidadeEquipe(u.id), nome: u.nome, restaurante: 'Takeat', inscricaoId: null as string | null, usuario: u };
   }
   const i = await inscricaoDoCliente(turmaId);

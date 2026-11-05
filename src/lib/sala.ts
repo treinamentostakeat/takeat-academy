@@ -1,6 +1,7 @@
 'use server';
 import { z } from 'zod';
 import { db } from './db';
+import { ehEquipe } from './permissoes';
 import { usuarioAtual } from './sessao';
 import { livekitAtivo, liberarFala, encerrarSala } from './integracoes/livekit';
 import { finalizarTurma } from './presenca';
@@ -19,7 +20,7 @@ const falha = (erro: string): Resultado => ({ ok: false, erro });
 
 async function exigirEquipe() {
   const u = await usuarioAtual();
-  if (!u) throw new Error('Entre com sua conta da equipe.');
+  if (!u || !ehEquipe(u.cargo)) throw new Error('Entre com sua conta da equipe.');
   return u;
 }
 

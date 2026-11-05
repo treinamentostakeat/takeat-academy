@@ -3,6 +3,7 @@ import { db } from './db';
 import { FIM_AGENDA, garantirTurmas } from './turmas';
 import { finalizarAulasPendentes } from './presenca';
 import { hoje, rotuloDia, situacao } from './datas';
+import { CARGOS_EQUIPE } from './permissoes';
 import { HORARIOS } from './temas';
 
 /* Dados da área da equipe: agenda (semana/dia), detalhe da turma, grade modelo e usuários. */
@@ -77,7 +78,7 @@ export async function detalheTurma(id: string) {
 
 /** Pessoas que podem dar aula ou plantão (usuários ativos) */
 export const pessoasAtivas = () =>
-  db.usuario.findMany({ where: { ativo: true }, orderBy: { nome: 'asc' }, select: { id: true, nome: true, cargo: true } });
+  db.usuario.findMany({ where: { ativo: true, cargo: { in: CARGOS_EQUIPE } }, orderBy: { nome: 'asc' }, select: { id: true, nome: true, cargo: true } });
 
 /* ---------- Grade modelo ---------- */
 export type Celula = { dia: number; hora: number; tema: string; instrutorId: string; plantaoId: string };

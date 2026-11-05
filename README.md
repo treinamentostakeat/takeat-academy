@@ -43,6 +43,16 @@ Sem as chaves das integrações, o app funciona inteiro e mostra uma faixa amare
 
 Em produção o app precisa estar em HTTPS (o navegador só libera microfone e compartilhamento de tela assim) e `APP_URL` deve ser o endereço público.
 
+## Quem entra onde
+
+| Público | Onde | Como entra |
+|---|---|---|
+| Clientes | `/`, `/aulas`, `/perfil` | CNPJ, sem senha |
+| Equipe de treinamentos (gestor, instrutor) | `/equipe` | E-mail e senha |
+| RH e colaboradores | `/interno` | E-mail e senha criados em `/interno/pessoas` |
+
+A senha gerada é provisória: no primeiro acesso, a pessoa precisa criar a própria. Depois de 5 tentativas erradas seguidas, a conta fica bloqueada por 15 minutos. O gestor cria a primeira conta de RH em `/equipe/usuarios`. As regras ficam em `src/lib/permissoes.ts`.
+
 ## Links que a equipe usa
 
 - **Grupos de WhatsApp (por restaurante):** `APP_URL/i/<CNPJ>`, que identifica o restaurante e marca o canal como "Link do grupo".

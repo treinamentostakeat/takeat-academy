@@ -1,6 +1,7 @@
 import { exigirUsuario } from '@/lib/sessao';
 import { db } from '@/lib/db';
 import { hoje } from '@/lib/datas';
+import { CARGOS, cargoValido, ehCargo } from '@/lib/permissoes';
 import { BotaoExportar } from '@/components/equipe/Tabela';
 import { Toaster } from '@/components/equipe/Toast';
 import { UsuariosTabela, type Linha } from './UsuariosTabela';
@@ -36,15 +37,15 @@ export default async function Usuarios({ searchParams }: { searchParams: Promise
   const sp = await searchParams;
   const hj = hoje();
   const [usuarios, aulas, plantoes] = await Promise.all([
-    db.usuario.findMany({ select: { id: true, nome: true, email: true, cargo: true, ativo: true, ultimoAcesso: true } }),
+    db.usuario.findMany({ select: { id: true, nome: true, email: true, cargo: true, ativo: true, ultimoAcesso: true, departamento: true } }),
     db.turma.groupBy({ by: ['instrutorId'], where: { status: 'agendada', data: { gte: hj } }, _count: true }),
     db.turma.groupBy({ by: ['plantaoId'], where: { status: 'agendada', data: { gte: hj } }, _count: true }),
   ]);
   const futuras = (id: string) => (aulas.find((a) => a.instrutorId === id)?._count ?? 0) + (plantoes.find((p) => p.plantaoId === id)?._count ?? 0);
   const linhas: Linha[] = usuarios
     .map((u) => ({
-      id: u.id, nome: u.nome, email: u.email, cargo: u.cargo === 'gestor' ? 'gestor' as const : 'instrutor' as const, ativo: u.ativo,
-      acesso: u.ultimoAcesso ? fmtAcesso(u.ultimoAcesso) : null, eu: u.id === eu.id, futuras: futuras(u.id),
+      id: u.id, nome: u.nome, email: u.email, cargo: cargoValido(u.cargo), ativo: u.ativo, departamento: u.departamento,
+      acesso: u.ultimoAcesso ? fmtAcesso(u.ultimoAcesso) : null, eu: u.id === eu.id, futuras: futuras(u.id), gerenciavel: u.id !== eu.id,
     }))
     .sort((a, b) => Number(b.eu) - Number(a.eu) || Number(b.ativo) - Number(a.ativo) || a.nome.localeCompare(b.nome, 'pt'));
 
@@ -52,7 +53,11 @@ export default async function Usuarios({ searchParams }: { searchParams: Promise
     <div className="us">
       <UsuariosTabela
         linhas={linhas}
-        filtro={{ q: sp.q ?? '', cargo: sp.cargo === 'gestor' || sp.cargo === 'instrutor' ? sp.cargo : '', sit: sp.sit === 'ativo' || sp.sit === 'off' ? sp.sit : '' }}
+        cargos={[...CARGOS]}
+        titulo="Usuários e cargos"
+        subtitulo="Quem acessa a área da equipe e o que cada cargo pode fazer."
+        rotuloTabela="Equipe"
+        filtro={{ q: sp.q ?? '', cargo: ehCargo(sp.cargo) ? sp.cargo : '', sit: sp.sit === 'ativo' || sp.sit === 'off' ? sp.sit : '' }}
       />
       <section className="tcard perm" aria-labelledby="p-h">
         <div className="tbar">
