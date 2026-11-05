@@ -16,7 +16,7 @@ type InfoTema = { cor: string; tint: string; descricao: string; icone: string; s
 
 export const TEMA: Record<Tema, InfoTema> = {
   'Salão/Balcão': {
-    cor: 'var(--gestor)', tint: 'var(--gestor-tint)', slug: 'salao-balcao',
+    cor: 'var(--brand)', tint: 'var(--brand-tint)', slug: 'salao-balcao',
     descricao: 'Vendas e configuração do salão e do balcão',
     icone: '<path d="M3 19h18"/><path d="M4.5 16.5h15"/><path d="M5.5 16.5a6.5 6.5 0 0 1 13 0"/><path d="M12 10V8.5"/><circle cx="12" cy="7" r="1.25"/>',
   },

@@ -16,17 +16,11 @@
 .gr-pg .gc.chg { border-color: var(--yellow); background: color-mix(in srgb, var(--yellow) 8%, var(--surface-raised)); }
 .gr-pg .gc .tag { position: absolute; top: -8px; right: 8px; height: 16px; padding: 0 6px; border-radius: 9999px; background: var(--yellow-tint); color: var(--yellow-ink); font-size: 11px; line-height: 16px; font-weight: 600; letter-spacing: .5px; display: none; }
 .gr-pg .gc.chg .tag { display: inline-block; }
-.gr-pg .gc .row { display: grid; grid-template-columns: 44px minmax(0, 1fr); align-items: center; gap: 6px; }
+.gr-pg .gc .row { display: grid; grid-template-columns: minmax(0, 1fr); gap: 4px; }
 .gr-pg .gc .row > span { font-size: 11px; line-height: 16px; letter-spacing: .5px; color: var(--text-tertiary); font-weight: 500; }
-.gr-pg .gc .row.tema { grid-template-columns: 24px minmax(0, 1fr); }
+.gr-pg .gc .row.tema { grid-template-columns: 24px minmax(0, 1fr); align-items: center; gap: 8px; }
 .gr-pg .sw { width: 24px; height: 24px; border-radius: 8px; display: grid; place-items: center; background: var(--tt); color: var(--tc); }
 .gr-pg .sw svg { width: 16px; height: 16px; }
-.gr-pg .gc select { width: 100%; min-width: 0; height: 32px; padding: 0 28px 0 8px; border: 1px solid var(--stroke-strong); border-radius: 8px; background: var(--surface-raised); color: var(--text-primary); font: inherit; font-size: 12px; line-height: 16px; letter-spacing: .4px; appearance: none; cursor: pointer;
-  background-image: linear-gradient(45deg, transparent 50%, var(--text-tertiary) 50%), linear-gradient(135deg, var(--text-tertiary) 50%, transparent 50%);
-  background-position: calc(100% - 14px) 14px, calc(100% - 9px) 14px; background-size: 5px 5px; background-repeat: no-repeat; }
-.gr-pg .gc select:hover { border-color: var(--text-primary); }
-.gr-pg .gc select:focus { border-color: var(--focus); outline: 0; }
-.gr-pg .gc select.chg { border-color: var(--yellow-ink); }
 .gr-pg .gc .warn { font-size: 11px; line-height: 16px; letter-spacing: .4px; color: var(--red-ink); display: flex; gap: 4px; align-items: center; }
 .gr-pg .gc .warn .icon { color: inherit; }
 

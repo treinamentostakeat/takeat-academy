@@ -2,6 +2,8 @@
 import { useEffect, useRef, useState, useTransition } from 'react';
 import { createPortal } from 'react-dom';
 import { iniciais } from '@/lib/formato';
+import { Dropdown } from '@/components/Dropdown';
+import { BotaoExportar, Paginacao, usePaginacao } from '@/components/equipe/Tabela';
 import { Modal } from '@/components/equipe/Modal';
 import { toast } from '@/components/equipe/Toast';
 import '@/components/equipe/equipe-comp.css';
@@ -39,6 +41,7 @@ export function UsuariosTabela({ linhas, filtro }: { linhas: Linha[]; filtro: Fi
     (!f.cargo || u.cargo === f.cargo) &&
     (!f.sit || (f.sit === 'ativo' ? u.ativo : !u.ativo)) &&
     palavras.every((w) => norm(`${u.nome} ${u.email}`).includes(w)));
+  const { visiveis, paginacao } = usePaginacao(lista, `${f.q}|${f.cargo}|${f.sit}`);
   const ativos = linhas.filter((u) => u.ativo).length;
   const limpar = () => setF({ q: '', cargo: '', sit: '' });
 
@@ -80,17 +83,21 @@ export function UsuariosTabela({ linhas, filtro }: { linhas: Linha[]; filtro: Fi
         <div className="tbar">
           <div><h2 id="t-h">Equipe</h2><p className="t-sub">{linhas.length} {linhas.length === 1 ? 'usuário' : 'usuários'}: {ativos} {ativos === 1 ? 'ativo' : 'ativos'}.</p></div>
           <div className="tools">
-            <label className="search"><span className="icon">search</span><input type="search" value={f.q} onChange={(e) => setF({ ...f, q: e.target.value })} placeholder="Buscar nome ou e-mail" aria-label="Buscar na tabela" /></label>
-            <span className={`sel${f.cargo ? ' on' : ''}`}>
-              <select value={f.cargo} onChange={(e) => setF({ ...f, cargo: e.target.value as Filtro['cargo'] })} aria-label="Cargo">
-                <option value="">Todos os cargos</option><option value="gestor">Gestor</option><option value="instrutor">Instrutor</option>
-              </select><span className="icon">expand_more</span>
+            <label className="search"><span className="icon">search</span><input type="search" value={f.q} onChange={(e) => setF({ ...f, q: e.target.value })} placeholder="Buscar na tabela" aria-label="Buscar por nome ou e-mail" /></label>
+            <span className="sel">
+              <Dropdown ariaLabel="Cargo" className={f.cargo ? 'on' : ''} value={f.cargo} onChange={(v) => setF({ ...f, cargo: v as Filtro['cargo'] })}
+                opcoes={[{ value: '', label: 'Todos os cargos' }, { value: 'gestor', label: 'Gestor' }, { value: 'instrutor', label: 'Instrutor' }]} />
             </span>
-            <span className={`sel${f.sit ? ' on' : ''}`}>
-              <select value={f.sit} onChange={(e) => setF({ ...f, sit: e.target.value as Filtro['sit'] })} aria-label="Situação">
-                <option value="">Todas as situações</option><option value="ativo">Ativo</option><option value="off">Desativado</option>
-              </select><span className="icon">expand_more</span>
+            <span className="sel">
+              <Dropdown ariaLabel="Situação" className={f.sit ? 'on' : ''} value={f.sit} onChange={(v) => setF({ ...f, sit: v as Filtro['sit'] })}
+                opcoes={[{ value: '', label: 'Todas as situações' }, { value: 'ativo', label: 'Ativo' }, { value: 'off', label: 'Desativado' }]} />
             </span>
+            <BotaoExportar dados={{
+              titulo: 'Equipe',
+              subtitulo: `${lista.length} de ${linhas.length} ${linhas.length === 1 ? 'usuário' : 'usuários'}`,
+              colunas: ['Nome', 'E-mail', 'Cargo', 'Situação', 'Último acesso'],
+              linhas: lista.map((u) => [u.nome, u.email, CARGO[u.cargo].l, u.ativo ? 'Ativo' : 'Desativado', u.acesso ?? 'Nunca entrou']),
+            }} />
           </div>
         </div>
         {(f.cargo || f.sit) && (
@@ -111,11 +118,11 @@ export function UsuariosTabela({ linhas, filtro }: { linhas: Linha[]; filtro: Fi
           </div>
         ) : (
           <>
-            <div className="tframe">
+            <div className="tframe t-cartoes">
               <table>
-                <thead><tr><th scope="col">Nome</th><th scope="col" className="mail">E-mail</th><th scope="col" className="c">Cargo</th><th scope="col" className="c">Situação</th><th scope="col" className="num">Último acesso</th><th scope="col" className="c"><span className="sr-only">Ações</span></th></tr></thead>
+                <thead><tr><th scope="col">Nome</th><th scope="col" className="mail">E-mail</th><th scope="col" className="c">Cargo</th><th scope="col" className="c">Situação</th><th scope="col" className="num">Último acesso</th><th scope="col" className="c">Ações</th></tr></thead>
                 <tbody>
-                  {lista.map((u) => (
+                  {visiveis.map((u) => (
                     <tr key={u.id}>
                       <td><span className="idc">{av(u)}<span><span className="t">{u.nome}</span>{u.eu && <span className="you">(você)</span>}<span className="s ms">{u.email}</span></span></span></td>
                       <td className="mail">{u.email}</td>
@@ -129,7 +136,7 @@ export function UsuariosTabela({ linhas, filtro }: { linhas: Linha[]; filtro: Fi
               </table>
             </div>
             <div className="mlist">
-              {lista.map((u) => (
+              {visiveis.map((u) => (
                 <article className="mc" key={u.id}>
                   <div className="mc-h">
                     <div className="idc">{av(u)}<div className="mc-n"><b>{u.nome}{u.eu && <span className="you">(você)</span>}</b><small>{u.email}</small></div></div>
@@ -139,6 +146,7 @@ export function UsuariosTabela({ linhas, filtro }: { linhas: Linha[]; filtro: Fi
                 </article>
               ))}
             </div>
+            <Paginacao {...paginacao} />
           </>
         )}
       </section>

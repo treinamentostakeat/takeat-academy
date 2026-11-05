@@ -7,3 +7,4 @@
 .login-card .inp { height: 48px; padding: 0 16px; border: 1px solid var(--stroke-medium); border-radius: 12px; background: var(--surface-raised); color: var(--text-primary); font-size: 16px; }
 .login-card .inp:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
 .login-err { display: flex; gap: 8px; align-items: center; padding: 12px; border-radius: 12px; background: var(--red-tint); color: var(--red-ink); font-weight: 500; }
+@media (max-width: 900px) { .login-card h1 { font-size: 18px; line-height: 24px; } }

@@ -16,12 +16,12 @@
 .header .nav { display: flex; align-items: stretch; height: 100%; gap: 4px; flex: 1; min-width: 0; }
 .header .nav a { display: flex; align-items: center; padding: 0 12px; text-decoration: none; position: relative; color: var(--text-secondary); white-space: nowrap; }
 .header .nav a:hover { color: var(--text-primary); }
-.header .nav a[aria-current="page"] { color: var(--gestor); font-weight: 600; letter-spacing: .1px; }
-.header .nav a[aria-current="page"]::after { content: ""; position: absolute; left: 12px; right: 12px; bottom: 0; height: 2px; border-radius: 2px 2px 0 0; background: var(--gestor); }
+.header .nav a[aria-current="page"] { color: var(--brand); font-weight: 600; letter-spacing: .1px; }
+.header .nav a[aria-current="page"]::after { content: ""; position: absolute; left: 12px; right: 12px; bottom: 0; height: 2px; border-radius: 4px 4px 0 0; background: var(--brand); }
 .header .who { margin-left: auto; flex: none; }
 .who-id { display: flex; align-items: center; gap: 8px; padding: 4px 12px 4px 4px; border: 1px solid var(--stroke-default); border-radius: 9999px; background: var(--surface-raised); text-decoration: none; color: var(--text-primary); font-weight: 600; }
 .who-id:hover { border-color: var(--stroke-medium); }
-.who-id .avatar { width: 32px; height: 32px; border-radius: 9999px; background: var(--gestor-tint); color: var(--gestor-ink); display: grid; place-items: center; font-size: 12px; font-weight: 600; }
+.who-id .avatar { width: 32px; height: 32px; border-radius: 9999px; background: var(--brand-tint); color: var(--brand-ink); display: grid; place-items: center; font-size: 12px; font-weight: 600; }
 .menu-btn { display: none; }
 .drawer { position: fixed; inset: 0; z-index: 70; display: none; }
 .drawer.on { display: block; }
@@ -29,7 +29,7 @@
 .drawer nav { position: absolute; top: 0; left: 0; bottom: 0; width: min(320px, 86vw); background: var(--surface-raised); box-shadow: var(--shadow-05); padding: 16px; display: flex; flex-direction: column; gap: 4px; }
 .drawer nav .top-d { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
 .drawer nav a { display: flex; align-items: center; gap: 12px; height: 48px; padding: 0 12px; border-radius: 12px; text-decoration: none; color: var(--text-secondary); font-size: 16px; line-height: 24px; letter-spacing: .5px; font-weight: 500; }
-.drawer nav a[aria-current="page"] { background: var(--gestor-tint); color: var(--gestor); font-weight: 600; }
+.drawer nav a[aria-current="page"] { background: var(--brand-tint); color: var(--brand); font-weight: 600; }
 .drawer .x { width: 48px; height: 48px; border-radius: 16px; border: 0; background: transparent; color: var(--text-secondary); cursor: pointer; display: grid; place-items: center; }
 
 /* Página do cliente */
@@ -52,3 +52,4 @@
 
 /* Sem a barra do protótipo no app real */
 :root { --proto-h: 0px; }
+@media (max-width: 1023px) { .page-h h1 { font-size: 18px; line-height: 24px; } }

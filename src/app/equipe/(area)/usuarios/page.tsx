@@ -1,6 +1,7 @@
 import { exigirUsuario } from '@/lib/sessao';
 import { db } from '@/lib/db';
 import { hoje } from '@/lib/datas';
+import { BotaoExportar } from '@/components/equipe/Tabela';
 import { Toaster } from '@/components/equipe/Toast';
 import { UsuariosTabela, type Linha } from './UsuariosTabela';
 import './usuarios.css';
@@ -54,8 +55,17 @@ export default async function Usuarios({ searchParams }: { searchParams: Promise
         filtro={{ q: sp.q ?? '', cargo: sp.cargo === 'gestor' || sp.cargo === 'instrutor' ? sp.cargo : '', sit: sp.sit === 'ativo' || sp.sit === 'off' ? sp.sit : '' }}
       />
       <section className="tcard perm" aria-labelledby="p-h">
-        <div className="tbar"><div><h2 id="p-h">O que cada cargo pode fazer</h2><p className="t-sub">Vale para todos os usuários do cargo. Só o gestor troca o cargo de alguém.</p></div></div>
-        <div className="tframe">
+        <div className="tbar">
+          <div><h2 id="p-h">O que cada cargo pode fazer</h2><p className="t-sub">Vale para todos os usuários do cargo. Só o gestor troca o cargo de alguém.</p></div>
+          <div className="tools">
+            <BotaoExportar dados={{
+              titulo: 'O que cada cargo pode fazer',
+              colunas: ['Permissão', 'Gestor', 'Instrutor'],
+              linhas: PERM.flatMap((r) => (r.length === 1 ? [] : [[r[3] ? `${r[0]} (${r[3]})` : r[0], r[1] ? 'Pode' : 'Não pode', r[2] ? 'Pode' : 'Não pode']])),
+            }} />
+          </div>
+        </div>
+        <div className="tframe t-cartoes">
           <table>
             <thead><tr><th scope="col">Permissão</th><th scope="col" className="c">Gestor</th><th scope="col" className="c">Instrutor</th></tr></thead>
             <tbody>
@@ -70,6 +80,16 @@ export default async function Usuarios({ searchParams }: { searchParams: Promise
                 ))}
             </tbody>
           </table>
+        </div>
+        <div className="mlist">
+          {PERM.map((r) => (r.length === 1
+            ? <div key={r[0]} className="mc-grp">{r[0]}</div>
+            : (
+              <article className="mc" key={r[0]}>
+                <div className="mc-n"><b>{r[0]}</b>{r[3] && <small>{r[3]}</small>}</div>
+                <dl><dt>Gestor</dt><dd><Bool v={r[1]} /></dd><dt>Instrutor</dt><dd><Bool v={r[2]} /></dd></dl>
+              </article>
+            )))}
         </div>
       </section>
       <Toaster />

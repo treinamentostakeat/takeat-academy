@@ -19,10 +19,11 @@ export function Modal({ titulo, onFechar, children, rodape, foco }: {
   useEffect(() => {
     const anterior = document.activeElement as HTMLElement | null;
     const el = ref.current;
-    const alvo = (foco && el?.querySelector<HTMLElement>(foco)) || el?.querySelector<HTMLElement>('input, select, textarea, .md-f .btn');
+    const alvo = (foco && el?.querySelector<HTMLElement>(foco)) || el?.querySelector<HTMLElement>('input, .dd-btn, textarea, .md-f .btn');
     alvo?.focus();
     const tecla = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') { e.stopPropagation(); fechar.current(); }
+      // Com uma lista de Dropdown aberta, o Esc fecha só a lista
+      if (e.key === 'Escape' && !document.querySelector('.dd-list')) { e.stopPropagation(); fechar.current(); }
     };
     window.addEventListener('keydown', tecla, true);
     return () => {
@@ -31,7 +32,7 @@ export function Modal({ titulo, onFechar, children, rodape, foco }: {
     };
   }, [foco]);
   return createPortal(
-    <div className="md-scrim" ref={ref} onMouseDown={(e) => { if (e.target === e.currentTarget) onFechar(); }}>
+    <div className="md-scrim" ref={ref} onMouseDown={(e) => { if (e.target === e.currentTarget && !document.querySelector('.dd-list')) onFechar(); }}>
       <div className="md" role="dialog" aria-modal="true" aria-labelledby={id}>
         <div className="md-h">
           <h2 id={id}>{titulo}</h2>

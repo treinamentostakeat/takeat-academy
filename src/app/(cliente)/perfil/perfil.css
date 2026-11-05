@@ -13,7 +13,7 @@
 .cl-perfil .box { padding: 16px; }
 .cl-perfil .box-h { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 4px; }
 .cl-perfil .box-h h2 { font-size: 16px; line-height: 24px; letter-spacing: .15px; font-weight: 600; color: var(--text-primary); display: flex; align-items: center; gap: 8px; }
-.cl-perfil .box-h h2 .icon { color: var(--gestor); }
+.cl-perfil .box-h h2 .icon { color: var(--brand); }
 .cl-perfil .alist { list-style: none; margin: 0; padding: 0; }
 .cl-perfil .alist li { display: flex; align-items: center; gap: 12px; padding: 12px 0; }
 .cl-perfil .alist li + li { border-top: .5px solid var(--stroke-default); }
@@ -29,7 +29,7 @@
 
 /* Identificação (visitante) */
 .cl-perfil .ident { width: 100%; max-width: 480px; margin: 16px auto 0; padding: 24px 16px; text-align: center; }
-.cl-perfil .ident .ic { width: 56px; height: 56px; border-radius: 16px; background: var(--gestor-tint); color: var(--gestor); display: grid; place-items: center; margin: 0 auto 16px; }
+.cl-perfil .ident .ic { width: 56px; height: 56px; border-radius: 16px; background: var(--brand-tint); color: var(--brand); display: grid; place-items: center; margin: 0 auto 16px; }
 .cl-perfil .ident h1 { font-size: 22px; line-height: 28px; font-weight: 600; color: var(--text-primary); }
 .cl-perfil .ident p { margin-top: 4px; }
 .cl-perfil .ident form { margin-top: 24px; text-align: left; display: grid; gap: 16px; }
@@ -41,3 +41,4 @@
   .cl-perfil .alist li { flex-wrap: wrap; }
   .cl-perfil .alist .acts { width: 100%; padding-left: 44px; justify-content: flex-start; }
 }
+@media (max-width: 1023px) { .cl-perfil .head h1, .cl-perfil .ident h1 { font-size: 18px; line-height: 24px; } }

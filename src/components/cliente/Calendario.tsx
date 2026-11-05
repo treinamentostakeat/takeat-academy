@@ -3,6 +3,7 @@
    No celular vira abas de dia + uma coluna. Os estados de cada bloco vêm prontos do servidor. */
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { Dropdown } from '@/components/Dropdown';
 import { TemaTile } from '@/components/TemaTile';
 import { temaVars } from '@/lib/temas';
 import { AbrirInscricao, EntrarAula } from './Inscricao';
@@ -88,12 +89,13 @@ function Bloco({ c }: { c: Celula }) {
 export function SemanaSelect({ semanas, atual }: { semanas: { value: string; label: string; href: string }[]; atual: string }) {
   const router = useRouter();
   return (
-    <label className="sel">
-      <span className="sr-only">Escolher semana</span>
-      <select value={atual} onChange={(e) => { const s = semanas.find((x) => x.value === e.target.value); if (s) router.push(s.href, { scroll: false }); }}>
-        {semanas.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
-      </select>
-      <span className="icon">expand_more</span>
-    </label>
+    <div className="sel">
+      <Dropdown
+        ariaLabel="Escolher semana"
+        value={atual}
+        opcoes={semanas.map((s) => ({ value: s.value, label: s.label }))}
+        onChange={(v) => { const s = semanas.find((x) => x.value === v); if (s) router.push(s.href, { scroll: false }); }}
+      />
+    </div>
   );
 }

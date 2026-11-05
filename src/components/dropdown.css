@@ -1,0 +1,27 @@
+/* Dropdown — components.md §3 (lista) e §2 (gatilho = Input Outlined). Só tokens. */
+.dd-btn { display: inline-flex; align-items: center; justify-content: space-between; gap: 4px; width: 100%; min-width: 0; height: 40px; padding: 10px 12px; border: 1px solid var(--stroke-strong); border-radius: 12px; background: var(--surface-raised); color: var(--text-secondary); font: inherit; font-size: 14px; line-height: 20px; letter-spacing: .25px; font-weight: 400; text-align: left; cursor: pointer; outline: 0; }
+.dd-btn:hover { border-color: var(--text-primary); }
+.dd-btn:focus-visible, .dd-btn[aria-expanded="true"] { border-color: var(--focus); }
+.dd-btn:disabled { border-color: var(--stroke-medium); color: var(--text-disabled); cursor: not-allowed; }
+.dd-v { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dd-seta { flex: none; color: var(--text-tertiary); transition: transform .15s ease-out; }
+.dd-btn[aria-expanded="true"] .dd-seta { transform: rotate(180deg); }
+/* Filtro aplicado */
+.dd-btn.on { border-color: var(--brand); background: var(--brand-tint); color: var(--brand-ink); font-weight: 500; }
+.dd-btn.on .dd-seta { color: inherit; }
+/* Campo com alteração ainda não salva (grade modelo) */
+.dd-btn.chg { border-color: var(--yellow-ink); }
+.dd-compacto { width: auto; height: 32px; padding: 4px 8px 4px 12px; border-radius: 8px; }
+
+.dd-list { position: fixed; z-index: 100; margin: 0; padding: 8px; list-style: none; overflow-y: auto; background: var(--surface-raised); border-radius: 8px; box-shadow: var(--shadow-02); }
+.dd-opt { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 40px; padding: 8px; border-radius: 4px; color: var(--text-secondary); font-size: 14px; line-height: 20px; letter-spacing: .25px; font-weight: 400; white-space: nowrap; cursor: pointer; }
+.dd-opt.on { background: var(--surface-nested); color: var(--text-primary); }
+.dd-opt[aria-selected="true"] { color: var(--brand-ink); font-weight: 500; }
+.dd-opt[aria-disabled="true"] { color: var(--text-disabled); cursor: not-allowed; }
+.dd-opt .icon { flex: none; color: inherit; }
+
+/* Mesma regra de plataforma dos campos: 48px no celular (components.md §2) */
+@media (max-width: 900px) {
+  .dd-btn:not(.dd-compacto) { height: 48px; padding: 12px; border-radius: 16px; font-size: 16px; line-height: 24px; letter-spacing: .5px; }
+  .dd-opt { min-height: 48px; font-size: 16px; line-height: 24px; letter-spacing: .5px; white-space: normal; }
+}

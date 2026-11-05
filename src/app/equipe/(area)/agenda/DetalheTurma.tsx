@@ -6,6 +6,7 @@ import { TemaTile } from '@/components/TemaTile';
 import { Drawer } from '@/components/equipe/Drawer';
 import { AcoesTurma } from '@/components/equipe/AcoesTurma';
 import { ChipSit, rotuloSit } from './pecas';
+import { TabelaInscritos } from './TabelaInscritos';
 
 /* Drawer "Detalhe da turma" (aberto por ?turma=<id> na agenda) */
 
@@ -86,29 +87,25 @@ export async function DetalheTurma({ id, u, fecharHref }: { id: string; u: Usuar
       )}
 
       <section>
-        <div className="sec-t">Inscritos ({n})</div>
         {!n ? (
-          <div className="state st-p"><span className="icon">group</span><b>Ainda sem inscritos</b><p>As inscrições aparecem aqui assim que os clientes escolherem este horário.</p></div>
+          <>
+            <div className="sec-t">Inscritos (0)</div>
+            <div className="state st-p"><span className="icon">group</span><b>Ainda sem inscritos</b><p>As inscrições aparecem aqui assim que os clientes escolherem este horário.</p></div>
+          </>
         ) : (
           <>
-            <div className="tframe">
-              <table>
-                <thead><tr><th scope="col">Nome</th><th scope="col">Restaurante</th><th scope="col">WhatsApp</th><th scope="col">Canal</th><th scope="col">Presença</th></tr></thead>
-                <tbody>
-                  {t.inscricoes.map((i) => (
-                    <tr key={i.id}>
-                      <td>{i.nome}</td>
-                      <td>{i.restaurante.nome}</td>
-                      <td className="nw">{whatsMascarado(i.whatsapp)}</td>
-                      <td>{CANAL[i.canal] ?? i.canal}</td>
-                      <td>{feita
-                        ? (i.presente ? <span className="pres-y">Presente</span> : <span className="pres-n">Faltou</span>)
-                        : t.sit === 'ao-vivo' && i.presente ? <span className="pres-y">Presente</span> : <span className="dim">—</span>}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            <TabelaInscritos
+              titulo={`Inscritos: ${t.tema}`}
+              subtitulo={`${rotuloDia(t.data)}, ${t.hora}h às ${t.hora + 1}h · Instrutor: ${t.instrutor.nome}`}
+              linhas={t.inscricoes.map((i) => ({
+                id: i.id,
+                nome: i.nome,
+                restaurante: i.restaurante.nome,
+                whatsapp: whatsMascarado(i.whatsapp),
+                canal: CANAL[i.canal] ?? i.canal,
+                presenca: feita ? (i.presente ? 'presente' : 'faltou') : t.sit === 'ao-vivo' && i.presente ? 'presente' : null,
+              }))}
+            />
             {feita && <p className="hint">{t.presentes} de {n} presentes ({pct}%). Presença registrada automaticamente pela sala.</p>}
           </>
         )}

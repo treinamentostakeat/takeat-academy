@@ -2,7 +2,7 @@
    menu e modais vão para o body (portal), por isso têm prefixo próprio (.us-km, .md …). */
 .us .tbar .t-sub { font-size: 12px; line-height: 16px; letter-spacing: .4px; color: var(--text-secondary); margin-top: 2px; }
 .us .chip-blue { background: var(--blue-tint); color: var(--blue-ink); }
-.us .chip-gestor { background: var(--gestor-tint); color: var(--gestor-ink); }
+.us .chip-gestor { background: var(--brand-tint); color: var(--brand-ink); }
 .us .tframe td.c, .us .tframe th.c { text-align: center; }
 .us .tframe td.mail { color: var(--text-secondary); font-weight: 400; }
 .us .users .idc .t, .us .users td.num { white-space: nowrap; }
@@ -16,18 +16,6 @@
 .us .kb:hover, .us .kb[aria-expanded="true"] { background: var(--surface-fill); color: var(--text-primary); }
 .us .dash { color: var(--text-disabled); }
 
-.us .mlist { display: none; gap: 12px; }
-.us .mc { background: var(--surface-raised); border: 1px solid var(--stroke-default); border-radius: 12px; padding: 16px; display: grid; gap: 12px; }
-.us .mc-h { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
-.us .mc-h .idc { display: flex; gap: 12px; align-items: center; min-width: 0; }
-.us .mc-h .mc-n { min-width: 0; }
-.us .mc-h b { display: block; font-weight: 600; color: var(--text-primary); }
-.us .mc-h small { display: block; margin-top: 2px; font-size: 12px; line-height: 16px; letter-spacing: .4px; font-weight: 500; color: var(--text-tertiary); overflow-wrap: anywhere; }
-.us .mc-h .r { display: flex; align-items: center; gap: 4px; flex: none; }
-.us .mc dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 8px 16px; }
-.us .mc dt { color: var(--text-secondary); }
-.us .mc dd { margin: 0; text-align: right; color: var(--text-primary); font-weight: 500; font-variant-numeric: tabular-nums; }
-
 .us .perm { margin-top: 16px; }
 .us .perm .tframe { max-height: none; }
 .us .perm td .sub-s { margin-top: 2px; }
@@ -38,14 +26,9 @@
 .us .perm tr.grp td { background: var(--surface-nested); height: 32px; padding: 6px 12px; font-size: 12px; line-height: 16px; letter-spacing: .5px; font-weight: 500; text-transform: uppercase; color: var(--text-secondary); }
 
 @media (max-width: 900px) {
-  .us .users .tframe { display: none; }
-  .us .mlist { display: grid; }
   .us .tbar .tools { width: 100%; }
-  .us .tbar .search { width: 100%; }
-  .us .tbar .tools .sel { flex: 1 1 auto; }
-  .us .tbar .tools .sel select { width: 100%; }
+  .us .perm .tools { justify-content: flex-end; }
   .us .rp-actions, .us .rp-actions .btn { width: 100%; }
-  .us .perm td.c, .us .perm th.c { width: 88px; }
 }
 
 /* Menu de ações (portal) */
@@ -60,8 +43,8 @@
 .md .roles { display: grid; gap: 8px; }
 .md .role { display: flex; gap: 12px; align-items: flex-start; padding: 12px 16px; border: 1px solid var(--stroke-default); border-radius: 12px; cursor: pointer; margin: 0; }
 .md .role:hover { border-color: var(--stroke-medium); }
-.md .role:has(input:checked) { border-color: var(--gestor); background: var(--gestor-tint); }
-.md .role input { margin: 3px 0 0; accent-color: var(--gestor); width: 18px; height: 18px; flex: none; }
+.md .role:has(input:checked) { border-color: var(--brand); background: var(--brand-tint); }
+.md .role input { margin: 3px 0 0; accent-color: var(--brand); width: 18px; height: 18px; flex: none; }
 .md .role b { display: block; font-weight: 600; color: var(--text-primary); }
 .md .role small { display: block; font-size: 12px; line-height: 16px; letter-spacing: .4px; color: var(--text-secondary); font-weight: 400; }
 .md .nv-f { display: grid; gap: 16px; }

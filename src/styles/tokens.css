@@ -1,6 +1,6 @@
 /* Takeat UI Kit — tokens (foundations.md) usados na Takeat Academy.
    Único lugar com valores brutos. As telas usam só var(--token).
-   Marca = gestor/* (reports.md · I13). red/* só para ação destrutiva e erro. */
+   Marca: as telas usam só --brand*. Para trocar a cor da marca, mude apenas o bloco "marca" abaixo. */
 
 :root {
   color-scheme: light;
@@ -29,10 +29,21 @@
   --gestor-60: rgba(168, 39, 67, .60);
   --gestor-80: rgba(168, 39, 67, .80);
   --gestor-dark: #5C1525;
-  /* red (destrutivo / erro) */
+  /* red (cor padrão dos produtos Takeat; também destrutivo e erro) */
   --red: #C8131B;
   --red-tint: rgba(200, 19, 27, .10);
+  --red-40: rgba(200, 19, 27, .40);
+  --red-60: rgba(200, 19, 27, .60);
+  --red-80: rgba(200, 19, 27, .80);
   --red-dark: #7A0D12;
+  /* marca: a Academy é produto padrão, então red/* (foundations.md · Rules by tier) */
+  --brand: var(--red);
+  --brand-tint: var(--red-tint);
+  --brand-40: var(--red-40);
+  --brand-60: var(--red-60);
+  --brand-80: var(--red-80);
+  --brand-dark: var(--red-dark);
+  --brand-ink: var(--red-ink);
   /* teal */
   --teal: #1D9688;
   --teal-tint: rgba(29, 150, 136, .10);
@@ -72,7 +83,7 @@
   --on-media: #FFFFFF;
   --on-media-muted: rgba(255, 255, 255, .64);
   --on-media-chip: rgba(255, 255, 255, .12);
-  --media-gestor: #CE4E6B;
+  --media-brand: #E23B41;
   --media-teal: #34C4B2;
 }
 
@@ -100,6 +111,9 @@
   --gestor-dark: #8E3348;
   --red: #E23B41;
   --red-tint: rgba(226, 59, 65, .16);
+  --red-40: rgba(226, 59, 65, .40);
+  --red-60: rgba(226, 59, 65, .60);
+  --red-80: rgba(226, 59, 65, .80);
   --red-dark: #AE2C33;
   --teal: #34C4B2;
   --teal-tint: rgba(52, 196, 178, .16);
@@ -125,7 +139,7 @@
   --shadow-03: 0 4px 8px rgba(0,0,0,.50), 0 0 2px rgba(0,0,0,.40);
   --shadow-04: 0 8px 16px rgba(0,0,0,.50), 0 0 2px rgba(0,0,0,.40);
   --shadow-05: 0 10px 25px rgba(0,0,0,.55), 0 0 8px rgba(0,0,0,.40);
-  --media: #0B0B0B;
+  --media: #121212;
 }
 
 /* Escuro — seguindo o sistema, quando não há escolha explícita */
@@ -153,6 +167,9 @@
     --gestor-dark: #8E3348;
     --red: #E23B41;
     --red-tint: rgba(226, 59, 65, .16);
+    --red-40: rgba(226, 59, 65, .40);
+    --red-60: rgba(226, 59, 65, .60);
+    --red-80: rgba(226, 59, 65, .80);
     --red-dark: #AE2C33;
     --teal: #34C4B2;
     --teal-tint: rgba(52, 196, 178, .16);
@@ -178,7 +195,7 @@
     --shadow-03: 0 4px 8px rgba(0,0,0,.50), 0 0 2px rgba(0,0,0,.40);
     --shadow-04: 0 8px 16px rgba(0,0,0,.50), 0 0 2px rgba(0,0,0,.40);
     --shadow-05: 0 10px 25px rgba(0,0,0,.55), 0 0 8px rgba(0,0,0,.40);
-    --media: #0B0B0B;
+    --media: #121212;
   }
 }
 

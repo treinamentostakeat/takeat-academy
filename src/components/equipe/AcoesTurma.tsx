@@ -1,5 +1,6 @@
 'use client';
 import { useState, useTransition } from 'react';
+import { Dropdown } from '@/components/Dropdown';
 import { Modal } from './Modal';
 import './equipe-comp.css';
 import { toast } from './Toast';
@@ -51,7 +52,7 @@ function ModalTroca({ turma, pessoas, onFechar }: { turma: Props['turma']; pesso
   const opcoes = (atual: string) => {
     const l = [...pessoas];
     if (!l.some((p) => p.id === atual)) l.unshift({ id: atual, nome: 'Pessoa desativada' });
-    return l.map((p) => <option key={p.id} value={p.id}>{p.nome}</option>);
+    return l.map((p) => ({ value: p.id, label: p.nome }));
   };
   return (
     <Modal
@@ -67,11 +68,11 @@ function ModalTroca({ turma, pessoas, onFechar }: { turma: Props['turma']; pesso
       <p>{turma.tema} · {turma.quando}. A troca vale só para esta turma; a grade modelo não muda.</p>
       <div className="fld">
         <label htmlFor="f-inst">Instrutor da aula</label>
-        <select id="f-inst" value={inst} onChange={(e) => setInst(e.target.value)}>{opcoes(turma.instrutorId)}</select>
+        <Dropdown id="f-inst" value={inst} onChange={setInst} opcoes={opcoes(turma.instrutorId)} />
       </div>
       <div className="fld">
         <label htmlFor="f-plant">Plantão</label>
-        <select id="f-plant" value={plant} onChange={(e) => setPlant(e.target.value)}>{opcoes(turma.plantaoId)}</select>
+        <Dropdown id="f-plant" value={plant} onChange={setPlant} opcoes={opcoes(turma.plantaoId)} />
         {inst === plant
           ? <div className="info aviso"><span className="icon s16">warning</span>A mesma pessoa fica na aula e no plantão: o plantão fecha neste horário.</div>
           : <div className="info">Treinamento é prioridade: se quem dá a aula faltar, quem está no plantão assume.</div>}

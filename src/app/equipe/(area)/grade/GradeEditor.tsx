@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useMemo, useState, useTransition } from 'react';
 import { HORARIOS, TEMA, temaVars, type Tema } from '@/lib/temas';
+import { Dropdown } from '@/components/Dropdown';
 import { toast } from '@/components/equipe/Toast';
 import { salvarGrade } from './acoes';
 
@@ -97,7 +98,8 @@ export function GradeEditor({ inicial, temas, pessoas, valePadrao, minimo }: {
     const x = a - b;
     return x ? <span className={`d ${x > 0 ? 'up' : 'dn'}`}>{x > 0 ? '+' : '−'}{Math.abs(x)}</span> : null;
   };
-  const opPessoas = pessoas.map((p) => <option key={p.id} value={p.id} disabled={!p.ativo}>{p.nome}</option>);
+  const opPessoas = pessoas.map((p) => ({ value: p.id, label: p.nome, disabled: !p.ativo }));
+  const opTemas = temas.map((t) => ({ value: t, label: t }));
 
   return (
     <>
@@ -138,15 +140,13 @@ export function GradeEditor({ inicial, temas, pessoas, valePadrao, minimo }: {
                         <span className="tag">Alterada</span>
                         <div className="row tema">
                           <Sw tema={c.tema} />
-                          <select aria-label={`Tema, ${rot}`} className={m.tema ? 'chg' : ''} value={c.tema} onChange={(e) => alterar(d, h, 'tema', e.target.value)}>
-                            {temas.map((t) => <option key={t} value={t}>{t}</option>)}
-                          </select>
+                          <Dropdown ariaLabel={`Tema, ${rot}`} className={m.tema ? 'chg' : ''} value={c.tema} opcoes={opTemas} onChange={(v) => alterar(d, h, 'tema', v)} />
                         </div>
                         <div className="row"><span>Aula</span>
-                          <select aria-label={`Instrutor da aula, ${rot}`} className={m.instrutorId ? 'chg' : ''} value={c.instrutorId} onChange={(e) => alterar(d, h, 'instrutorId', e.target.value)}>{opPessoas}</select>
+                          <Dropdown ariaLabel={`Instrutor da aula, ${rot}`} className={m.instrutorId ? 'chg' : ''} value={c.instrutorId} opcoes={opPessoas} onChange={(v) => alterar(d, h, 'instrutorId', v)} />
                         </div>
                         <div className="row"><span>Plantão</span>
-                          <select aria-label={`Plantão, ${rot}`} className={m.plantaoId ? 'chg' : ''} value={c.plantaoId} onChange={(e) => alterar(d, h, 'plantaoId', e.target.value)}>{opPessoas}</select>
+                          <Dropdown ariaLabel={`Plantão, ${rot}`} className={m.plantaoId ? 'chg' : ''} value={c.plantaoId} opcoes={opPessoas} onChange={(v) => alterar(d, h, 'plantaoId', v)} />
                         </div>
                         {c.instrutorId === c.plantaoId && <div className="warn"><span className="icon s16">warning</span>Mesma pessoa na aula e no plantão</div>}
                         {pessoas.some((p) => !p.ativo && (p.id === c.instrutorId || p.id === c.plantaoId)) && <div className="warn"><span className="icon s16">person_off</span>Pessoa desativada: troque</div>}

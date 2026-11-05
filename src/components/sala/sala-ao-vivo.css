@@ -27,3 +27,4 @@
   .cam > video { position: static; width: 96px; height: 54px; border-radius: 8px; flex: none; }
   .cam:has(> video) .face { display: none; }
 }
+@media (max-width: 1023px) { .count b.longe { font-size: 18px; line-height: 24px; } }
