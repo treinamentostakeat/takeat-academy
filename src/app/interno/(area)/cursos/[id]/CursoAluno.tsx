@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { useState, useTransition } from 'react';
 import { exibicaoDeVideo } from '@/lib/aprendizagem';
 import type { CursoAlunoDados } from '@/lib/trilhas';
+import { Capa } from '../../pecas';
 import { enviarQuiz, type ResultadoQuiz } from './acoes';
 
 /* Curso para quem aprende: visão geral, conteúdo (vídeos e texto), materiais e quiz final. */
@@ -26,9 +27,9 @@ export function CursoAluno({ curso, editar }: { curso: CursoAlunoDados; editar: 
       </aside>
       <div className="in-curso-b">
         <div className="mod in-head">
+          <Capa titulo={curso.titulo} etapa={curso.etapa} indiceEtapa={curso.indiceEtapa} grande />
           <div className="in-chips">
-            <span className="chip chip-neutral">{curso.etapa}</span>
-            {curso.area && <span className="chip chip-neutral">{curso.area}</span>}
+            {curso.area &&<span className="chip chip-neutral">{curso.area}</span>}
             {curso.progresso && <span className="chip chip-teal">Concluído com {curso.progresso.acertos}/{curso.progresso.total}</span>}
             {!curso.publicado && <span className="chip chip-yellow">Não publicado</span>}
           </div>

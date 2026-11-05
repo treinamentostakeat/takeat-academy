@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { corrigir, exibicaoDeVideo, linkValido } from './aprendizagem';
+import { corDaEtapa, corrigir, exibicaoDeVideo, iconeDoCurso, linkValido } from './aprendizagem';
 
 test('vídeo do YouTube, Vimeo e Drive vira player incorporado', () => {
   assert.deepEqual(exibicaoDeVideo('https://www.youtube.com/watch?v=abc123XYZ'), { tipo: 'iframe', src: 'https://www.youtube-nocookie.com/embed/abc123XYZ' });
@@ -24,6 +24,16 @@ test('links que não são http(s) são recusados', () => {
   assert.equal(exibicaoDeVideo(''), null);
   assert.equal(linkValido('javascript:alert(1)'), false);
   assert.equal(linkValido('https://drive.google.com/x'), true);
+});
+
+test('capa escolhe o ícone pelo assunto e a cor pela etapa', () => {
+  assert.equal(iconeDoCurso('Financeiro'), 'payments');
+  assert.equal(iconeDoCurso('Novos Negócios de IA'), 'auto_awesome');
+  assert.equal(iconeDoCurso('Sucesso do Cliente'), 'handshake');
+  assert.equal(iconeDoCurso('Assunto sem ícone'), 'school');
+  assert.equal(corDaEtapa(0), 'brand');
+  assert.equal(corDaEtapa(6), 'brand');
+  assert.equal(corDaEtapa(-1), 'yellow');
 });
 
 test('quiz aprova com o mínimo de acertos', () => {

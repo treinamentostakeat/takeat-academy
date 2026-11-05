@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { podeEditarConteudo } from '@/lib/permissoes';
 import { exigirPessoa } from '@/lib/sessao';
 import { trilhasDoUsuario } from '@/lib/trilhas';
-import { BarraProgresso } from '../../pecas';
+import { BarraProgresso, Capa } from '../../pecas';
 import '../../interno.css';
 
 export const metadata = { title: 'Trilha' };
@@ -45,10 +45,8 @@ export default async function Trilha({ params }: { params: Promise<{ id: string 
               const nota = t.notas.get(c.id);
               return (
                 <Link key={c.id} className="mod in-ccard" href={`/interno/cursos/${c.id}`}>
-                  <div className="in-chips">
-                    {nota ? <span className="chip chip-teal">Concluído · {nota.acertos}/{nota.total}</span> : <span className="chip chip-neutral">Disponível</span>}
-                    {!c.publicado && <span className="chip chip-yellow">Não publicado</span>}
-                  </div>
+                  <Capa titulo={c.titulo} etapa={e.nome} indiceEtapa={t.etapas.indexOf(e)}
+                    selo={nota ? <span className="chip chip-teal"><span className="icon s16">check_circle</span>Concluído · {nota.acertos}/{nota.total}</span> : !c.publicado ? <span className="chip chip-yellow">Não publicado</span> : null} />
                   <h3>{c.titulo}</h3>
                   {c.resumo && <p>{c.resumo}</p>}
                   <span className="in-meta">{c.area && `${c.area} · `}{c._count.perguntas} perguntas</span>

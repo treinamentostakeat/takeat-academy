@@ -58,6 +58,7 @@ export async function cursoParaAluno(id: string, u: UsuarioSessao) {
     progresso: c.progressos[0] ? { acertos: c.progressos[0].acertos, total: c.progressos[0].total } : null,
     trilha: { id: trilha.id, titulo: trilha.titulo, publicada: trilha.publicada },
     etapa: c.etapa.nome,
+    indiceEtapa: trilha.etapas.findIndex((e) => e.id === c.etapaId),
     posicao: pos + 1, totalCursos: ordem.length,
     proximo: ordem[pos + 1] ?? null,
   };

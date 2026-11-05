@@ -34,6 +34,20 @@ export function exibicaoDeVideo(url: string): Exibicao {
   return { tipo: 'link', href: u.toString() };
 }
 
+/* Capa automática do curso: ícone pelo assunto do título e cor pela posição da etapa na trilha */
+const ICONES: [RegExp, string][] = [
+  [/financ/i, 'payments'], [/pessoas|cultura|\brh\b/i, 'groups'], [/rpa|automa/i, 'smart_toy'], [/cria/i, 'emoji_objects'],
+  [/sucesso/i, 'handshake'], [/suporte/i, 'support_agent'], [/onboarding|implanta/i, 'rocket_launch'], [/field/i, 'storefront'],
+  [/inside|vendas|comercial/i, 'headset_mic'], [/marketing/i, 'campaign'], [/growth|performance/i, 'trending_up'],
+  [/evento|parceri/i, 'event'], [/franquia/i, 'store'], [/neg[oó]cios.*ia|\bia\b|intelig/i, 'auto_awesome'],
+  [/tech|tecnologia|desenvolv/i, 'code'], [/produto/i, 'widgets'], [/takeatos|sistema|ferramenta/i, 'dashboard'],
+  [/pol[ií]tica/i, 'policy'], [/card[aá]pio/i, 'restaurant_menu'],
+];
+export const iconeDoCurso = (titulo: string) => ICONES.find(([re]) => re.test(titulo))?.[1] ?? 'school';
+/** Família de cor do kit para a etapa (repete depois da sexta) */
+export const CORES_ETAPA = ['brand', 'blue', 'orange', 'teal', 'green', 'yellow'] as const;
+export const corDaEtapa = (indice: number) => CORES_ETAPA[((indice % CORES_ETAPA.length) + CORES_ETAPA.length) % CORES_ETAPA.length];
+
 export const linkValido = (url: string) => {
   try { const u = new URL(url.trim()); return u.protocol === 'https:' || u.protocol === 'http:'; } catch { return false; }
 };

@@ -167,3 +167,23 @@
 .ed-arq-n { flex: 1; min-width: 160px; color: var(--text-secondary); overflow-wrap: anywhere; }
 .ed-arq label.btn { cursor: pointer; }
 .ed-envio { display: grid; gap: 4px; max-width: 420px; color: var(--text-secondary); }
+
+/* Capa gerada do curso (proposta de extensão do kit: tint da família de cor + ícone) */
+.in-capa { --cc: var(--brand); --ct: var(--brand-tint); --ci: var(--brand-ink);
+  position: relative; overflow: hidden; display: grid; place-items: center; height: 120px;
+  margin: -16px -16px 0; border-radius: 15px 15px 0 0; background: var(--ct); color: var(--cc); }
+.in-capa.c-blue { --cc: var(--blue); --ct: var(--blue-tint); --ci: var(--blue-ink); }
+.in-capa.c-orange { --cc: var(--orange); --ct: var(--orange-tint); --ci: var(--orange-ink); }
+.in-capa.c-teal { --cc: var(--teal); --ct: var(--teal-tint); --ci: var(--teal-ink); }
+.in-capa.c-green { --cc: var(--green); --ct: var(--green-tint); --ci: var(--green-ink); }
+.in-capa.c-yellow { --cc: var(--yellow); --ct: var(--yellow-tint); --ci: var(--yellow-ink); }
+.in-capa::after { content: ""; position: absolute; right: -32px; bottom: -48px; width: 160px; height: 160px; border-radius: 9999px; border: 24px solid var(--cc); opacity: .08; }
+.in-capa-i { position: relative; z-index: 1; display: grid; place-items: center; width: 64px; height: 64px; border-radius: 9999px; background: var(--surface-raised); font-size: 32px; box-shadow: var(--shadow-01); }
+.in-capa-e { position: absolute; left: 16px; top: 12px; z-index: 1; font-size: 11px; line-height: 16px; letter-spacing: .5px; font-weight: 600; text-transform: uppercase; color: var(--ci); }
+.in-capa-s { position: absolute; right: 12px; top: 8px; z-index: 1; }
+.in-capa-s .chip { display: inline-flex; align-items: center; gap: 4px; box-shadow: var(--shadow-01); }
+.in-capa.grande { height: 144px; }
+.in-capa.grande .in-capa-i { width: 80px; height: 80px; font-size: 40px; }
+.in-ccard:hover .in-capa-i { transform: scale(1.05); }
+.in-capa-i { transition: transform .15s ease-out; }
+@media (prefers-reduced-motion: reduce) { .in-capa-i { transition: none; } }
