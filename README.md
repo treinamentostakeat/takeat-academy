@@ -18,6 +18,14 @@ Abra http://localhost:3000 (lado do cliente) e http://localhost:3000/equipe (ár
 O banco já está criado no Supabase com a conta do gestor (`onboarding@takeat.app`) e a grade modelo.
 Mudanças de tabela ficam em `prisma/migrations` e são aplicadas com `npm run db:migrate`.
 
+## Testes
+
+```bash
+npm test
+```
+
+Os testes que usam banco só rodam com `TEST_DATABASE_URL` apontando para um Postgres em localhost, porque apagam os dados que usam. Sem essa variável, eles são pulados.
+
 ## Modo demonstração
 
 Sem as chaves das integrações, o app funciona inteiro e mostra uma faixa amarela no topo:

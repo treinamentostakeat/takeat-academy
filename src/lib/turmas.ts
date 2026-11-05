@@ -29,9 +29,8 @@ export async function garantirTurmas(de: string, ate: string) {
       if (g) novas.push({ data: d, hora: h, tema: g.tema, instrutorId: g.instrutorId, plantaoId: g.plantaoId });
     }
   }
-  for (const t of novas) {
-    await db.turma.upsert({ where: { data_hora: { data: t.data, hora: t.hora } }, update: {}, create: t });
-  }
+  // skipDuplicates: duas páginas podem gerar as mesmas turmas ao mesmo tempo, e a segunda só ignora
+  if (novas.length) await db.turma.createMany({ data: novas, skipDuplicates: true });
 }
 
 /** Turmas de um período com instrutor, plantão e contagem de inscritos */
