@@ -19,6 +19,8 @@ export const cargoValido = (c: unknown): Cargo => (ehCargo(c) ? c : 'colaborador
 
 export const ehEquipe = (c: Cargo) => CARGOS_EQUIPE.includes(c);
 export const podeGerirPessoas = (c: Cargo) => c === 'gestor' || c === 'rh';
+/** Criar e editar trilhas, cursos, vídeos e perguntas da área interna */
+export const podeEditarConteudo = (c: Cargo) => c === 'gestor' || c === 'rh';
 /** O gestor administra qualquer cargo; o RH, só colaboradores */
 export const podeAdministrar = (quem: Cargo, alvo: Cargo) => quem === 'gestor' || (quem === 'rh' && alvo === 'colaborador');
 export const cargosQuePodeDar = (quem: Cargo) => CARGOS.filter((c) => podeAdministrar(quem, c));

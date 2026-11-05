@@ -27,6 +27,8 @@ model Usuario {
   falhasLogin Int     @default(0)
   bloqueadoAte DateTime?
 
+  progressos Progresso[]
+  tentativas Tentativa[]
   aulas      Turma[]     @relation("instrutor")
   plantoes   Turma[]     @relation("plantao")
   gradeAulas GradeSlot[] @relation("gradeInstrutor")
@@ -117,4 +119,111 @@ model Integracao {
   status    String   @default("pendente")
   erro      String?
   criadoEm  DateTime @default(now())
+}
+
+/* ---------- Área interna: trilhas de aprendizagem (editadas pelo RH) ---------- */
+
+/// Trilha (ex.: Onboarding Takeat). Só aparece para colaboradores quando publicada.
+model Trilha {
+  id           String   @id @default(cuid())
+  titulo       String
+  descricao    String   @default("")
+  publico      String   @default("")
+  publicada    Boolean  @default(false)
+  criadoEm     DateTime @default(now())
+  atualizadoEm DateTime @updatedAt
+  etapas       Etapa[]
+}
+
+/// Agrupa os cursos de uma trilha, na ordem sugerida.
+model Etapa {
+  id        String  @id @default(cuid())
+  trilhaId  String
+  nome      String
+  descricao String  @default("")
+  ordem     Int
+  trilha    Trilha  @relation(fields: [trilhaId], references: [id], onDelete: Cascade)
+  cursos    Curso[]
+}
+
+/// Curso com texto, vídeos, materiais e quiz. aprovacao = acertos mínimos para concluir.
+model Curso {
+  id         String      @id @default(cuid())
+  etapaId    String
+  titulo     String
+  area       String      @default("")
+  resumo     String      @default("")
+  aprender   String[]
+  texto      String      @default("")
+  contato    String      @default("")
+  aprovacao  Int         @default(7)
+  publicado  Boolean     @default(true)
+  ordem      Int
+  etapa      Etapa       @relation(fields: [etapaId], references: [id], onDelete: Cascade)
+  videos     Video[]
+  materiais  Material[]
+  perguntas  Pergunta[]
+  progressos Progresso[]
+  tentativas Tentativa[]
+}
+
+/// url vazia = vídeo ainda não anexado (não aparece para o colaborador)
+model Video {
+  id      String @id @default(cuid())
+  cursoId String
+  titulo  String
+  duracao String @default("")
+  url     String @default("")
+  ordem   Int
+  curso   Curso  @relation(fields: [cursoId], references: [id], onDelete: Cascade)
+}
+
+model Material {
+  id        String @id @default(cuid())
+  cursoId   String
+  titulo    String
+  descricao String @default("")
+  url       String
+  ordem     Int
+  curso     Curso  @relation(fields: [cursoId], references: [id], onDelete: Cascade)
+}
+
+/// correta = posição da alternativa certa em alternativas. Nunca vai para o navegador antes da resposta.
+model Pergunta {
+  id           String   @id @default(cuid())
+  cursoId      String
+  enunciado    String
+  alternativas String[]
+  correta      Int
+  ordem        Int
+  curso        Curso    @relation(fields: [cursoId], references: [id], onDelete: Cascade)
+}
+
+/// Melhor resultado aprovado de cada pessoa em cada curso.
+model Progresso {
+  id          String   @id @default(cuid())
+  usuarioId   String
+  cursoId     String
+  acertos     Int
+  total       Int
+  concluidoEm DateTime @default(now())
+  usuario     Usuario  @relation(fields: [usuarioId], references: [id])
+  curso       Curso    @relation(fields: [cursoId], references: [id], onDelete: Cascade)
+
+  @@unique([usuarioId, cursoId])
+}
+
+/// Cada envio do quiz, aprovado ou não (base para relatórios do RH).
+model Tentativa {
+  id        String   @id @default(cuid())
+  usuarioId String
+  cursoId   String
+  acertos   Int
+  total     Int
+  aprovada  Boolean
+  criadoEm  DateTime @default(now())
+  usuario   Usuario  @relation(fields: [usuarioId], references: [id])
+  curso     Curso    @relation(fields: [cursoId], references: [id], onDelete: Cascade)
+
+  @@index([cursoId])
 }

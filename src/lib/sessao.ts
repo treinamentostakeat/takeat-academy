@@ -4,7 +4,7 @@ import { connection } from 'next/server';
 import { redirect } from 'next/navigation';
 import bcrypt from 'bcryptjs';
 import { db } from './db';
-import { aposFalhaDeLogin, cargoValido, ehEquipe, inicioDe, podeGerirPessoas, type Cargo } from './permissoes';
+import { aposFalhaDeLogin, cargoValido, ehEquipe, inicioDe, podeEditarConteudo, podeGerirPessoas, type Cargo } from './permissoes';
 import { abrir, selar } from './selo';
 
 export { abrir, selar };
@@ -64,6 +64,13 @@ export async function exigirPessoa() {
 export async function exigirGestaoPessoas() {
   const u = await exigirPessoa();
   if (!podeGerirPessoas(u.cargo)) redirect('/interno?negado=1');
+  return u;
+}
+
+/** Só quem cria e edita trilhas, cursos e perguntas (gestor e RH). */
+export async function exigirEditorConteudo() {
+  const u = await exigirPessoa();
+  if (!podeEditarConteudo(u.cargo)) redirect('/interno?negado=1');
   return u;
 }
 

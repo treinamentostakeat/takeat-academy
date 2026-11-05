@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { aposFalhaDeLogin, cargoValido, cargosQuePodeDar, ehEquipe, inicioDe, loginDe, podeAdministrar, podeGerirPessoas } from './permissoes';
+import { aposFalhaDeLogin, cargoValido, cargosQuePodeDar, ehEquipe, inicioDe, loginDe, podeAdministrar, podeEditarConteudo, podeGerirPessoas } from './permissoes';
 
 test('só gestor e instrutor são da equipe', () => {
   assert.equal(ehEquipe('gestor'), true);
@@ -20,6 +20,13 @@ test('só gestor e RH gerem pessoas', () => {
   assert.equal(podeGerirPessoas('rh'), true);
   assert.equal(podeGerirPessoas('instrutor'), false);
   assert.equal(podeGerirPessoas('colaborador'), false);
+});
+
+test('só gestor e RH editam conteúdo', () => {
+  assert.equal(podeEditarConteudo('gestor'), true);
+  assert.equal(podeEditarConteudo('rh'), true);
+  assert.equal(podeEditarConteudo('instrutor'), false);
+  assert.equal(podeEditarConteudo('colaborador'), false);
 });
 
 test('RH só administra colaboradores', () => {

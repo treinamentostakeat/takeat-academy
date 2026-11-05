@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 import { Shell, type GrupoNav } from '@/components/Shell';
-import { ehEquipe, podeGerirPessoas } from '@/lib/permissoes';
+import { ehEquipe, podeEditarConteudo, podeGerirPessoas } from '@/lib/permissoes';
 import { exigirPessoa, sair } from '@/lib/sessao';
 
 async function sairAction() {
@@ -14,6 +14,7 @@ export default async function LayoutInterno({ children }: { children: React.Reac
   const nav: GrupoNav[] = [
     { t: 'Onboarding', items: [{ href: '/interno', icon: 'home', label: 'Início', exato: true }] },
     { t: 'Administração', items: [
+      ...(podeEditarConteudo(usuario.cargo) ? [{ href: '/interno/conteudo', icon: 'edit_note', label: 'Conteúdo' }] : []),
       ...(podeGerirPessoas(usuario.cargo) ? [{ href: '/interno/pessoas', icon: 'group', label: 'Pessoas' }] : []),
       ...(ehEquipe(usuario.cargo) ? [{ href: '/equipe/agenda', icon: 'calendar_month', label: 'Área da equipe' }] : []),
     ] },

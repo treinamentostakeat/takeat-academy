@@ -1,0 +1,2250 @@
+{
+  "trilha": {
+    "titulo": "Onboarding Takeat",
+    "descricao": "A trilha de integração de quem chega na Takeat: ferramentas, políticas, IA, todos os setores e o nosso produto.",
+    "publico": "Novos colaboradores"
+  },
+  "etapas": [
+    {
+      "nome": "Fundamentos",
+      "descricao": "Cursos fixos para todo mundo",
+      "cursos": [
+        {
+          "titulo": "TakeatOS",
+          "area": "Ferramenta interna",
+          "resumo": "O sistema onde a Takeat trabalha no dia a dia: tarefas, comunicados, RH e painéis dos times.",
+          "aprender": [
+            "O que existe no TakeatOS",
+            "Como usar o Portal do RH",
+            "Onde acompanhar comunicados"
+          ],
+          "texto": "O TakeatOS é o sistema interno que reúne as ferramentas da empresa em um só lugar: quadros de tarefas para organizar o trabalho, Portal do RH (férias, solicitações, reembolsos e notas fiscais), comunicados oficiais, painéis com os indicadores de cada time e o organograma, que mostra a estrutura de times.\n\nO acesso é criado por Pessoas & Cultura no seu primeiro dia. Cada pessoa vê os módulos do seu time e do seu papel, então é normal que você não enxergue tudo o que um colega de outra área enxerga.\n\nComunicados oficiais da empresa saem pelo canal de comunicados do TakeatOS. Ative as notificações e confira o painel com frequência para não perder nada.",
+          "contato": "Pessoas & Cultura (acessos) e time de RPA (dúvidas técnicas)",
+          "videos": [],
+          "perguntas": [
+            {
+              "enunciado": "Onde a Takeat publica os comunicados oficiais?",
+              "alternativas": [
+                "No canal de comunicados do TakeatOS",
+                "Em grupos pessoais de WhatsApp",
+                "Só por e-mail pessoal"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "Onde você pede férias e faz solicitações de RH?",
+              "alternativas": [
+                "Por mensagem direta para o CEO",
+                "No Portal do RH, dentro do TakeatOS",
+                "Em uma planilha própria"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "Por que você pode não ver todos os módulos do TakeatOS?",
+              "alternativas": [
+                "O sistema está com erro",
+                "Só o RH usa o TakeatOS",
+                "O acesso depende do seu time e do seu papel"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "Quem cria o seu acesso ao TakeatOS?",
+              "alternativas": [
+                "Pessoas & Cultura, no seu primeiro dia",
+                "Você mesmo, depois de um mês",
+                "O cliente"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "Onde você vê a estrutura de times da empresa?",
+              "alternativas": [
+                "No site público",
+                "No organograma do TakeatOS",
+                "Em um arquivo impresso"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "Pedidos de reembolso são feitos:",
+              "alternativas": [
+                "Por WhatsApp",
+                "Direto com o banco",
+                "No Portal do RH, no TakeatOS"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "O que os painéis do TakeatOS mostram?",
+              "alternativas": [
+                "Os indicadores de cada time",
+                "Cardápios dos clientes",
+                "Notícias do mercado"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "Para que servem os quadros de tarefas?",
+              "alternativas": [
+                "Para guardar fotos",
+                "Para organizar o trabalho",
+                "Para emitir notas fiscais"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "Como não perder comunicados importantes?",
+              "alternativas": [
+                "Esperar alguém avisar",
+                "Desativar notificações",
+                "Ativar as notificações e conferir o painel"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "O que é o TakeatOS?",
+              "alternativas": [
+                "O sistema interno que reúne as ferramentas da empresa",
+                "O aplicativo que o cliente final usa",
+                "Uma rede social"
+              ],
+              "correta": 0
+            }
+          ]
+        },
+        {
+          "titulo": "Políticas internas",
+          "area": "Pessoas & Cultura",
+          "resumo": "As regras do jogo: onde ficam as políticas da Takeat e quais você precisa conhecer desde o início.",
+          "aprender": [
+            "Onde consultar as políticas",
+            "Férias e recesso",
+            "A quem recorrer"
+          ],
+          "texto": "As políticas internas da Takeat ficam publicadas na plataforma de políticas da empresa. Antes de decidir algo que envolva regras, como férias, reembolsos, conduta ou uso de ferramentas, consulte a política correspondente.\n\nFérias: todo fim de ano a empresa inteira entra em férias coletivas, de 21/12 a 03/01. Esses dias são descontados dos seus 30 dias de férias.\n\nAs políticas também ficam na Biblioteca desta plataforma. Pessoas & Cultura é responsável pelas políticas de pessoas: se alguma regra não estiver clara, procure o time antes de agir.",
+          "contato": "Pessoas & Cultura",
+          "videos": [],
+          "perguntas": [
+            {
+              "enunciado": "Onde ficam as políticas internas da Takeat?",
+              "alternativas": [
+                "Na plataforma de políticas da empresa",
+                "No site público da Takeat",
+                "Cada gestor guarda a sua"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "Quando acontecem as férias coletivas de fim de ano?",
+              "alternativas": [
+                "Durante todo o mês de janeiro",
+                "De 21/12 a 03/01",
+                "A Takeat não tem férias coletivas"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "Ficou em dúvida sobre uma política. O que fazer?",
+              "alternativas": [
+                "Seguir o que um colega acha",
+                "Ignorar até alguém reclamar",
+                "Consultar a política e falar com Pessoas & Cultura"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "Os dias de férias coletivas:",
+              "alternativas": [
+                "São descontados dos seus 30 dias de férias",
+                "São dias extras, além das férias",
+                "São descontados do salário"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "Quando você deve consultar uma política?",
+              "alternativas": [
+                "Só depois de um problema",
+                "Antes de decidir algo que envolva regras",
+                "Nunca, o gestor decide"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "Qual destes temas é tratado nas políticas?",
+              "alternativas": [
+                "Receitas dos clientes",
+                "Campeonato de futebol",
+                "Férias, reembolsos, conduta e uso de ferramentas"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "Nesta plataforma, onde você encontra as políticas?",
+              "alternativas": [
+                "Na Biblioteca",
+                "No quiz",
+                "Em nenhum lugar"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "Quantos dias de férias por ano servem de referência?",
+              "alternativas": [
+                "10 dias",
+                "30 dias",
+                "60 dias"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "Quem entra nas férias coletivas de fim de ano?",
+              "alternativas": [
+                "Só o time de Tech",
+                "Só quem pedir",
+                "A empresa inteira"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "Quem é responsável pelas políticas de pessoas?",
+              "alternativas": [
+                "Pessoas & Cultura",
+                "Marketing",
+                "Suporte"
+              ],
+              "correta": 0
+            }
+          ]
+        },
+        {
+          "titulo": "IA na Takeat",
+          "area": "Todas as áreas",
+          "resumo": "Como usamos inteligência artificial no trabalho, com responsabilidade.",
+          "aprender": [
+            "Onde a IA ajuda",
+            "Cuidados com dados",
+            "Revisão humana sempre"
+          ],
+          "texto": "A Takeat usa IA para ganhar tempo em tarefas repetitivas, escrever e revisar textos, analisar dados e automatizar processos. A expectativa é que todo mundo use IA como ferramenta de trabalho.\n\nDados de clientes, de colaboradores e informações financeiras só podem ser usados em ferramentas aprovadas pela empresa. Na dúvida, não cole dados sensíveis.\n\nA IA pode inventar informações com aparência de verdade (isso se chama alucinação). Por isso, tudo que ela produz passa por você antes de sair: confira números, nomes e fatos. A responsabilidade pelo resultado é de quem enviou.\n\nPedidos melhores geram respostas melhores: diga à IA o objetivo, o público e o formato que você quer.",
+          "contato": "Gestor(a) da sua área",
+          "videos": [],
+          "perguntas": [
+            {
+              "enunciado": "Antes de usar um texto gerado por IA, você deve:",
+              "alternativas": [
+                "Enviar direto, a IA não erra",
+                "Revisar e conferir números, nomes e fatos",
+                "Pedir para outra IA aprovar"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "Dados de clientes podem ser usados em ferramentas de IA:",
+              "alternativas": [
+                "Apenas nas ferramentas aprovadas pela empresa",
+                "Em qualquer ferramenta gratuita",
+                "Em qualquer ferramenta, se for rápido"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "Quem é responsável por um material feito com ajuda de IA?",
+              "alternativas": [
+                "A ferramenta de IA",
+                "Ninguém",
+                "A pessoa que usou e enviou o material"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "Ficou em dúvida se uma ferramenta é aprovada. O que fazer?",
+              "alternativas": [
+                "Não colar dados sensíveis",
+                "Colar tudo e ver no que dá",
+                "Usar a conta pessoal"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "Qual destes é um uso de IA citado no curso?",
+              "alternativas": [
+                "Assinar contratos sozinha",
+                "Escrever e revisar textos",
+                "Aprovar férias"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "Informações financeiras da empresa podem ir para:",
+              "alternativas": [
+                "Qualquer chatbot",
+                "Redes sociais",
+                "Somente ferramentas aprovadas"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "Qual a expectativa da Takeat sobre IA?",
+              "alternativas": [
+                "Que todo mundo use como ferramenta de trabalho",
+                "Que ninguém use",
+                "Que só Tech use"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "Quando a IA inventa informação com cara de verdade, chamamos de:",
+              "alternativas": [
+                "Automação",
+                "Alucinação",
+                "Integração"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "Um bom pedido para a IA inclui:",
+              "alternativas": [
+                "Só uma palavra",
+                "Dados sensíveis de clientes",
+                "Objetivo, público e formato"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "Dados de colaboradores seguem qual regra?",
+              "alternativas": [
+                "Só em ferramentas aprovadas",
+                "Podem ir para qualquer ferramenta",
+                "Só podem ser enviados à noite"
+              ],
+              "correta": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nome": "Conheça os setores",
+      "descricao": "Quem faz o quê na Takeat",
+      "cursos": [
+        {
+          "titulo": "Financeiro",
+          "area": "Setor",
+          "resumo": "Quem cuida de cada real da Takeat, as datas de pagamento, como enviar suas notas, pedir reembolso e a quem recorrer.",
+          "aprender": [
+            "Quem é o time do Financeiro e o que fazem os agentes de IA TETS e FIN",
+            "As 6 datas de pagamento e os prazos de nota fiscal",
+            "Seu pagamento como PJ, reembolsos, cartão da área e estornos",
+            "Fechamento, contatos, rituais, indicadores, sistemas e glossário"
+          ],
+          "texto": "Assista aos 4 vídeos na ordem, cerca de 3 minutos cada. Eles são silenciosos e mostram tudo na tela, passo a passo. Juntos, cobrem o material completo do Financeiro, que está na seção Materiais.\n\nO mais importante para o seu dia a dia: pagamentos saem nos dias 05, 10, 15, 20, 25 e 30. Você recebe o fixo e o Flash no dia 05 e as comissões no dia 15. A NF da comissão vai até o dia 10 e a NF do fixo até o último dia do mês.",
+          "contato": "Henrique dos Anjos Moura (Gerente Financeiro) e Júlia Paulino Rocon (Analista Financeira) · financeiro@takeat.app",
+          "videos": [
+            {
+              "titulo": "Parte 1 · Quem somos, o time e a IA",
+              "duracao": "3min18"
+            },
+            {
+              "titulo": "Parte 2 · Calendário e processos",
+              "duracao": "2min55"
+            },
+            {
+              "titulo": "Parte 3 · Fechamento, contatos e rituais",
+              "duracao": "3min10"
+            },
+            {
+              "titulo": "Parte 4 · Indicadores, sistemas, FAQ e glossário",
+              "duracao": "3min31"
+            }
+          ],
+          "perguntas": [
+            {
+              "enunciado": "Em quais dias do mês a Takeat faz pagamentos?",
+              "alternativas": [
+                "05, 10, 15, 20, 25 e 30",
+                "Em todo dia útil",
+                "Só nos dias 05 e 20"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "Em que dia você recebe o fixo e o Flash?",
+              "alternativas": [
+                "Dia 15",
+                "Dia 05",
+                "Último dia do mês"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "Até quando você envia a nota fiscal da comissão?",
+              "alternativas": [
+                "Até o dia 05",
+                "Até o último dia do mês",
+                "Até o dia 10"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "Até quando você envia a nota fiscal do fixo?",
+              "alternativas": [
+                "Até o último dia do mês",
+                "Até o dia 10",
+                "Até o dia 15"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "A data de pagamento caiu num sábado. O que acontece?",
+              "alternativas": [
+                "Sai na sexta-feira anterior",
+                "Sai no próximo dia útil",
+                "Fica para o mês seguinte"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "O que é obrigatório para um reembolso ser pago?",
+              "alternativas": [
+                "Comprovante legível e aprovação do gestor",
+                "Só uma foto do produto",
+                "Um aviso por WhatsApp ao Financeiro"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "Um cliente pediu estorno ou reclamou da cobrança. Para quem você direciona?",
+              "alternativas": [
+                "Direto para o Financeiro",
+                "Para o Facilities",
+                "Para o Sucesso do Cliente"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "O que os agentes de IA do Financeiro NÃO fazem?",
+              "alternativas": [
+                "Conciliar o banco",
+                "Autorizar pagamentos",
+                "Montar o lote de pagamento"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "Você usou o cartão da sua área. O que faz com o comprovante?",
+              "alternativas": [
+                "Guarda até o fim do ano",
+                "Envia no grupo oficial de WhatsApp",
+                "Entrega em mãos ao Financeiro"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "Trocou de banco ou de chave PIX. Quando avisar o Financeiro?",
+              "alternativas": [
+                "Antes da próxima data de pagamento",
+                "Só se o pagamento falhar",
+                "No fim do semestre"
+              ],
+              "correta": 0
+            }
+          ]
+        },
+        {
+          "titulo": "Pessoas & Cultura",
+          "area": "Setor",
+          "resumo": "O RH da Takeat: do recrutamento à experiência de quem já está aqui.",
+          "aprender": [
+            "Frentes do time",
+            "Com quem falar",
+            "Rituais de cultura"
+          ],
+          "texto": "Pessoas & Cultura é liderado pela Ana Clara e tem três frentes: Aquisição de Talentos (Naju e Thafines), People Experience (Maria Luiza) e Facilities (Renan), que cuida do escritório e da estrutura física.\n\nO time cuida de recrutamento, onboarding de novos colaboradores, férias, benefícios, comunicação interna, pesquisa de clima (eNPS) e reconhecimentos de cultura, em que colegas indicam quem viveu os valores da Takeat.\n\nRituais que você vai conhecer: a Reunião Geral (RG) mensal, os reconhecimentos de cultura e desafios internos como o TakeFitness, um desafio de atividade física e bem-estar.",
+          "contato": "Maria Luiza (People Experience)",
+          "videos": [],
+          "perguntas": [
+            {
+              "enunciado": "Quem cuida de recrutamento na Takeat?",
+              "alternativas": [
+                "Aquisição de Talentos, em Pessoas & Cultura",
+                "O time de Tech",
+                "O Financeiro"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "O que é a RG?",
+              "alternativas": [
+                "Um documento de identidade",
+                "A Reunião Geral mensal da empresa",
+                "Um relatório do Financeiro"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "Dúvidas sobre o escritório e a estrutura física vão para:",
+              "alternativas": [
+                "Inside Sales",
+                "Produto",
+                "Facilities"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "Quem lidera Pessoas & Cultura?",
+              "alternativas": [
+                "Ana Clara",
+                "Renan",
+                "Thafines"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "Quem está em People Experience?",
+              "alternativas": [
+                "Naju",
+                "Maria Luiza",
+                "Renan"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "O que é o eNPS?",
+              "alternativas": [
+                "Um sistema de pagamento",
+                "Um tipo de contrato",
+                "A pesquisa de clima"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "Nos reconhecimentos de cultura, colegas indicam:",
+              "alternativas": [
+                "Quem viveu os valores da Takeat",
+                "Quem vendeu mais",
+                "Quem chegou mais cedo"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "O TakeFitness é:",
+              "alternativas": [
+                "Um módulo do sistema",
+                "Um desafio de atividade física e bem-estar",
+                "Uma academia parceira"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "Quantas frentes tem Pessoas & Cultura?",
+              "alternativas": [
+                "Uma",
+                "Cinco",
+                "Três"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "O onboarding de novos colaboradores é conduzido por:",
+              "alternativas": [
+                "Pessoas & Cultura",
+                "Suporte",
+                "Franquias"
+              ],
+              "correta": 0
+            }
+          ]
+        },
+        {
+          "titulo": "RPA",
+          "area": "Setor",
+          "resumo": "Automações e ferramentas internas que deixam a operação mais rápida.",
+          "aprender": [
+            "O que é RPA",
+            "Exemplos de automação",
+            "Como pedir uma automação"
+          ],
+          "texto": "RPA (Robotic Process Automation, ou automação robótica de processos) é o time que automatiza tarefas repetitivas com robôs e fluxos, e que constrói ferramentas internas como o TakeatOS. Um fluxo é uma sequência de passos que roda automaticamente.\n\nOs robôs também cuidam de integrações entre sistemas, e os fluxos passam por revisão antes de ir ao ar.\n\nAutomatizar libera as pessoas para trabalho de análise e relacionamento. Se você repete a mesma tarefa manual várias vezes por semana, ela pode ser automatizada: fale com seu gestor e leve a demanda ao time de RPA. Conversas estratégicas com clientes, por outro lado, continuam sendo trabalho de gente.",
+          "contato": "",
+          "videos": [],
+          "perguntas": [
+            {
+              "enunciado": "O que significa RPA?",
+              "alternativas": [
+                "Automação robótica de processos",
+                "Relatório de Performance Anual",
+                "Rede de Parceiros Associados"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "Qual ferramenta interna o time de RPA ajuda a construir?",
+              "alternativas": [
+                "O site público",
+                "O TakeatOS",
+                "A maquininha de cartão"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "Uma boa tarefa para automatizar é:",
+              "alternativas": [
+                "Uma conversa estratégica com cliente",
+                "Uma decisão única e rara",
+                "Uma tarefa manual que se repete toda semana"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "Antes de levar uma automação ao RPA, fale com:",
+              "alternativas": [
+                "Seu gestor",
+                "O cliente",
+                "Ninguém"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "Qual o benefício de automatizar?",
+              "alternativas": [
+                "Aumentar o retrabalho",
+                "Liberar tempo para análise e relacionamento",
+                "Ter mais planilhas manuais"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "Além das automações, os robôs do RPA cuidam de:",
+              "alternativas": [
+                "Recrutamento",
+                "Eventos",
+                "Integrações entre sistemas"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "O que acontece com um fluxo antes de ir ao ar?",
+              "alternativas": [
+                "Passa por revisão",
+                "Vai direto, sem revisão",
+                "É impresso"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "O que é um fluxo?",
+              "alternativas": [
+                "Um tipo de contrato",
+                "Uma sequência de passos que roda automaticamente",
+                "Uma reunião semanal"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "Qual destas NÃO é boa candidata a automação?",
+              "alternativas": [
+                "Copiar dados entre planilhas toda semana",
+                "Enviar o mesmo relatório todo dia",
+                "Negociação estratégica com um cliente"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "O time de RPA faz:",
+              "alternativas": [
+                "Automações e ferramentas internas",
+                "Folha de pagamento",
+                "Campanhas pagas"
+              ],
+              "correta": 0
+            }
+          ]
+        },
+        {
+          "titulo": "CRIA",
+          "area": "Iniciativa ligada ao RPA",
+          "resumo": "O desafio interno da Takeat para quem quer criar soluções.",
+          "aprender": [
+            "O que é o Desafio CRIA",
+            "Como participar",
+            "Por que participar"
+          ],
+          "texto": "O Desafio CRIA é um desafio interno da Takeat, com algumas edições ao longo do ano, conduzido com apoio de Pessoas & Cultura. Colaboradores de qualquer área participam criando soluções para problemas reais da Takeat ou dos clientes.\n\nCada edição tem um período de inscrição com prazo, divulgado pelos canais internos. Perdeu o prazo? Fique de olho na próxima edição.\n\nParticipar é uma forma de aprender, construir algo útil e dar visibilidade ao seu trabalho. Na trilha, o CRIA aparece junto do RPA porque muitas soluções envolvem automação.",
+          "contato": "",
+          "videos": [],
+          "perguntas": [
+            {
+              "enunciado": "O que é o CRIA?",
+              "alternativas": [
+                "Um desafio interno da Takeat",
+                "Um cliente da Takeat",
+                "Um módulo de pagamento"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "Onde as inscrições do CRIA são divulgadas?",
+              "alternativas": [
+                "Em redes sociais pessoais",
+                "Nos canais internos",
+                "Não são divulgadas"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "Quem pode participar do CRIA?",
+              "alternativas": [
+                "Somente diretores",
+                "Somente o time de RPA",
+                "Colaboradores de qualquer área"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "As soluções do CRIA devem resolver:",
+              "alternativas": [
+                "Problemas reais da Takeat ou dos clientes",
+                "Problemas pessoais",
+                "Nada específico"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "Cada edição tem:",
+              "alternativas": [
+                "Inscrição aberta o ano todo",
+                "Um período de inscrição com prazo",
+                "Inscrição só por indicação"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "Com que frequência o CRIA acontece?",
+              "alternativas": [
+                "Uma vez a cada cinco anos",
+                "Todo dia",
+                "Em algumas edições ao longo do ano"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "Na trilha, o CRIA aparece junto de qual setor?",
+              "alternativas": [
+                "RPA",
+                "Franquias",
+                "Financeiro"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "Perdeu o prazo de inscrição. E agora?",
+              "alternativas": [
+                "Não há mais chance",
+                "Fique de olho na próxima edição",
+                "Peça para entrar mesmo assim"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "Por que participar do CRIA?",
+              "alternativas": [
+                "Para faltar ao trabalho",
+                "Por obrigação",
+                "Para aprender, construir e dar visibilidade ao seu trabalho"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "Quem apoia a condução do CRIA?",
+              "alternativas": [
+                "Pessoas & Cultura",
+                "Os clientes",
+                "Fornecedores"
+              ],
+              "correta": 0
+            }
+          ]
+        },
+        {
+          "titulo": "Sucesso do Cliente",
+          "area": "Setor",
+          "resumo": "Acompanha a carteira de clientes para que eles fiquem, cresçam e indiquem.",
+          "aprender": [
+            "Carteira e agentes",
+            "Churn, upsell e reativação",
+            "Satisfação"
+          ],
+          "texto": "Depois que o cliente está ativo, o time de Sucesso acompanha a carteira, ou seja, o conjunto de clientes de cada agente. Cada agente cuida de um grupo de restaurantes e monitora uso, satisfação e risco de cancelamento.\n\nIndicadores do time: churn (cancelamentos), upsell (venda de algo a mais para quem já é cliente), reativação (trazer de volta clientes inativos) e inadimplência (clientes com pagamento atrasado).\n\nO objetivo é que o cliente fique, cresça e indique. Cliente satisfeito tende a indicar outros restaurantes.",
+          "contato": "",
+          "videos": [],
+          "perguntas": [
+            {
+              "enunciado": "O que é churn?",
+              "alternativas": [
+                "Cancelamento de clientes",
+                "Venda para cliente novo",
+                "Um relatório fiscal"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "Upsell é:",
+              "alternativas": [
+                "Conquistar um cliente novo",
+                "Vender algo a mais para quem já é cliente",
+                "Dar desconto no cancelamento"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "Quando o time de Sucesso entra na jornada do cliente?",
+              "alternativas": [
+                "Antes da primeira reunião de vendas",
+                "Só quando o cliente cancela",
+                "Depois que o cliente está ativo"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "Cada agente de Sucesso cuida de:",
+              "alternativas": [
+                "Um grupo de restaurantes",
+                "Toda a base sozinho",
+                "Só de franquias"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "Reativação é:",
+              "alternativas": [
+                "Cancelar clientes",
+                "Trazer de volta clientes inativos",
+                "Contratar pessoas"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "O que o time de Sucesso monitora?",
+              "alternativas": [
+                "Só o faturamento da Takeat",
+                "As redes sociais",
+                "Uso, satisfação e risco de cancelamento"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "Um cliente satisfeito tende a:",
+              "alternativas": [
+                "Indicar outros restaurantes",
+                "Cancelar",
+                "Pedir reembolso"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "Carteira, no Sucesso, é:",
+              "alternativas": [
+                "Uma bolsa",
+                "O conjunto de clientes de um agente",
+                "O orçamento do time"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "Inadimplência é:",
+              "alternativas": [
+                "Cliente que indicou outro",
+                "Cliente novo",
+                "Cliente com pagamento atrasado"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "O objetivo do Sucesso é que o cliente:",
+              "alternativas": [
+                "Fique, cresça e indique",
+                "Abra mais chamados",
+                "Troque de sistema"
+              ],
+              "correta": 0
+            }
+          ]
+        },
+        {
+          "titulo": "Suporte",
+          "area": "Setor",
+          "resumo": "Resolve as dúvidas e os problemas dos clientes no dia a dia da operação.",
+          "aprender": [
+            "Como o Suporte atende",
+            "Escala e plantões",
+            "Indicadores"
+          ],
+          "texto": "O Suporte é a linha de frente técnica: atende os restaurantes clientes quando algo não funciona ou quando surge uma dúvida no uso do sistema. Cada solicitação vira um chamado, o registro do atendimento.\n\nComo restaurante funciona à noite, aos fins de semana e em feriados, o time trabalha com escala e plantões, e os feriados entram na escala. O time acompanha de perto o volume de chamados e a satisfação dos atendimentos.\n\nProblemas técnicos complexos são escalados para o time de Tech. A diferença para o Sucesso: o Suporte resolve o dia a dia; o Sucesso acompanha a carteira no longo prazo. Um bom atendimento faz o cliente confiar e continuar com a Takeat.",
+          "contato": "",
+          "videos": [],
+          "perguntas": [
+            {
+              "enunciado": "Por que o Suporte trabalha com escala e plantões?",
+              "alternativas": [
+                "Restaurantes operam à noite, fins de semana e feriados",
+                "Para reduzir o número de pessoas",
+                "Porque é obrigatório por lei"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "O principal papel do Suporte é:",
+              "alternativas": [
+                "Vender planos novos",
+                "Resolver dúvidas e problemas dos clientes",
+                "Criar campanhas"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "Qual indicador o Suporte acompanha?",
+              "alternativas": [
+                "Faturamento de eventos",
+                "Número de franquias",
+                "Volume de chamados"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "Um problema técnico complexo é:",
+              "alternativas": [
+                "Escalado para o time de Tech",
+                "Ignorado",
+                "Enviado ao Marketing"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "Feriados, para o Suporte:",
+              "alternativas": [
+                "São sempre folga para todos",
+                "Entram na escala",
+                "Não existem"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "Além do volume, o Suporte acompanha:",
+              "alternativas": [
+                "Leads de eventos",
+                "Contas a pagar",
+                "A satisfação dos atendimentos"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "Quem o Suporte atende?",
+              "alternativas": [
+                "Os restaurantes clientes",
+                "Fornecedores de eventos",
+                "Candidatos a vagas"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "O que é um chamado?",
+              "alternativas": [
+                "Uma ligação de vendas",
+                "O registro de um atendimento ao cliente",
+                "Uma reunião interna"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "Qual a diferença entre Suporte e Sucesso?",
+              "alternativas": [
+                "Não há diferença",
+                "Sucesso atende só à noite",
+                "Suporte resolve o dia a dia; Sucesso acompanha a carteira no longo prazo"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "Um bom atendimento faz o cliente:",
+              "alternativas": [
+                "Confiar e continuar com a Takeat",
+                "Abrir mais chamados",
+                "Cancelar"
+              ],
+              "correta": 0
+            }
+          ]
+        },
+        {
+          "titulo": "Onboarding de clientes",
+          "area": "Setor",
+          "resumo": "Coloca o cliente novo para rodar: implantação e ativação do sistema.",
+          "aprender": [
+            "O que é ativação",
+            "SLA de implantação",
+            "Cardápio e integrações"
+          ],
+          "texto": "Depois da venda, o time de Onboarding implanta o sistema no restaurante. As pessoas do time são chamadas de ativadores: configuram o cardápio (com apoio de IA na conversão de cardápios), conectam integrações como o iFood e treinam a equipe do restaurante.\n\nO time tem um prazo (SLA de implantação) para deixar o cliente ativo. Quando a ativação termina, o cliente segue acompanhado pelo time de Sucesso.\n\nUm onboarding bem feito reduz cancelamentos nos primeiros meses.",
+          "contato": "",
+          "videos": [],
+          "perguntas": [
+            {
+              "enunciado": "O que faz o time de Onboarding de clientes?",
+              "alternativas": [
+                "Implanta e ativa o sistema no cliente novo",
+                "Contrata colaboradores",
+                "Cuida das redes sociais"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "SLA de implantação é:",
+              "alternativas": [
+                "Um tipo de contrato de trabalho",
+                "O prazo para deixar o cliente ativo",
+                "Uma campanha de marketing"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "Um bom onboarding ajuda a:",
+              "alternativas": [
+                "Aumentar os chamados no Suporte",
+                "Atrasar a ativação",
+                "Reduzir cancelamentos nos primeiros meses"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "Como são chamadas as pessoas do time de Onboarding?",
+              "alternativas": [
+                "Ativadores",
+                "Embaixadores",
+                "Franqueados"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "O que o Onboarding configura no restaurante?",
+              "alternativas": [
+                "A folha de pagamento",
+                "O cardápio",
+                "O site da Takeat"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "Qual integração é citada no curso?",
+              "alternativas": [
+                "Netflix",
+                "Uber",
+                "iFood"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "Quem o Onboarding treina?",
+              "alternativas": [
+                "A equipe do restaurante",
+                "O time de Marketing",
+                "Os fornecedores"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "Depois da ativação, o cliente segue com:",
+              "alternativas": [
+                "Field Sales",
+                "Sucesso do Cliente",
+                "Financeiro"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "A conversão de cardápios conta com apoio de:",
+              "alternativas": [
+                "Fax",
+                "Correio",
+                "IA"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "Quando começa o Onboarding?",
+              "alternativas": [
+                "Depois da venda",
+                "Antes da primeira reunião",
+                "Só após um ano"
+              ],
+              "correta": 0
+            }
+          ]
+        },
+        {
+          "titulo": "Field Sales",
+          "area": "Setor",
+          "resumo": "Vendas presenciais: o time que vai até o restaurante.",
+          "aprender": [
+            "Como funciona a venda de campo",
+            "Visitas e demos",
+            "Indicadores"
+          ],
+          "texto": "Field Sales é o time comercial que vende presencialmente: visita restaurantes, faz demonstrações do sistema (demos) no próprio restaurante e fecha negócios.\n\nOs leads do Field vêm da prospecção na região e também de eventos. Os principais números do time são visitas, demos realizadas e vendas fechadas no mês.\n\nDepois que a venda fecha, o cliente segue para o time de Onboarding.",
+          "contato": "",
+          "videos": [],
+          "perguntas": [
+            {
+              "enunciado": "Como o Field Sales vende?",
+              "alternativas": [
+                "Presencialmente, visitando restaurantes",
+                "Só por e-mail",
+                "Por anúncios"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "O que é uma demo?",
+              "alternativas": [
+                "Um desconto especial",
+                "Uma demonstração do sistema para o cliente",
+                "Um relatório de churn"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "Qual destes é indicador do Field Sales?",
+              "alternativas": [
+                "Volume de chamados",
+                "eNPS",
+                "Visitas e demos realizadas"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "Onde o Field faz a demo?",
+              "alternativas": [
+                "No próprio restaurante",
+                "Só no escritório",
+                "Por carta"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "De onde vêm os leads do Field?",
+              "alternativas": [
+                "Só do Financeiro",
+                "Da prospecção na região e de eventos",
+                "Do time de Facilities"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "Depois que a venda fecha, o cliente segue para:",
+              "alternativas": [
+                "Marketing",
+                "Franquias",
+                "Onboarding"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "Vendas fechadas no mês são:",
+              "alternativas": [
+                "Um indicador do Field",
+                "Um benefício de RH",
+                "Um tipo de política"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "Field Sales faz parte de qual área?",
+              "alternativas": [
+                "Pessoas & Cultura",
+                "Comercial",
+                "Tech"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "Qual destas NÃO é atividade do Field?",
+              "alternativas": [
+                "Visitar restaurantes",
+                "Fazer demos",
+                "Emitir notas fiscais"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "Field vem do inglês e significa:",
+              "alternativas": [
+                "Campo",
+                "Escritório",
+                "Produto"
+              ],
+              "correta": 0
+            }
+          ]
+        },
+        {
+          "titulo": "Inside Sales",
+          "area": "Setor",
+          "resumo": "Vendas remotas: leads, reuniões online e fechamento.",
+          "aprender": [
+            "De onde vêm os leads",
+            "Qualificação e reuniões",
+            "Metas e acompanhamento"
+          ],
+          "texto": "Inside Sales vende de forma remota. O time recebe os leads (potenciais clientes interessados) gerados por Marketing e Growth, qualifica cada um, ou seja, entende se o restaurante tem perfil para a Takeat, agenda reuniões online e conduz até o fechamento.\n\nO time acompanha metas de reuniões e de vendas, e usa one-on-ones (conversas individuais entre gestor e vendedor) para desenvolver as pessoas.\n\nA diferença para o Field: o Inside vende à distância; o Field vende presencialmente.",
+          "contato": "",
+          "videos": [],
+          "perguntas": [
+            {
+              "enunciado": "Qual a diferença entre Inside e Field Sales?",
+              "alternativas": [
+                "Inside vende à distância; Field vende presencialmente",
+                "Não há diferença",
+                "Inside só atende franquias"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "De onde vêm boa parte dos leads do Inside?",
+              "alternativas": [
+                "Do Financeiro",
+                "De Marketing e Growth",
+                "Do Suporte"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "O que é um lead?",
+              "alternativas": [
+                "Um cliente que cancelou",
+                "Um colaborador novo",
+                "Um potencial cliente interessado"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "Qualificar um lead é:",
+              "alternativas": [
+                "Entender se o restaurante tem perfil para a Takeat",
+                "Dar nota ao vendedor",
+                "Cancelar o contato"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "Como são as reuniões do Inside?",
+              "alternativas": [
+                "Sempre presenciais",
+                "Online",
+                "Por carta"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "O que é um one-on-one?",
+              "alternativas": [
+                "Uma promoção",
+                "Um tipo de cliente",
+                "Uma conversa individual entre gestor e vendedor"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "Quais metas o Inside acompanha?",
+              "alternativas": [
+                "Reuniões e vendas",
+                "Chamados e plantões",
+                "Eventos e viagens"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "Depois de qualificar o lead, o próximo passo é:",
+              "alternativas": [
+                "Cancelar o lead",
+                "Agendar uma reunião online",
+                "Mandar para o Financeiro"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "Inside Sales faz parte de qual área?",
+              "alternativas": [
+                "Tech",
+                "Facilities",
+                "Comercial"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "O Inside conduz o lead até:",
+              "alternativas": [
+                "O fechamento",
+                "O cancelamento",
+                "O Suporte"
+              ],
+              "correta": 0
+            }
+          ]
+        },
+        {
+          "titulo": "Marketing",
+          "area": "Setor",
+          "resumo": "Marca, conteúdo e comunicação da Takeat com o mercado.",
+          "aprender": [
+            "Marca e conteúdo",
+            "Calendário de conteúdo",
+            "Apoio ao comercial"
+          ],
+          "texto": "Marketing cuida da marca Takeat e da comunicação com o mercado: redes sociais, blog com conteúdos sobre gestão de restaurantes, materiais de venda para o time comercial e o calendário de conteúdo, que organiza o que será publicado e quando.\n\nO objetivo é fazer o restaurante conhecer a Takeat e confiar nela, gerando interesse que vira oportunidade (lead) para o time comercial.",
+          "contato": "",
+          "videos": [],
+          "perguntas": [
+            {
+              "enunciado": "Qual destas é uma entrega de Marketing?",
+              "alternativas": [
+                "Calendário de conteúdo e posts",
+                "Folha de pagamento",
+                "Escala de plantões"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "Marketing ajuda o comercial a:",
+              "alternativas": [
+                "Implantar o sistema",
+                "Gerar interesse e oportunidades",
+                "Cobrar clientes"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "Quem cuida da marca Takeat no mercado?",
+              "alternativas": [
+                "Facilities",
+                "Tech",
+                "Marketing"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "O blog da Takeat fala sobre:",
+              "alternativas": [
+                "Gestão de restaurantes",
+                "Futebol",
+                "Política"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "O calendário de conteúdo organiza:",
+              "alternativas": [
+                "As férias do time",
+                "O que será publicado e quando",
+                "Os plantões do Suporte"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "Que material o Marketing faz para o comercial?",
+              "alternativas": [
+                "Contratos de trabalho",
+                "Notas fiscais",
+                "Materiais de venda"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "Interesse gerado pelo Marketing vira:",
+              "alternativas": [
+                "Lead para o comercial",
+                "Chamado no Suporte",
+                "Reembolso"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "O objetivo do Marketing é que o restaurante:",
+              "alternativas": [
+                "Cancele",
+                "Conheça e confie na Takeat",
+                "Abra chamados"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "Qual canal é citado no curso?",
+              "alternativas": [
+                "Rádio AM",
+                "Jornal impresso",
+                "Redes sociais"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "Marketing comunica a Takeat para:",
+              "alternativas": [
+                "O mercado",
+                "Só o time interno",
+                "Os fornecedores"
+              ],
+              "correta": 0
+            }
+          ]
+        },
+        {
+          "titulo": "Growth e Performance",
+          "area": "Setor",
+          "resumo": "Aquisição de clientes com dados: campanhas pagas, funil e indicações.",
+          "aprender": [
+            "Mídia paga e funil",
+            "Links rastreáveis (UTM)",
+            "Programa de indicações"
+          ],
+          "texto": "Growth e Performance faz a aquisição de clientes crescer de forma mensurável: campanhas pagas, testes, otimização do funil (as etapas que levam alguém de visitante a cliente) e acompanhamento do custo para conquistar cada cliente.\n\nLinks com UTM mostram de qual canal veio cada lead. O programa de indicação (member get member) recompensa clientes que indicam novos restaurantes.\n\nTestar é parte do trabalho: o time compara versões de campanhas e fica com a que traz mais resultado.",
+          "contato": "",
+          "videos": [],
+          "perguntas": [
+            {
+              "enunciado": "Para que serve um link com UTM?",
+              "alternativas": [
+                "Saber de qual canal veio o lead",
+                "Pagar fornecedores",
+                "Abrir chamados"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "Member get member é:",
+              "alternativas": [
+                "Um benefício de RH",
+                "Um programa em que clientes indicam novos clientes",
+                "Um tipo de contrato"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "Growth e Performance foca em:",
+              "alternativas": [
+                "Implantação",
+                "Folha de pagamento",
+                "Aquisição mensurável de clientes"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "O que é o funil?",
+              "alternativas": [
+                "As etapas que levam alguém de visitante a cliente",
+                "Um equipamento de cozinha",
+                "O organograma"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "Que tipo de campanha o time faz?",
+              "alternativas": [
+                "Só panfletos",
+                "Campanhas pagas",
+                "Nenhuma"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "Por que o time testa versões de campanhas?",
+              "alternativas": [
+                "Por diversão",
+                "Para gastar mais",
+                "Para ficar com a que traz mais resultado"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "O time acompanha quanto custa:",
+              "alternativas": [
+                "Conquistar cada cliente",
+                "O almoço do time",
+                "O aluguel do escritório"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "Quem é recompensado no member get member?",
+              "alternativas": [
+                "Fornecedores",
+                "Clientes que indicam novos restaurantes",
+                "Candidatos"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "Mensurável significa:",
+              "alternativas": [
+                "Impossível de medir",
+                "Feito sem dados",
+                "Que pode ser medido"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "Growth gera leads para:",
+              "alternativas": [
+                "O time comercial",
+                "Facilities",
+                "Financeiro"
+              ],
+              "correta": 0
+            }
+          ]
+        },
+        {
+          "titulo": "Eventos e Parcerias",
+          "area": "Setor",
+          "resumo": "Feiras, eventos e parceiros que levam a Takeat a mais restaurantes.",
+          "aprender": [
+            "Eventos do setor",
+            "Fornecedores e logística",
+            "Programa de parceiros"
+          ],
+          "texto": "Eventos e Parcerias organiza a presença da Takeat em feiras e eventos de food service. O time cuida de fornecedores, viagens e logística, e da captação de leads nos eventos.\n\nO time também gerencia os parceiros: empresas ou pessoas que indicam ou vendem a Takeat. Parceiros recebem bonificações e podem fazer resgates, acompanhados pelo time.",
+          "contato": "",
+          "videos": [],
+          "perguntas": [
+            {
+              "enunciado": "Qual é uma entrega de Eventos e Parcerias?",
+              "alternativas": [
+                "Presença em feiras de food service",
+                "Correção de bugs",
+                "Folha de pagamento"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "Parceiros, nesse contexto, são:",
+              "alternativas": [
+                "Colaboradores CLT",
+                "Empresas ou pessoas que indicam ou vendem a Takeat",
+                "Clientes inadimplentes"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "Eventos geram para o comercial:",
+              "alternativas": [
+                "Chamados",
+                "Notas fiscais",
+                "Leads"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "O time cuida de quais itens de logística?",
+              "alternativas": [
+                "Fornecedores e viagens",
+                "Servidores",
+                "Cardápios"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "O que os parceiros recebem?",
+              "alternativas": [
+                "Férias extras",
+                "Bonificações",
+                "Acesso ao TakeatOS"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "De que mercado são as feiras?",
+              "alternativas": [
+                "Automotivo",
+                "Moda",
+                "Food service"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "Quem acompanha os resgates dos parceiros?",
+              "alternativas": [
+                "Eventos e Parcerias",
+                "Suporte",
+                "Tech"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "Um parceiro pode:",
+              "alternativas": [
+                "Demitir colaboradores",
+                "Indicar ou vender a Takeat",
+                "Mudar o preço do sistema"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "Qual NÃO é tarefa do time?",
+              "alternativas": [
+                "Organizar viagens",
+                "Captar leads em eventos",
+                "Corrigir bugs do sistema"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "A captação de leads acontece:",
+              "alternativas": [
+                "Nos eventos",
+                "No Financeiro",
+                "Na folha de pagamento"
+              ],
+              "correta": 0
+            }
+          ]
+        },
+        {
+          "titulo": "Franquias",
+          "area": "Setor",
+          "resumo": "Atendimento a redes de franquia, que têm muitas unidades e necessidades próprias.",
+          "aprender": [
+            "Por que franquias são diferentes",
+            "Relacionamento com redes",
+            "Pendências"
+          ],
+          "texto": "Redes de franquia têm várias unidades, padrões definidos de forma central e decisões tomadas pela franqueadora (a dona da marca). Por isso a Takeat tem um time dedicado a elas.\n\nO time registra as interações com cada rede, acompanha as pendências e conduz negociações que envolvem muitas lojas de uma vez. Uma única negociação bem feita pode trazer dezenas de unidades.\n\nCada loja de uma rede é um franqueado; quem decide pela rede é a franqueadora.",
+          "contato": "",
+          "videos": [],
+          "perguntas": [
+            {
+              "enunciado": "Por que franquias têm um time dedicado?",
+              "alternativas": [
+                "Têm várias unidades e decisões centralizadas",
+                "São clientes menores",
+                "Não usam o sistema"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "Quem costuma decidir pela rede de franquia?",
+              "alternativas": [
+                "Cada garçom",
+                "A franqueadora",
+                "O Suporte da Takeat"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "O time de Franquias acompanha:",
+              "alternativas": [
+                "Escala de plantões",
+                "Campanhas pagas",
+                "Interações e pendências com cada rede"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "A franqueadora é:",
+              "alternativas": [
+                "A dona da marca",
+                "Um fornecedor",
+                "Um cliente final"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "Cada loja de uma rede é chamada de:",
+              "alternativas": [
+                "Parceira",
+                "Franqueado",
+                "Ativador"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "As negociações com franquias envolvem:",
+              "alternativas": [
+                "Uma loja só",
+                "Nenhuma loja",
+                "Muitas lojas de uma vez"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "Uma boa negociação com uma rede pode trazer:",
+              "alternativas": [
+                "Dezenas de unidades",
+                "Nenhum cliente",
+                "Só um cliente"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "Os padrões de uma rede são definidos:",
+              "alternativas": [
+                "Por cada cliente final",
+                "De forma central",
+                "Pelo Suporte"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "O que o time registra?",
+              "alternativas": [
+                "Folha de ponto",
+                "Cardápios",
+                "As interações com cada rede"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "Franquias exigem atendimento:",
+              "alternativas": [
+                "Dedicado",
+                "Nenhum",
+                "Só por e-mail"
+              ],
+              "correta": 0
+            }
+          ]
+        },
+        {
+          "titulo": "Novos Negócios de IA",
+          "area": "Setor",
+          "resumo": "Novas frentes de produto e receita com inteligência artificial.",
+          "aprender": [
+            "Por que IA é estratégica",
+            "Como validamos ideias",
+            "Como sugerir ideias"
+          ],
+          "texto": "Novos Negócios de IA explora oportunidades de produto e de receita usando inteligência artificial. O time testa ideias rapidamente com clientes antes de investir pesado.\n\nTestar rápido reduz o risco: se a ideia não funciona, o time aprende e muda de rumo cedo.\n\nSe você enxergar um problema de restaurante que a IA poderia resolver, leve a ideia ao time. Qualquer colaborador pode sugerir, e muitas das melhores ideias vêm de quem está perto do cliente.",
+          "contato": "",
+          "videos": [],
+          "perguntas": [
+            {
+              "enunciado": "O foco de Novos Negócios de IA é:",
+              "alternativas": [
+                "Explorar produtos e receitas com IA",
+                "Cuidar da folha de pagamento",
+                "Organizar feiras"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "Como o time valida ideias?",
+              "alternativas": [
+                "Lançando só depois de um ano",
+                "Testando rápido com clientes",
+                "Sem falar com clientes"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "Quem pode levar ideias para o time?",
+              "alternativas": [
+                "Só diretores",
+                "Só o time de Tech",
+                "Qualquer colaborador"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "Por que testar rápido?",
+              "alternativas": [
+                "Reduz o risco e acelera o aprendizado",
+                "Aumenta o custo",
+                "Evita falar com clientes"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "Se uma ideia não funciona no teste, o time:",
+              "alternativas": [
+                "Insiste para sempre",
+                "Aprende e muda de rumo cedo",
+                "Esconde o resultado"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "De onde vêm muitas das melhores ideias?",
+              "alternativas": [
+                "De sorteios",
+                "De concorrentes",
+                "De quem está perto do cliente"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "Que tipo de problema vale levar ao time?",
+              "alternativas": [
+                "Um problema de restaurante que a IA poderia resolver",
+                "Uma reclamação sobre o almoço",
+                "Nenhum"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "O time busca oportunidades de:",
+              "alternativas": [
+                "Mudança de escritório",
+                "Produto e receita",
+                "Férias"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "Antes de investir pesado, o time:",
+              "alternativas": [
+                "Contrata muita gente",
+                "Aguarda um ano",
+                "Testa com clientes"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "A tecnologia central desse time é:",
+              "alternativas": [
+                "Inteligência artificial",
+                "Impressão 3D",
+                "Rádio"
+              ],
+              "correta": 0
+            }
+          ]
+        },
+        {
+          "titulo": "Tech",
+          "area": "Setor",
+          "resumo": "Engenharia que constrói e mantém a plataforma Takeat no ar.",
+          "aprender": [
+            "O que Tech faz",
+            "Integrações e estabilidade",
+            "Como reportar um problema"
+          ],
+          "texto": "Tech desenvolve e mantém a plataforma Takeat: novas funcionalidades, integrações (como marketplaces e meios de pagamento), infraestrutura e estabilidade do sistema, para que ele fique no ar mesmo nos horários de pico dos restaurantes.\n\nProblemas reportados por clientes chegam ao Tech normalmente pelo Suporte. Ao reportar algo, descreva o passo a passo para reproduzir, o cliente afetado e inclua prints.\n\nTech trabalha junto com o time de Produto, que define o que será construído.",
+          "contato": "",
+          "videos": [],
+          "perguntas": [
+            {
+              "enunciado": "Qual destas é responsabilidade de Tech?",
+              "alternativas": [
+                "Manter a plataforma estável",
+                "Fazer visitas comerciais",
+                "Pagar fornecedores"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "Problemas de clientes normalmente chegam ao Tech por:",
+              "alternativas": [
+                "Marketing",
+                "Suporte",
+                "Financeiro"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "Um bom reporte de problema tem:",
+              "alternativas": [
+                "Só a frase 'não funciona'",
+                "Nada, Tech descobre sozinho",
+                "Passo a passo, cliente afetado e prints"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "Quais integrações são citadas?",
+              "alternativas": [
+                "Marketplaces e meios de pagamento",
+                "Redes de TV",
+                "Companhias aéreas"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "Por que a estabilidade é tão importante?",
+              "alternativas": [
+                "Para o sistema cair à noite",
+                "Para o sistema ficar no ar nos horários de pico",
+                "Não é importante"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "Tech trabalha junto com qual time para decidir o que construir?",
+              "alternativas": [
+                "Facilities",
+                "Eventos",
+                "Produto"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "Desenvolver novas funcionalidades é tarefa de:",
+              "alternativas": [
+                "Tech",
+                "Financeiro",
+                "Pessoas & Cultura"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "Ao reportar um problema, o passo a passo serve para:",
+              "alternativas": [
+                "Enfeitar o chamado",
+                "Reproduzir o erro",
+                "Atrasar o atendimento"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "Infraestrutura é:",
+              "alternativas": [
+                "O cardápio do restaurante",
+                "Um benefício",
+                "A base técnica que mantém o sistema funcionando"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "Prints em um reporte ajudam a:",
+              "alternativas": [
+                "Mostrar exatamente o que aconteceu",
+                "Esconder o erro",
+                "Nada"
+              ],
+              "correta": 0
+            }
+          ]
+        },
+        {
+          "titulo": "Produto",
+          "area": "Setor",
+          "resumo": "Decide o que construir, para quem e em que ordem.",
+          "aprender": [
+            "Papel do Produto",
+            "Roadmap e prioridades",
+            "Como levar feedback"
+          ],
+          "texto": "O time de Produto entende os problemas dos restaurantes, define o que será construído e prioriza o roadmap (o plano do que será construído e em que ordem) junto com Tech.\n\nPriorizar é escolher: nem tudo cabe no roadmap ao mesmo tempo, então o time decide pelo que gera mais valor para o cliente e para a Takeat.\n\nFeedbacks de clientes ouvidos por Vendas, Sucesso e Suporte são matéria-prima para o Produto. Quanto mais concreto o feedback, com um exemplo real do problema que o cliente viveu, melhor.",
+          "contato": "",
+          "videos": [],
+          "perguntas": [
+            {
+              "enunciado": "O que é o roadmap?",
+              "alternativas": [
+                "O plano do que será construído e em que ordem",
+                "O mapa do escritório",
+                "A rota das visitas do Field"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "Produto trabalha mais próximo de qual time para construir?",
+              "alternativas": [
+                "Facilities",
+                "Tech",
+                "Eventos"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "Qual feedback ajuda mais o Produto?",
+              "alternativas": [
+                "'O cliente não gostou'",
+                "Nenhum, Produto decide sozinho",
+                "Um exemplo concreto do problema que o cliente viveu"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "Priorizar é:",
+              "alternativas": [
+                "Escolher o que gera mais valor primeiro",
+                "Fazer tudo ao mesmo tempo",
+                "Não decidir nada"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "Quais times levam feedback de clientes ao Produto?",
+              "alternativas": [
+                "Só Facilities",
+                "Vendas, Sucesso e Suporte",
+                "Nenhum"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "O ponto de partida do Produto são:",
+              "alternativas": [
+                "As férias do time",
+                "Os fornecedores",
+                "Os problemas dos restaurantes"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "Quem define o que será construído?",
+              "alternativas": [
+                "Produto",
+                "Financeiro",
+                "Eventos"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "Por que nem tudo entra no roadmap ao mesmo tempo?",
+              "alternativas": [
+                "Porque é proibido",
+                "Porque é preciso escolher o que gera mais valor",
+                "Porque o cliente não quer"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "Feedback de cliente, para o Produto, é:",
+              "alternativas": [
+                "Irrelevante",
+                "Spam",
+                "Matéria-prima"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "O valor considerado na priorização é para:",
+              "alternativas": [
+                "O cliente e a Takeat",
+                "Ninguém",
+                "Só os concorrentes"
+              ],
+              "correta": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nome": "Produto Takeat",
+      "descricao": "O que vendemos e por quê",
+      "cursos": [
+        {
+          "titulo": "Conheça o produto Takeat",
+          "area": "Produto",
+          "resumo": "O que a Takeat entrega para o restaurante e como o cliente percorre a empresa.",
+          "aprender": [
+            "Para quem é a Takeat",
+            "Principais soluções",
+            "Jornada do cliente"
+          ],
+          "texto": "A Takeat é uma plataforma de gestão para restaurantes e negócios de food service. Ela ajuda o restaurante a vender mais e operar melhor: cardápio digital, pedidos no salão e no delivery, integrações com marketplaces como iFood e 99Food, pagamentos, emissão de notas fiscais e indicadores do negócio.\n\nA jornada do cliente passa por quase toda a empresa: Marketing e Growth atraem, Inside e Field Sales vendem, Onboarding implanta, Suporte resolve o dia a dia e Sucesso acompanha para o cliente crescer e indicar.\n\nAssista à demonstração do produto nos materiais abaixo e, se puder, peça para acompanhar uma demo com o time comercial.",
+          "contato": "Time de Produto",
+          "videos": [],
+          "perguntas": [
+            {
+              "enunciado": "Quem é o cliente da Takeat?",
+              "alternativas": [
+                "Restaurantes e negócios de food service",
+                "Hospitais",
+                "Escolas"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "Qual a ordem da jornada do cliente?",
+              "alternativas": [
+                "Suporte → Vendas → Marketing",
+                "Marketing/Growth → Vendas → Onboarding → Suporte/Sucesso",
+                "Sucesso → Onboarding → Vendas"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "Qual destas integrações é citada no curso?",
+              "alternativas": [
+                "Netflix",
+                "Spotify",
+                "iFood"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "A Takeat ajuda o restaurante a:",
+              "alternativas": [
+                "Vender mais e operar melhor",
+                "Fechar mais cedo",
+                "Contratar cozinheiros"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "Pedidos podem ser feitos:",
+              "alternativas": [
+                "Só por telefone",
+                "No salão e no delivery",
+                "Só por carta"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "Qual destas é uma solução da Takeat?",
+              "alternativas": [
+                "Seguro de carro",
+                "Plano de saúde",
+                "Cardápio digital"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "Além do iFood, qual marketplace é citado?",
+              "alternativas": [
+                "99Food",
+                "Mercado Livre",
+                "Shopee"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "Quem implanta o sistema no cliente?",
+              "alternativas": [
+                "Marketing",
+                "Onboarding",
+                "Financeiro"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "Na jornada, quem atrai o cliente?",
+              "alternativas": [
+                "Suporte",
+                "Tech",
+                "Marketing e Growth"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "Emissão de notas fiscais é:",
+              "alternativas": [
+                "Uma solução da plataforma",
+                "Algo que a Takeat não faz",
+                "Tarefa do cliente final"
+              ],
+              "correta": 0
+            }
+          ]
+        },
+        {
+          "titulo": "Curso IA para restaurantes",
+          "area": "Produto",
+          "resumo": "Como a inteligência artificial ajuda o restaurante, e como a Takeat usa IA no produto.",
+          "aprender": [
+            "Onde a IA ajuda o restaurante",
+            "IA dentro da Takeat",
+            "Como explicar ao cliente"
+          ],
+          "texto": "A IA já ajuda restaurantes em várias frentes: montar e converter cardápios, responder clientes, criar conteúdo para divulgação e analisar vendas para decidir preços e promoções.\n\nNa Takeat, a IA já aparece em processos como a conversão de cardápios para o sistema, o que acelera a implantação de clientes novos.\n\nEste curso é para todas as áreas: entender esses usos ajuda qualquer pessoa da Takeat a conversar melhor com clientes sobre IA. Ao explicar, fale do problema que a IA resolve para o restaurante, não da tecnologia.\n\nOs materiais completos do curso ficam abaixo. Faça as aulas na ordem e depois responda ao quiz.",
+          "contato": "Time de Novos Negócios de IA",
+          "videos": [],
+          "perguntas": [
+            {
+              "enunciado": "Qual destes é um uso de IA em restaurantes?",
+              "alternativas": [
+                "Converter e organizar cardápios",
+                "Lavar a louça",
+                "Entregar pedidos de moto"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "Por que esse curso é para todas as áreas?",
+              "alternativas": [
+                "Porque é obrigatório por lei",
+                "Para todos conversarem melhor com clientes sobre IA",
+                "Porque substitui o onboarding"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "Analisar vendas com IA ajuda o restaurante a:",
+              "alternativas": [
+                "Contratar menos garçons",
+                "Fechar mais cedo",
+                "Decidir preços e promoções"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "Onde a Takeat já usa IA?",
+              "alternativas": [
+                "Na conversão de cardápios para o sistema",
+                "Na entrega dos pedidos",
+                "Na limpeza do salão"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "A conversão de cardápios com IA acelera:",
+              "alternativas": [
+                "As férias",
+                "A implantação de clientes novos",
+                "O cancelamento"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "Ao explicar IA para um cliente, fale de:",
+              "alternativas": [
+                "Detalhes técnicos do modelo",
+                "Nada",
+                "O problema que ela resolve para o restaurante"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "A IA pode ajudar o restaurante a responder:",
+              "alternativas": [
+                "Clientes",
+                "Processos judiciais",
+                "Provas escolares"
+              ],
+              "correta": 0
+            },
+            {
+              "enunciado": "Criar conteúdo para divulgação é um uso de IA para:",
+              "alternativas": [
+                "O Financeiro da Takeat",
+                "O restaurante",
+                "O fornecedor"
+              ],
+              "correta": 1
+            },
+            {
+              "enunciado": "Qual NÃO é um uso de IA citado?",
+              "alternativas": [
+                "Converter cardápios",
+                "Analisar vendas",
+                "Cozinhar os pratos"
+              ],
+              "correta": 2
+            },
+            {
+              "enunciado": "Onde ficam os materiais completos do curso?",
+              "alternativas": [
+                "Na seção Materiais do curso",
+                "No site do iFood",
+                "Não existem"
+              ],
+              "correta": 0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

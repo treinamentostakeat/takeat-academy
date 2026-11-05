@@ -53,6 +53,16 @@ Em produção o app precisa estar em HTTPS (o navegador só libera microfone e c
 
 A senha gerada é provisória: no primeiro acesso, a pessoa precisa criar a própria. Depois de 5 tentativas erradas seguidas, a conta fica bloqueada por 15 minutos. O gestor cria a primeira conta de RH em `/equipe/usuarios`. As regras ficam em `src/lib/permissoes.ts`.
 
+## Trilhas da área interna
+
+O RH e o gestor editam tudo em `/interno/conteudo`: trilhas, etapas, cursos, vídeos (por link do YouTube, Vimeo, Google Drive ou arquivo .mp4), materiais e perguntas. Só aparece para os colaboradores o que estiver publicado. O quiz é corrigido no servidor; o gabarito nunca vai para o navegador antes da resposta.
+
+Para importar a trilha do protótipo do RH (21 cursos e 210 perguntas, que entra como rascunho e sem os vídeos):
+
+```bash
+npm run db:importar-onboarding
+```
+
 ## Links que a equipe usa
 
 - **Grupos de WhatsApp (por restaurante):** `APP_URL/i/<CNPJ>`, que identifica o restaurante e marca o canal como "Link do grupo".
