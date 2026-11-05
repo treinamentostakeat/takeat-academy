@@ -7,7 +7,7 @@ import { Modal } from '@/components/equipe/Modal';
 import { toast } from '@/components/equipe/Toast';
 import '@/components/equipe/equipe-comp.css';
 import { exibicaoDeVideo } from '@/lib/aprendizagem';
-import { excluirCurso, salvarCurso, type CursoEdicao } from '../../acoes';
+import { excluirCurso, prepararEnvioVideo, salvarCurso, type CursoEdicao } from '../../acoes';
 
 /* Editor de um curso: dados, conteúdo, vídeos (por link), materiais e perguntas. Salva tudo de uma vez. */
 
@@ -85,11 +85,11 @@ export function EditorCurso({ inicial, etapas, trilhaId, tentativas }: { inicial
       </section>
 
       <section className="mod ed-bloco">
-        <div className="mod-h"><div><h2>Vídeos ({c.videos.length})</h2><p>Cole o link do YouTube, Vimeo ou Google Drive (compartilhado com quem tem o link), ou de um arquivo .mp4. Vídeo sem link não aparece para o colaborador.</p></div></div>
+        <div className="mod-h"><div><h2>Vídeos ({c.videos.length})</h2><p>Envie o arquivo do vídeo. Ele fica guardado de forma privada e só toca para quem está logado na plataforma.</p></div></div>
         {c.videos.map((v, i) => (
-          <VideoEditor key={i} v={v} i={i} n={c.videos.length} onChange={(x) => set('videos', trocar(c.videos, i, x))} onMover={(d) => set('videos', mover(c.videos, i, d))} onTirar={() => set('videos', tirar(c.videos, i))} />
+          <VideoEditor key={i} cursoId={c.id} v={v} i={i} n={c.videos.length} onChange={(x) => set('videos', trocar(c.videos, i, x))} onMover={(d) => set('videos', mover(c.videos, i, d))} onTirar={() => set('videos', tirar(c.videos, i))} />
         ))}
-        <div><button type="button" className="btn btn-m btn-outlined" onClick={() => set('videos', [...c.videos, { titulo: '', duracao: '', url: '' } as Video])}><span className="icon">add</span>Adicionar vídeo</button></div>
+        <div><button type="button" className="btn btn-m btn-outlined" onClick={() => set('videos', [...c.videos, { titulo: '', duracao: '', url: '', arquivo: '', nomeArquivo: '' } as Video])}><span className="icon">add</span>Adicionar vídeo</button></div>
       </section>
 
       <section className="mod ed-bloco">
@@ -142,29 +142,85 @@ export function EditorCurso({ inicial, etapas, trilhaId, tentativas }: { inicial
   );
 }
 
-function VideoEditor({ v, i, n, onChange, onMover, onTirar }: { v: Video; i: number; n: number; onChange: (v: Video) => void; onMover: (d: -1 | 1) => void; onTirar: () => void }) {
+/** Envia o arquivo direto do navegador para o Storage, com barra de progresso. */
+function enviarArquivo(url: string, arquivo: File, progresso: (pct: number) => void) {
+  return new Promise<void>((ok, falha) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open('PUT', url);
+    xhr.setRequestHeader('x-upsert', 'false');
+    xhr.upload.onprogress = (e) => { if (e.lengthComputable) progresso(Math.round((e.loaded / e.total) * 100)); };
+    xhr.onload = () => (xhr.status >= 200 && xhr.status < 300 ? ok() : falha(new Error(String(xhr.status))));
+    xhr.onerror = () => falha(new Error('rede'));
+    const corpo = new FormData();
+    corpo.append('cacheControl', '3600');
+    corpo.append('', arquivo);
+    xhr.send(corpo);
+  });
+}
+
+function VideoEditor({ cursoId, v, i, n, onChange, onMover, onTirar }: { cursoId: string; v: Video; i: number; n: number; onChange: (v: Video) => void; onMover: (d: -1 | 1) => void; onTirar: () => void }) {
+  const [pct, setPct] = useState<number | null>(null);
+  const [erro, setErro] = useState('');
+  const [link, setLink] = useState(!v.arquivo && !!v.url);
   const ex = v.url ? exibicaoDeVideo(v.url) : null;
+  const escolher = async (arquivo: File | undefined) => {
+    if (!arquivo) return;
+    setErro('');
+    setPct(0);
+    try {
+      const r = await prepararEnvioVideo({ cursoId, nome: arquivo.name, tipo: arquivo.type, tamanho: arquivo.size });
+      if (!r.ok) { setErro(r.erro); setPct(null); return; }
+      await enviarArquivo(r.url, arquivo, setPct);
+      onChange({ ...v, titulo: v.titulo || arquivo.name.replace(/\.[^.]+$/, ''), arquivo: r.caminho, nomeArquivo: arquivo.name, url: '' });
+      toast('Vídeo enviado. Clique em "Salvar curso" para guardar.', 'upload');
+    } catch {
+      setErro('O envio falhou. Confira sua conexão e tente de novo.');
+    }
+    setPct(null);
+  };
   return (
     <div className="ed-item">
       <div className="ed-grid">
         <div className="fld"><label htmlFor={`v-t-${i}`}>Título do vídeo {i + 1}</label><input id={`v-t-${i}`} maxLength={120} value={v.titulo} onChange={(e) => onChange({ ...v, titulo: e.target.value })} /></div>
         <div className="fld"><label htmlFor={`v-d-${i}`}>Duração (opcional)</label><input id={`v-d-${i}`} maxLength={20} placeholder="Ex.: 3min18" value={v.duracao} onChange={(e) => onChange({ ...v, duracao: e.target.value })} /></div>
         <div className="fld ed-full">
-          <label htmlFor={`v-u-${i}`}>Link do vídeo</label>
-          <input id={`v-u-${i}`} type="url" placeholder="https://" value={v.url} onChange={(e) => onChange({ ...v, url: e.target.value })} aria-describedby={`v-i-${i}`} />
-          <div className="info" id={`v-i-${i}`}>
-            {!v.url ? 'Sem link: o vídeo ainda não aparece para o colaborador.'
-              : !ex ? 'Link inválido: cole o endereço completo, começando com https://'
-                : ex.tipo === 'iframe' ? 'O vídeo vai tocar dentro da plataforma.'
-                  : ex.tipo === 'video' ? 'Arquivo de vídeo: toca no player do navegador.'
-                    : 'Este site não toca dentro da plataforma: o colaborador verá um botão para abrir o vídeo.'}
-          </div>
+          <span className="ed-rot">Arquivo do vídeo</span>
+          {pct !== null ? (
+            <div className="ed-envio" role="status"><span>Enviando… {pct}%</span><div className="in-barra"><i style={{ width: `${pct}%` }} /></div></div>
+          ) : v.arquivo ? (
+            <div className="ed-arq"><span className="icon">movie</span><span className="ed-arq-n">{v.nomeArquivo || 'Vídeo enviado'}</span>
+              <label className="btn btn-m btn-outlined">Trocar<input type="file" accept={TIPOS} hidden onChange={(e) => { void escolher(e.target.files?.[0]); e.target.value = ''; }} /></label>
+              <button type="button" className="btn btn-m btn-outlined" onClick={() => onChange({ ...v, arquivo: '', nomeArquivo: '' })}>Remover arquivo</button>
+            </div>
+          ) : (
+            <div className="ed-arq">
+              <label className="btn btn-m btn-outlined"><span className="icon">upload</span>Enviar vídeo<input type="file" accept={TIPOS} hidden onChange={(e) => { void escolher(e.target.files?.[0]); e.target.value = ''; }} /></label>
+              <span className="ed-arq-n">MP4, WebM ou MOV, até 50 MB.</span>
+              {!link && <button type="button" className="linkbtn" onClick={() => setLink(true)}>Usar um link</button>}
+            </div>
+          )}
+          {erro && <div className="err" role="alert">{erro}</div>}
+          {!v.arquivo && !erro && pct === null && !v.url && !link && <div className="info">Sem arquivo: o vídeo ainda não aparece para o colaborador.</div>}
         </div>
+        {!v.arquivo && link && (
+          <div className="fld ed-full">
+            <label htmlFor={`v-u-${i}`}>Ou link do vídeo</label>
+            <input id={`v-u-${i}`} type="url" placeholder="https://" value={v.url} onChange={(e) => onChange({ ...v, url: e.target.value })} aria-describedby={`v-i-${i}`} />
+            <div className="info" id={`v-i-${i}`}>
+              {!v.url ? 'YouTube, Vimeo ou Google Drive.'
+                : !ex ? 'Link inválido: cole o endereço completo, começando com https://'
+                  : ex.tipo === 'iframe' ? 'O vídeo vai tocar dentro da plataforma.'
+                    : ex.tipo === 'video' ? 'Arquivo de vídeo: toca no player do navegador.'
+                      : 'Este site não toca dentro da plataforma: o colaborador verá um botão para abrir o vídeo.'}
+            </div>
+          </div>
+        )}
       </div>
       <Ordem i={i} n={n} rotulo={`vídeo ${i + 1}`} onMover={onMover} onTirar={onTirar} />
     </div>
   );
 }
+const TIPOS = 'video/mp4,video/webm,video/quicktime,video/x-m4v';
 
 function PerguntaEditor({ q, i, n, onChange, onMover, onTirar }: { q: Pergunta; i: number; n: number; onChange: (q: Pergunta) => void; onMover: (d: -1 | 1) => void; onTirar: () => void }) {
   const alt = (k: number, txt: string) => onChange({ ...q, alternativas: trocar(q.alternativas, k, txt) });

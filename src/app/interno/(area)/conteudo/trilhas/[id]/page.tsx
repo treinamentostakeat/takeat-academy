@@ -12,7 +12,7 @@ export default async function EditarTrilha({ params }: { params: Promise<{ id: s
   const { id } = await params;
   const t = await db.trilha.findUnique({
     where: { id },
-    include: { etapas: { orderBy: { ordem: 'asc' }, include: { cursos: { orderBy: { ordem: 'asc' }, select: { id: true, titulo: true, publicado: true, _count: { select: { perguntas: true, videos: { where: { url: '' } } } } } } } } },
+    include: { etapas: { orderBy: { ordem: 'asc' }, include: { cursos: { orderBy: { ordem: 'asc' }, select: { id: true, titulo: true, publicado: true, _count: { select: { perguntas: true, videos: { where: { url: '', arquivo: '' } } } } } } } } },
   });
   if (!t) return <section className="tcard"><div className="state"><span className="icon">search_off</span><b>Trilha não encontrada</b><div className="acts"><Link className="btn btn-l btn-outlined" href="/interno/conteudo">Voltar</Link></div></div></section>;
   return (

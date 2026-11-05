@@ -34,7 +34,7 @@ export default async function EditarCurso({ params }: { params: Promise<{ id: st
         inicial={{
           id: c.id, etapaId: c.etapaId, titulo: c.titulo, area: c.area, resumo: c.resumo, aprender: c.aprender, texto: c.texto, contato: c.contato,
           aprovacao: c.aprovacao, publicado: c.publicado,
-          videos: c.videos.map((v) => ({ titulo: v.titulo, duracao: v.duracao, url: v.url })),
+          videos: c.videos.map((v) => ({ titulo: v.titulo, duracao: v.duracao, url: v.url, arquivo: v.arquivo, nomeArquivo: v.nomeArquivo })),
           materiais: c.materiais.map((m) => ({ titulo: m.titulo, descricao: m.descricao, url: m.url })),
           perguntas: c.perguntas.map((q) => ({ enunciado: q.enunciado, alternativas: q.alternativas, correta: q.correta })),
         }}

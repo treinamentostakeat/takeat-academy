@@ -11,7 +11,7 @@ export default async function Conteudo() {
   await exigirEditorConteudo();
   const trilhas = await db.trilha.findMany({
     orderBy: { criadoEm: 'asc' },
-    include: { etapas: { select: { _count: { select: { cursos: true } }, cursos: { select: { publicado: true, _count: { select: { perguntas: true, videos: { where: { url: '' } } } } } } } } },
+    include: { etapas: { select: { _count: { select: { cursos: true } }, cursos: { select: { publicado: true, _count: { select: { perguntas: true, videos: { where: { url: '', arquivo: '' } } } } } } } } },
   });
   return (
     <div className="in">

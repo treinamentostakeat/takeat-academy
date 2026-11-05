@@ -1,4 +1,5 @@
 import 'server-only';
+import { armazenamentoAtivo, linksDeLeitura } from './armazenamento';
 import { db } from './db';
 import { podeEditarConteudo } from './permissoes';
 import type { UsuarioSessao } from './sessao';
@@ -31,7 +32,7 @@ export async function cursoParaAluno(id: string, u: UsuarioSessao) {
     where: { id },
     include: {
       etapa: { include: { trilha: { include: { etapas: { orderBy: { ordem: 'asc' }, include: { cursos: { where: editor ? {} : { publicado: true }, orderBy: { ordem: 'asc' }, select: { id: true, titulo: true } } } } } } } },
-      videos: { where: { url: { not: '' } }, orderBy: { ordem: 'asc' } },
+      videos: { where: { OR: [{ url: { not: '' } }, { arquivo: { not: '' } }] }, orderBy: { ordem: 'asc' } },
       materiais: { orderBy: { ordem: 'asc' } },
       perguntas: { orderBy: { ordem: 'asc' }, select: { id: true, enunciado: true, alternativas: true } },
       progressos: { where: { usuarioId: u.id } },
@@ -42,10 +43,16 @@ export async function cursoParaAluno(id: string, u: UsuarioSessao) {
   if (!editor && (!c.publicado || !trilha.publicada)) return null;
   const ordem = trilha.etapas.flatMap((e) => e.cursos);
   const pos = ordem.findIndex((x) => x.id === c.id);
+  // Vídeo enviado: link assinado e temporário; se o Storage falhar, o vídeo some da lista em vez de quebrar a página
+  const arquivos = c.videos.map((v) => v.arquivo).filter(Boolean);
+  const assinados = arquivos.length && armazenamentoAtivo() ? await linksDeLeitura(arquivos).catch(() => new Map<string, string | null>()) : new Map<string, string | null>();
+  const videos = c.videos
+    .map((v) => ({ id: v.id, titulo: v.titulo, duracao: v.duracao, url: v.arquivo ? assinados.get(v.arquivo) ?? '' : v.url }))
+    .filter((v) => v.url);
   return {
     id: c.id, titulo: c.titulo, area: c.area, resumo: c.resumo, aprender: c.aprender, texto: c.texto, contato: c.contato,
     aprovacao: Math.min(c.aprovacao, c.perguntas.length), publicado: c.publicado,
-    videos: c.videos.map((v) => ({ id: v.id, titulo: v.titulo, duracao: v.duracao, url: v.url })),
+    videos,
     materiais: c.materiais.map((m) => ({ id: m.id, titulo: m.titulo, descricao: m.descricao, url: m.url })),
     perguntas: c.perguntas,
     progresso: c.progressos[0] ? { acertos: c.progressos[0].acertos, total: c.progressos[0].total } : null,

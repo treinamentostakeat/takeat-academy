@@ -159,3 +159,11 @@
   .ed-barra { position: static; box-shadow: none; }
   .in-qnav .btn { flex: 1; }
 }
+
+/* Envio de vídeo */
+.ed-rot { display: block; margin-bottom: 8px; font-weight: 600; color: var(--text-secondary); letter-spacing: .1px; }
+.ed-arq { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; min-height: 40px; }
+.ed-arq > .icon { color: var(--brand); }
+.ed-arq-n { flex: 1; min-width: 160px; color: var(--text-secondary); overflow-wrap: anywhere; }
+.ed-arq label.btn { cursor: pointer; }
+.ed-envio { display: grid; gap: 4px; max-width: 420px; color: var(--text-secondary); }
