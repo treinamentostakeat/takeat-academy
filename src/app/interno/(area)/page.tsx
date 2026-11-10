@@ -2,11 +2,20 @@ import Link from 'next/link';
 import { podeEditarConteudo, podeGerirPessoas } from '@/lib/permissoes';
 import { exigirPessoa } from '@/lib/sessao';
 import { trilhasDoUsuario } from '@/lib/trilhas';
-import { BarraProgresso } from './pecas';
+import { BarraProgresso, Capa } from './pecas';
 import './interno.css';
 
 export const metadata = { title: 'Onboarding' };
 
+/* Atalhos para o lado do cliente: o colaborador aprende o sistema como o cliente aprende.
+   Sem href = ainda não existe; aparece como "Em breve", sem link. */
+const SISTEMA: { icon: string; titulo: string; texto: string; href?: string }[] = [
+  { icon: 'videocam', titulo: 'Aulas ao vivo', texto: 'Os treinamentos que os clientes fazem, por tema e horário.', href: '/aulas' },
+  { icon: 'play_circle', titulo: 'Vídeos do sistema', texto: 'Aulas gravadas sobre cada parte do sistema Takeat.' },
+  { icon: 'help', titulo: 'Dúvidas frequentes', texto: 'As perguntas mais comuns dos clientes, respondidas.' },
+];
+
+/* Tela inicial do colaborador (painel): continuar de onde parou, trilhas e o sistema visto como cliente. */
 export default async function Inicio({ searchParams }: { searchParams: Promise<{ negado?: string }> }) {
   const u = await exigirPessoa();
   const { negado } = await searchParams;
@@ -31,7 +40,7 @@ export default async function Inicio({ searchParams }: { searchParams: Promise<{
       </div>
 
       {atual && (
-        <section className="in-cont">
+        <section className="in-cont" aria-label="Continue de onde parou">
           <div><span className="in-eyebrow">Continue de onde parou</span><h2>{atual.titulo}</h2>
             <BarraProgresso feitos={atual.concluidos} total={atual.total} />
           </div>
@@ -39,16 +48,13 @@ export default async function Inicio({ searchParams }: { searchParams: Promise<{
         </section>
       )}
 
-      <h2 className="in-sec">Trilhas</h2>
+      <h2 className="in-sec">Suas trilhas</h2>
       {trilhas.length ? (
         <div className="in-trilhas">
-          {trilhas.map((t) => (
+          {trilhas.map((t, i) => (
             <Link key={t.id} className="mod in-trilha" href={`/interno/trilhas/${t.id}`}>
-              <div className="in-chips">
-                <span className="chip chip-red">Trilha · {t.total} {t.total === 1 ? 'curso' : 'cursos'}</span>
-                {t.publico && <span className="chip chip-neutral">{t.publico}</span>}
-                {!t.publicada && <span className="chip chip-yellow">Não publicada</span>}
-              </div>
+              <Capa titulo={t.titulo} etapa={`Trilha · ${t.total} ${t.total === 1 ? 'curso' : 'cursos'}`} indiceEtapa={i} icone="route"
+                selo={t.total > 0 && t.concluidos === t.total ? <span className="chip chip-teal"><span className="icon s16">check_circle</span>Concluída</span> : !t.publicada ? <span className="chip chip-yellow">Não publicada</span> : null} />
               <h3>{t.titulo}</h3>
               {t.descricao && <p>{t.descricao}</p>}
               <BarraProgresso feitos={t.concluidos} total={t.total} />
@@ -60,6 +66,19 @@ export default async function Inicio({ searchParams }: { searchParams: Promise<{
           <p>{editor ? 'Crie a primeira trilha em Editar conteúdo.' : 'Assim que o RH publicar a sua trilha, ela aparece aqui.'}</p>
           {editor && <div className="acts"><Link className="btn btn-l btn-outlined" href="/interno/conteudo">Editar conteúdo</Link></div>}</div></section>
       )}
+
+      <div className="in-sec-h">
+        <h2 className="in-sec">Aprenda o sistema, como o cliente</h2>
+        <p>Os mesmos treinamentos que os restaurantes fazem.</p>
+      </div>
+      <div className="in-sistema">
+        {SISTEMA.map((s) => {
+          const corpo = <><span className="icon in-sis-i">{s.icon}</span><span className="in-sis-t"><b>{s.titulo}</b><small>{s.texto}</small></span>{s.href ? <span className="icon s16">arrow_forward</span> : <span className="chip chip-neutral">Em breve</span>}</>;
+          return s.href
+            ? <Link key={s.titulo} className="mod in-sis" href={s.href}>{corpo}</Link>
+            : <div key={s.titulo} className="mod in-sis off" aria-disabled="true">{corpo}</div>;
+        })}
+      </div>
     </div>
   );
 }

@@ -187,3 +187,18 @@
 .in-ccard:hover .in-capa-i { transform: scale(1.05); }
 .in-capa-i { transition: transform .15s ease-out; }
 @media (prefers-reduced-motion: reduce) { .in-capa-i { transition: none; } }
+
+/* Tela inicial: atalhos para o lado do cliente */
+.in-sec-h { display: grid; gap: 2px; margin-top: 8px; }
+.in-sec-h .in-sec { margin-top: 0; }
+.in-sec-h p { color: var(--text-secondary); }
+.in-sistema { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+.in-sis { flex-direction: row; align-items: center; gap: 12px; text-decoration: none; color: inherit; transition: border-color .15s ease-out; }
+a.in-sis:hover { border-color: var(--brand); }
+.in-sis.off { opacity: .72; }
+.in-sis-i { flex: none; width: 48px; height: 48px; border-radius: 12px; display: grid; place-items: center; background: var(--blue-tint); color: var(--blue-ink); font-size: 24px; }
+.in-sis-t { flex: 1; min-width: 0; display: grid; gap: 2px; }
+.in-sis-t b { font-weight: 600; color: var(--text-primary); }
+.in-sis-t small { font-size: 12px; line-height: 16px; letter-spacing: .4px; color: var(--text-secondary); }
+.in-sis > .icon:last-child { color: var(--text-tertiary); }
+@media (max-width: 900px) { .in-sistema { grid-template-columns: minmax(0, 1fr); } }

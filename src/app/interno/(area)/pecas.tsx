@@ -13,11 +13,13 @@ export function BarraProgresso({ feitos, total }: { feitos: number; total: numbe
 }
 
 /** Capa gerada do curso: cor da etapa, ícone do assunto e a etapa escrita. Sem imagem enviada. */
-export function Capa({ titulo, etapa, indiceEtapa, selo, grande }: { titulo: string; etapa: string; indiceEtapa: number; selo?: React.ReactNode; grande?: boolean }) {
+export function Capa({ titulo, etapa, indiceEtapa, selo, grande, icone }: { titulo: string; etapa: string; indiceEtapa: number; selo?: React.ReactNode; grande?: boolean; icone?: string }) {
+  const doTitulo = iconeDoCurso(titulo);
   return (
     <div className={`in-capa c-${corDaEtapa(indiceEtapa)}${grande ? ' grande' : ''}`} aria-hidden="true">
       <span className="in-capa-e">{etapa}</span>
-      <span className="icon in-capa-i">{iconeDoCurso(titulo)}</span>
+      {/* icone = padrão quando o título não indica assunto (ex.: trilhas) */}
+      <span className="icon in-capa-i">{doTitulo === 'school' && icone ? icone : doTitulo}</span>
       {selo && <span className="in-capa-s">{selo}</span>}
     </div>
   );
