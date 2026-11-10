@@ -1,10 +1,10 @@
 'use server';
-import { randomInt } from 'node:crypto';
 import { z } from 'zod';
 import bcrypt from 'bcryptjs';
 import { refresh } from 'next/cache';
 import { db } from '@/lib/db';
 import { CARGOS, ROTULO_CARGO, cargoValido, podeAdministrar } from '@/lib/permissoes';
+import { senhaProvisoria } from '@/lib/senha';
 import { exigirGestaoPessoas } from '@/lib/sessao';
 
 /* Ações sobre contas, usadas pelo gestor (Usuários e cargos) e pelo RH (Pessoas).
@@ -12,9 +12,6 @@ import { exigirGestaoPessoas } from '@/lib/sessao';
 
 export type ResultadoUsuario = { ok: true; msg: string; senha?: string; email?: string } | { ok: false; erro: string; campo?: 'nome' | 'email' | 'departamento' };
 
-const ALFABETO = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
-/** Senha provisória aleatória (12 caracteres, sem letras/números que se confundem) */
-const senhaProvisoria = () => Array.from({ length: 12 }, () => ALFABETO[randomInt(ALFABETO.length)]).join('');
 
 const Cargo = z.enum(CARGOS);
 const NovoSchema = z.object({

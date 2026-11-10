@@ -53,6 +53,10 @@ Em produção o app precisa estar em HTTPS (o navegador só libera microfone e c
 
 A senha gerada é provisória: no primeiro acesso, a pessoa precisa criar a própria. Depois de 5 tentativas erradas seguidas, a conta fica bloqueada por 15 minutos. O gestor cria a primeira conta de RH em `/equipe/usuarios`. As regras ficam em `src/lib/permissoes.ts`.
 
+## API de integração (RPA)
+
+Cadastro de colaboradores e recuperação de senha por API, documentados em [docs/API.md](docs/API.md). O servidor guarda só o hash da chave, em `API_RPA_CHAVE_HASH`; sem essa variável, a API responde `503`.
+
 ## Trilhas da área interna
 
 O RH e o gestor editam tudo em `/interno/conteudo`: trilhas, etapas, cursos, vídeos (por link do YouTube, Vimeo, Google Drive ou arquivo .mp4), materiais e perguntas. Só aparece para os colaboradores o que estiver publicado. O quiz é corrigido no servidor; o gabarito nunca vai para o navegador antes da resposta.
