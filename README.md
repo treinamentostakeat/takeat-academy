@@ -57,6 +57,10 @@ A senha gerada é provisória: no primeiro acesso, a pessoa precisa criar a pró
 
 Cadastro de colaboradores e recuperação de senha por API, documentados em [docs/API.md](docs/API.md). O servidor guarda só o hash da chave, em `API_RPA_CHAVE_HASH`; sem essa variável, a API responde `503`.
 
+## Clonagem de voz (ElevenLabs)
+
+A aba `/equipe/voz` envia amostras de áudio para a ElevenLabs, clona a voz, gera falas de teste e apaga vozes. Ela só aparece para gestores cujo e-mail está em `VOZ_ACESSO_EMAILS` (separados por vírgula). A chave fica em `ELEVENLABS_API_KEY`, só no servidor, e precisa das permissões de texto para fala e de leitura e escrita de vozes (`voices_read` e `voices_write`). Para clonar, é obrigatório confirmar a autorização da pessoa dona da voz. Cada ação fica registrada na tabela `Integracao`, no canal `elevenlabs`.
+
 ## Trilhas da área interna
 
 O RH e o gestor editam tudo em `/interno/conteudo`: trilhas, etapas, cursos, vídeos (por link do YouTube, Vimeo, Google Drive ou arquivo .mp4), materiais e perguntas. Só aparece para os colaboradores o que estiver publicado. O quiz é corrigido no servidor; o gabarito nunca vai para o navegador antes da resposta.

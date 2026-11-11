@@ -1,0 +1,23 @@
+/* Clonagem de voz, escopado em .vz. Só tokens do Takeat UI Kit. */
+.vz .vz-aviso { margin-bottom: 16px; }
+.vz .vz-aviso .icon { color: var(--red-ink); }
+.vz .vz-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 16px; align-items: start; }
+.vz .vz-form { display: grid; gap: 16px; }
+.vz .fld input, .vz .fld textarea { color: var(--text-primary); }
+.vz .fld input[type="file"] { height: auto; padding: 10px 12px; }
+.vz .vz-check { display: flex; gap: 12px; align-items: flex-start; color: var(--text-secondary); cursor: pointer; }
+.vz .vz-check input { width: 20px; height: 20px; margin: 2px 0 0; accent-color: var(--brand); flex: none; }
+.vz .err { font-size: 12px; line-height: 16px; letter-spacing: .4px; color: var(--red-ink); }
+.vz .vz-vazio { color: var(--text-tertiary); }
+.vz .vz-voz { display: grid; gap: 12px; padding: 16px; border-radius: 12px; background: var(--surface-nested); }
+.vz .vz-voz-h { display: flex; gap: 12px; align-items: center; }
+.vz .vz-voz-i { width: 40px; height: 40px; flex: none; border-radius: 9999px; display: grid; place-items: center; background: var(--brand-tint); color: var(--brand); }
+.vz .vz-voz-n { flex: 1; min-width: 0; }
+.vz .vz-voz-n b { display: block; font-weight: 600; color: var(--text-primary); }
+.vz .vz-voz-n small { display: block; font-size: 12px; line-height: 16px; letter-spacing: .4px; color: var(--text-tertiary); overflow-wrap: anywhere; }
+.vz .vz-voz .btn-icon { width: 32px; padding: 0; justify-content: center; }
+.vz .vz-voz textarea { height: 80px; }
+.vz .vz-acts { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.vz .vz-acts audio { height: 40px; max-width: 100%; }
+@media (max-width: 1100px) { .vz .vz-grid { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 900px) { .vz .vz-acts .btn, .vz .vz-form .btn { width: 100%; } .vz .vz-voz .btn-icon { width: 48px; } }

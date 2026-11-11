@@ -25,7 +25,14 @@ export const podeEditarConteudo = (c: Cargo) => c === 'gestor' || c === 'rh';
 export const podeAdministrar = (quem: Cargo, alvo: Cargo) => quem === 'gestor' || (quem === 'rh' && alvo === 'colaborador');
 export const cargosQuePodeDar = (quem: Cargo) => CARGOS.filter((c) => podeAdministrar(quem, c));
 
-export const inicioDe = (c: Cargo) => (ehEquipe(c) ? '/equipe/agenda' : '/interno');
+/** Clonagem de voz: só gestores cujo e-mail está na lista VOZ_ACESSO_EMAILS (separada por vírgula) */
+export function podeClonarVoz(u: { cargo: Cargo; email: string }, lista: string | undefined) {
+  if (u.cargo !== 'gestor') return false;
+  const emails = (lista ?? '').split(',').map((e) => e.trim().toLowerCase()).filter(Boolean);
+  return emails.includes(u.email.trim().toLowerCase());
+}
+
+export const inicioDe =(c: Cargo) => (ehEquipe(c) ? '/equipe/agenda' : '/interno');
 export const loginDe = (c: Cargo) => (ehEquipe(c) ? '/equipe/entrar' : '/interno/entrar');
 
 /* Tentativas de login: depois de 5 erros seguidos, a conta fica bloqueada por 15 minutos */

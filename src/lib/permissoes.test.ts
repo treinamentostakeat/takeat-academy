@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { aposFalhaDeLogin, cargoValido, cargosQuePodeDar, ehEquipe, inicioDe, loginDe, podeAdministrar, podeEditarConteudo, podeGerirPessoas } from './permissoes';
+import { aposFalhaDeLogin, cargoValido, cargosQuePodeDar, ehEquipe, inicioDe, loginDe, podeAdministrar, podeClonarVoz, podeEditarConteudo, podeGerirPessoas } from './permissoes';
 
 test('só gestor e instrutor são da equipe', () => {
   assert.equal(ehEquipe('gestor'), true);
@@ -27,6 +27,16 @@ test('só gestor e RH editam conteúdo', () => {
   assert.equal(podeEditarConteudo('rh'), true);
   assert.equal(podeEditarConteudo('instrutor'), false);
   assert.equal(podeEditarConteudo('colaborador'), false);
+});
+
+test('clonagem de voz: só gestor e só com e-mail na lista', () => {
+  const lista = ' Ana@Takeat.app , outra@takeat.app';
+  assert.equal(podeClonarVoz({ cargo: 'gestor', email: 'ana@takeat.app' }, lista), true);
+  assert.equal(podeClonarVoz({ cargo: 'gestor', email: 'beto@takeat.app' }, lista), false);
+  assert.equal(podeClonarVoz({ cargo: 'rh', email: 'ana@takeat.app' }, lista), false);
+  assert.equal(podeClonarVoz({ cargo: 'instrutor', email: 'ana@takeat.app' }, lista), false);
+  assert.equal(podeClonarVoz({ cargo: 'gestor', email: 'ana@takeat.app' }, undefined), false);
+  assert.equal(podeClonarVoz({ cargo: 'gestor', email: 'ana@takeat.app' }, ''), false);
 });
 
 test('RH só administra colaboradores', () => {

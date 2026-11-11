@@ -4,7 +4,7 @@ import { connection } from 'next/server';
 import { redirect } from 'next/navigation';
 import bcrypt from 'bcryptjs';
 import { db } from './db';
-import { aposFalhaDeLogin, cargoValido, ehEquipe, inicioDe, podeEditarConteudo, podeGerirPessoas, type Cargo } from './permissoes';
+import { aposFalhaDeLogin, cargoValido, ehEquipe, inicioDe, podeClonarVoz, podeEditarConteudo, podeGerirPessoas, type Cargo } from './permissoes';
 import { abrir, selar } from './selo';
 
 export { abrir, selar };
@@ -64,6 +64,13 @@ export async function exigirPessoa() {
 export async function exigirGestaoPessoas() {
   const u = await exigirPessoa();
   if (!podeGerirPessoas(u.cargo)) redirect('/interno?negado=1');
+  return u;
+}
+
+/** Só quem pode clonar voz (gestor na lista VOZ_ACESSO_EMAILS). */
+export async function exigirAcessoVoz() {
+  const u = await exigirUsuario({ gestor: true });
+  if (!podeClonarVoz(u, process.env.VOZ_ACESSO_EMAILS)) redirect('/equipe/agenda?negado=1');
   return u;
 }
 

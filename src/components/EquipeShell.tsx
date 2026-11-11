@@ -4,7 +4,7 @@ import { Shell, type GrupoNav } from './Shell';
 
 /* Shell da área da equipe: menu lateral por cargo. */
 
-export function EquipeShell({ usuario, sairAction, children }: { usuario: UsuarioSessao; sairAction: () => Promise<void>; children: React.ReactNode }) {
+export function EquipeShell({ usuario, sairAction, podeVoz = false, children }: { usuario: UsuarioSessao; sairAction: () => Promise<void>; podeVoz?: boolean; children: React.ReactNode }) {
   const gestor = usuario.cargo === 'gestor';
   const nav: GrupoNav[] = [
     { t: 'Operação', items: [
@@ -14,6 +14,7 @@ export function EquipeShell({ usuario, sairAction, children }: { usuario: Usuari
     { t: 'Administração', items: gestor ? [
       { href: '/equipe/usuarios', icon: 'group', label: 'Usuários e cargos' },
       { href: '/interno/pessoas', icon: 'badge', label: 'Onboarding interno' },
+      ...(podeVoz ? [{ href: '/equipe/voz', icon: 'record_voice_over', label: 'Clonagem de voz' }] : []),
     ] : [] },
     { t: 'Conta', items: [{ href: '/equipe/conta', icon: 'person', label: 'Minha conta' }] },
   ];
