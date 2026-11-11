@@ -4,7 +4,10 @@ import { refresh } from 'next/cache';
 import { db } from '@/lib/db';
 import { randomBytes } from 'node:crypto';
 import { linkValido } from '@/lib/aprendizagem';
-import { TIPOS_VIDEO, apagarArquivos, armazenamentoAtivo, caminhoDoVideo, ehCaminhoDoCurso, limiteVideoMb, linkDeEnvio, type EnvioAssinado } from '@/lib/armazenamento';
+import {
+  LIMITE_IMAGEM_MB, TIPOS_IMAGEM, TIPOS_VIDEO, apagarArquivos, armazenamentoAtivo, caminhoDaCapa, caminhoDoVideo, ehCaminhoDoCurso, ehCapaDaPasta,
+  limiteVideoMb, linkDeEnvio, pastaDaCapa, type EnvioAssinado,
+} from '@/lib/armazenamento';
 import { exigirEditorConteudo } from '@/lib/sessao';
 
 /* Edição de trilhas, etapas e cursos (gestor e RH). Toda ação confere a permissão no servidor. */
@@ -24,13 +27,19 @@ export async function criarTrilha(titulo: string): Promise<Resultado> {
   return { ok: true, msg: 'Trilha criada.', id: nova.id };
 }
 
-const TrilhaSchema = z.object({ id: Id, titulo: texto(120).min(3, 'Dê um título com pelo menos 3 letras.'), descricao: texto(600), publico: texto(80), publicada: z.boolean() });
+const Capa = z.string().max(300);
+const TrilhaSchema = z.object({ id: Id, titulo: texto(120).min(3, 'Dê um título com pelo menos 3 letras.'), descricao: texto(600), publico: texto(80), publicada: z.boolean(), capa: Capa });
 export async function salvarTrilha(dados: z.input<typeof TrilhaSchema>): Promise<Resultado> {
   await exigirEditorConteudo();
   const p = TrilhaSchema.safeParse(dados);
   if (!p.success) return falha(p.error.issues[0].message);
   const { id, ...data } = p.data;
+  if (data.capa && !ehCapaDaPasta(pastaDaCapa('trilha', id), data.capa)) return falha('A foto de capa não pertence a esta trilha. Envie a foto de novo.');
+  const atual = await db.trilha.findUnique({ where: { id }, select: { capa: true } });
+  if (!atual) return falha('Trilha não encontrada.');
   await db.trilha.update({ where: { id }, data });
+  // Foto trocada ou removida: a antiga sai do Storage
+  if (atual.capa && atual.capa !== data.capa) await apagarArquivos([atual.capa]);
   refresh();
   return { ok: true, msg: data.publicada ? 'Trilha salva e publicada.' : 'Trilha salva. Ela não aparece para os colaboradores enquanto não for publicada.' };
 }
@@ -39,7 +48,10 @@ export async function excluirTrilha(id: string): Promise<Resultado> {
   await exigirEditorConteudo();
   if (!Id.safeParse(id).success) return falha('Trilha inválida.');
   if (await db.tentativa.count({ where: { curso: { etapa: { trilhaId: id } } } })) return falha('Alguém já fez quiz nesta trilha. Para não perder o histórico, despublique em vez de excluir.');
+  const t = await db.trilha.findUnique({ where: { id }, select: { capa: true } });
+  const videos = await db.video.findMany({ where: { curso: { etapa: { trilhaId: id } } }, select: { arquivo: true, capa: true } });
   await db.trilha.delete({ where: { id } });
+  await apagarArquivos([t?.capa ?? '', ...videos.flatMap((v) => [v.arquivo, v.capa])].filter(Boolean));
   return { ok: true, msg: 'Trilha excluída.' };
 }
 
@@ -127,7 +139,7 @@ const CursoSchema = z.object({
   contato: texto(200),
   aprovacao: z.number().int().min(1, 'O mínimo de acertos precisa ser pelo menos 1.').max(50),
   publicado: z.boolean(),
-  videos: z.array(z.object({ titulo: texto(120).min(1, 'Todo vídeo precisa de título.'), duracao: texto(20), url: z.union([z.literal(''), Link]), arquivo: z.string().max(300), nomeArquivo: texto(200) })).max(20),
+  videos: z.array(z.object({ titulo: texto(120).min(1, 'Todo vídeo precisa de título.'), duracao: texto(20), url: z.union([z.literal(''), Link]), arquivo: z.string().max(300), nomeArquivo: texto(200), capa: Capa })).max(20),
   materiais: z.array(z.object({ titulo: texto(120).min(1, 'Todo material precisa de título.'), descricao: texto(200), url: Link })).max(30),
   perguntas: z.array(z.object({
     enunciado: texto(400).min(3, 'Toda pergunta precisa de enunciado.'),
@@ -147,8 +159,9 @@ export async function salvarCurso(dados: CursoEdicao): Promise<Resultado> {
   if (ruim >= 0) return falha(`Marque a alternativa correta da pergunta ${ruim + 1}.`);
   if (d.publicado && d.perguntas.length && d.aprovacao > d.perguntas.length) return falha(`O mínimo de acertos (${d.aprovacao}) é maior que o número de perguntas (${d.perguntas.length}).`);
   if (d.videos.some((v) => v.arquivo && !ehCaminhoDoCurso(d.id, v.arquivo))) return falha('Um dos vídeos enviados não pertence a este curso. Envie o arquivo de novo.');
+  if (d.videos.some((v) => v.capa && !ehCapaDaPasta(pastaDaCapa('curso', d.id), v.capa))) return falha('Uma das fotos de capa não pertence a este curso. Envie a foto de novo.');
 
-  const atual = await db.curso.findUnique({ where: { id: d.id }, include: { etapa: true, videos: { select: { arquivo: true } } } });
+  const atual = await db.curso.findUnique({ where: { id: d.id }, include: { etapa: true, videos: { select: { arquivo: true, capa: true } } } });
   if (!atual) return falha('Curso não encontrado.');
   const destino = await db.etapa.findUnique({ where: { id: d.etapaId } });
   if (!destino || destino.trilhaId !== atual.etapa.trilhaId) return falha('Escolha uma etapa desta trilha.');
@@ -165,9 +178,9 @@ export async function salvarCurso(dados: CursoEdicao): Promise<Resultado> {
     db.pergunta.createMany({ data: d.perguntas.map((q, i) => ({ ...q, cursoId: d.id, ordem: i })) }),
   ]);
   if (mudouEtapa) await reordenar('curso', (await db.curso.findMany({ where: { etapaId: atual.etapaId }, orderBy: { ordem: 'asc' }, select: { id: true } })).map((x) => x.id));
-  // Arquivos que saíram do curso (vídeo removido ou trocado) são apagados do Storage
-  const ficam = new Set(d.videos.map((v) => v.arquivo).filter(Boolean));
-  await apagarArquivos(atual.videos.map((v) => v.arquivo).filter((a) => a && !ficam.has(a)));
+  // Arquivos que saíram do curso (vídeo ou capa removidos ou trocados) são apagados do Storage
+  const ficam = new Set(d.videos.flatMap((v) => [v.arquivo, v.capa]).filter(Boolean));
+  await apagarArquivos(atual.videos.flatMap((v) => [v.arquivo, v.capa]).filter((a) => a && !ficam.has(a)));
   refresh();
   return { ok: true, msg: d.publicado ? 'Curso salvo e publicado.' : 'Curso salvo. Ele fica oculto até você publicar.' };
 }
@@ -177,7 +190,7 @@ export async function excluirCurso(id: string): Promise<Resultado> {
   const c = Id.safeParse(id).success ? await db.curso.findUnique({ where: { id }, include: { etapa: true, _count: { select: { tentativas: true } } } }) : null;
   if (!c) return falha('Curso não encontrado.');
   if (c._count.tentativas) return falha('Alguém já fez o quiz deste curso. Para não perder o histórico, despublique em vez de excluir.');
-  const arquivos = (await db.video.findMany({ where: { cursoId: id }, select: { arquivo: true } })).map((v) => v.arquivo).filter(Boolean);
+  const arquivos = (await db.video.findMany({ where: { cursoId: id }, select: { arquivo: true, capa: true } })).flatMap((v) => [v.arquivo, v.capa]).filter(Boolean);
   await db.curso.delete({ where: { id } });
   await apagarArquivos(arquivos);
   await reordenar('curso', (await db.curso.findMany({ where: { etapaId: c.etapaId }, orderBy: { ordem: 'asc' }, select: { id: true } })).map((x) => x.id));
@@ -199,6 +212,30 @@ export async function prepararEnvioVideo(dados: z.input<typeof EnvioSchema>): Pr
   if (p.data.tamanho > limite * 1024 * 1024) return { ok: false, erro: `O vídeo tem ${Math.ceil(p.data.tamanho / 1024 / 1024)} MB. O limite é de ${limite} MB por arquivo.` };
   if (!(await db.curso.findUnique({ where: { id: p.data.cursoId }, select: { id: true } }))) return { ok: false, erro: 'Curso não encontrado.' };
   const caminho = caminhoDoVideo(p.data.cursoId, p.data.nome, randomBytes(6).toString('hex'));
+  try {
+    return { ok: true, envio: await linkDeEnvio(caminho) };
+  } catch {
+    return { ok: false, erro: 'Não foi possível preparar o envio. Tente de novo em instantes.' };
+  }
+}
+
+/* ---------- Envio da foto de capa (trilha ou vídeo) ---------- */
+const EnvioCapaSchema = z.object({ dono: z.enum(['trilha', 'curso']), id: Id, nome: z.string().min(1).max(200), tipo: z.string().max(100), tamanho: z.number().int().positive() });
+
+/** Prepara o envio da foto de capa. dono = "trilha" (capa da trilha) ou "curso" (capa de um vídeo do curso).
+    A foto só fica na trilha ou no vídeo depois de salvar. */
+export async function prepararEnvioCapa(dados: z.input<typeof EnvioCapaSchema>): Promise<ResultadoEnvio> {
+  await exigirEditorConteudo();
+  if (!armazenamentoAtivo()) return { ok: false, erro: 'O envio de arquivos ainda não está configurado neste servidor.' };
+  const p = EnvioCapaSchema.safeParse(dados);
+  if (!p.success) return { ok: false, erro: 'Arquivo inválido.' };
+  if (!TIPOS_IMAGEM.includes(p.data.tipo)) return { ok: false, erro: 'Envie uma foto em JPG, PNG ou WebP.' };
+  if (p.data.tamanho > LIMITE_IMAGEM_MB * 1024 * 1024) return { ok: false, erro: `A foto tem ${Math.ceil(p.data.tamanho / 1024 / 1024)} MB. O limite é de ${LIMITE_IMAGEM_MB} MB.` };
+  const existe = p.data.dono === 'trilha'
+    ? await db.trilha.findUnique({ where: { id: p.data.id }, select: { id: true } })
+    : await db.curso.findUnique({ where: { id: p.data.id }, select: { id: true } });
+  if (!existe) return { ok: false, erro: p.data.dono === 'trilha' ? 'Trilha não encontrada.' : 'Curso não encontrado.' };
+  const caminho = caminhoDaCapa(pastaDaCapa(p.data.dono, p.data.id), p.data.nome, p.data.tipo, randomBytes(6).toString('hex'));
   try {
     return { ok: true, envio: await linkDeEnvio(caminho) };
   } catch {
