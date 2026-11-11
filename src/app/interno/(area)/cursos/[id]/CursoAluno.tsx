@@ -84,15 +84,24 @@ export function CursoAluno({ curso, editar }: { curso: CursoAlunoDados; editar: 
 
 function Videos({ videos }: { videos: CursoAlunoDados['videos'] }) {
   const [i, setI] = useState(0);
+  // Vídeo incorporado (YouTube, Vimeo…) com foto de capa: mostra a foto até a pessoa clicar em assistir
+  const [aberto, setAberto] = useState<string | null>(null);
   const v = videos[Math.min(i, videos.length - 1)];
   const ex = exibicaoDeVideo(v.url);
+  const capaAntes = ex?.tipo === 'iframe' && v.capa && aberto !== v.id;
   return (
     <div className="in-vbox">
       <div className="in-player">
-        {ex?.tipo === 'iframe' && <iframe key={ex.src} src={ex.src} title={v.titulo} allow="autoplay; fullscreen; picture-in-picture" allowFullScreen referrerPolicy="strict-origin-when-cross-origin" />}
-        {ex?.tipo === 'video' && <video key={ex.src} src={ex.src} controls playsInline preload="metadata" />}
+        {capaAntes && (
+          <button type="button" className="in-player-capa" onClick={() => setAberto(v.id)} aria-label={`Assistir: ${v.titulo}`}>
+            {/* eslint-disable-next-line @next/next/no-img-element -- link assinado e temporário do Storage */}
+            <img src={v.capa!} alt="" /><span className="icon">play_circle</span>
+          </button>
+        )}
+        {ex?.tipo === 'iframe' && !capaAntes && <iframe key={ex.src} src={ex.src} title={v.titulo} allow="autoplay; fullscreen; picture-in-picture" allowFullScreen referrerPolicy="strict-origin-when-cross-origin" />}
+        {ex?.tipo === 'video' && <video key={ex.src} src={ex.src} poster={v.capa ?? undefined} controls playsInline preload="metadata" />}
         {(ex?.tipo === 'link' || !ex) && (
-          <div className="in-player-link"><span className="icon">play_circle</span><b>{v.titulo}</b>
+          <div className={`in-player-link${v.capa ? ' com-capa' : ''}`} style={v.capa ? { backgroundImage: `url("${v.capa}")` } : undefined}><span className="icon">play_circle</span><b>{v.titulo}</b>
             {ex?.tipo === 'link' && <a className="btn btn-l btn-outlined" href={ex.href} target="_blank" rel="noopener noreferrer"><span className="icon">open_in_new</span>Abrir vídeo</a>}
           </div>
         )}
@@ -101,7 +110,11 @@ function Videos({ videos }: { videos: CursoAlunoDados['videos'] }) {
         <div className="in-vlist">
           {videos.map((x, k) => (
             <button key={x.id} type="button" className="in-vitem" aria-current={k === i} onClick={() => setI(k)}>
-              <span className="n">{k + 1}</span><span><b>{x.titulo}</b>{x.duracao && <small>{x.duracao}</small>}</span>
+              {x.capa
+                // eslint-disable-next-line @next/next/no-img-element -- link assinado e temporário do Storage
+                ? <span className="in-vthumb"><img src={x.capa} alt="" loading="lazy" /><span className="n">{k + 1}</span></span>
+                : <span className="n">{k + 1}</span>}
+              <span><b>{x.titulo}</b>{x.duracao && <small>{x.duracao}</small>}</span>
             </button>
           ))}
         </div>

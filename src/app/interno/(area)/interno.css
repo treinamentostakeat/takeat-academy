@@ -188,6 +188,28 @@
 .in-capa-i { transition: transform .15s ease-out; }
 @media (prefers-reduced-motion: reduce) { .in-capa-i { transition: none; } }
 
+/* Foto de capa enviada (trilha e vídeos): preenche o espaço da capa gerada */
+.in-capa.foto { background: var(--media); }
+.in-capa.foto::after { content: none; }
+.in-capa.foto.grande { height: 220px; }
+.in-capa-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.in-player { position: relative; }
+.in-player-capa { position: absolute; inset: 0; display: grid; place-items: center; padding: 0; border: 0; background: var(--media); cursor: pointer; }
+.in-player-capa img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.in-player-capa .icon { position: relative; font-size: 64px; width: 64px; height: 64px; color: var(--on-media); filter: drop-shadow(0 2px 8px rgba(0, 0, 0, .5)); transition: transform .15s ease-out; }
+.in-player-capa:hover .icon, .in-player-capa:focus-visible .icon { transform: scale(1.08); }
+.in-player-link.com-capa { background-size: cover; background-position: center; color: var(--on-media); text-shadow: 0 1px 6px rgba(0, 0, 0, .6); box-shadow: inset 0 0 0 999px rgba(0, 0, 0, .45); }
+.in-vthumb { position: relative; flex: none; width: 72px; aspect-ratio: 16 / 9; border-radius: 6px; overflow: hidden; background: var(--media); }
+.in-vthumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.in-vthumb .n { position: absolute; left: 4px; bottom: 4px; width: 20px; height: 20px; font-size: 11px; }
+@media (prefers-reduced-motion: reduce) { .in-player-capa .icon { transition: none; } }
+
+/* Campo de foto de capa no editor */
+.ed-capa-b { display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap; }
+.ed-capa-prev { flex: none; width: 160px; aspect-ratio: 16 / 9; border-radius: 8px; overflow: hidden; display: grid; place-items: center; background: var(--surface-nested); border: 1px dashed var(--stroke-default); color: var(--text-tertiary); }
+.ed-capa-prev img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ed-capa-a { flex: 1; min-width: 200px; display: grid; gap: 4px; }
+
 /* Tela inicial: atalhos para o lado do cliente */
 .in-sec-h { display: grid; gap: 2px; margin-top: 8px; }
 .in-sec-h .in-sec { margin-top: 0; }
