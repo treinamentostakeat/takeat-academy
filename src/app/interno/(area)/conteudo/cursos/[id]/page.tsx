@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Toaster } from '@/components/equipe/Toast';
+import { limiteVideoMb } from '@/lib/armazenamento';
 import { db } from '@/lib/db';
 import { exigirEditorConteudo } from '@/lib/sessao';
 import { EditorCurso } from './EditorCurso';
@@ -31,6 +32,7 @@ export default async function EditarCurso({ params }: { params: Promise<{ id: st
         trilhaId={trilha.id}
         etapas={trilha.etapas.map((e) => ({ value: e.id, label: e.nome }))}
         tentativas={c._count.tentativas}
+        limiteMb={limiteVideoMb()}
         inicial={{
           id: c.id, etapaId: c.etapaId, titulo: c.titulo, area: c.area, resumo: c.resumo, aprender: c.aprender, texto: c.texto, contato: c.contato,
           aprovacao: c.aprovacao, publicado: c.publicado,

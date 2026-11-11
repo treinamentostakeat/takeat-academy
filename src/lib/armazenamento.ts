@@ -6,7 +6,12 @@ import 'server-only';
 
 const BUCKET = 'academy';
 export const TIPOS_VIDEO = ['video/mp4', 'video/webm', 'video/quicktime', 'video/x-m4v'];
-export const LIMITE_VIDEO_MB = 50; // limite por arquivo do bucket (plano atual do Supabase)
+/** Limite por arquivo. No plano Free do Supabase o teto é 50 MB; no Pro, suba o limite global e o do bucket
+    no painel do Supabase e defina VIDEO_LIMITE_MB (ex.: 2048 para 2 GB). */
+export const limiteVideoMb = () => {
+  const n = Number(process.env.VIDEO_LIMITE_MB);
+  return Number.isFinite(n) && n > 0 ? Math.floor(n) : 50;
+};
 
 function cfg() {
   const url = process.env.SUPABASE_URL?.trim().replace(/\/$/, '');
@@ -28,11 +33,20 @@ async function api<T>(metodo: 'POST' | 'DELETE', caminho: string, corpo?: unknow
   return r.json() as Promise<T>;
 }
 
-/** Link para o navegador enviar o arquivo direto ao Storage (vale por 2 horas, um envio) */
-export async function linkDeEnvio(caminho: string) {
+export type EnvioAssinado = { endpoint: string; token: string; bucket: string; caminho: string };
+
+/** Token para o navegador enviar o arquivo direto ao Storage, em partes de 6 MB que retomam se a conexão cair
+    (protocolo TUS). Vale por 2 horas e só para este caminho. */
+export async function linkDeEnvio(caminho: string): Promise<EnvioAssinado> {
   const j = await api<{ url: string }>('POST', `/object/upload/sign/${BUCKET}/${caminho}`);
-  return `${cfg()!.url}/storage/v1${j.url}`;
+  const token = new URL(j.url, 'http://x').searchParams.get('token');
+  if (!token) throw new Error('Supabase Storage não devolveu o token de envio');
+  // Envio com token assinado usa a rota /upload/resumable/sign (a /upload/resumable exige JWT de usuário)
+  return { endpoint: `${hostDoStorage(cfg()!.url)}/storage/v1/upload/resumable/sign`, token, bucket: BUCKET, caminho };
 }
+
+/** O Supabase recomenda o host direto do Storage para arquivos grandes: <ref>.storage.supabase.co */
+export const hostDoStorage = (url: string) => url.replace(/^https:\/\/([a-z0-9]+)\.supabase\.co$/, 'https://$1.storage.supabase.co');
 
 /** Links para assistir (padrão: 4 horas). Caminho sem link volta como null. */
 export async function linksDeLeitura(caminhos: string[], segundos = 4 * 3600): Promise<Map<string, string | null>> {

@@ -2,11 +2,13 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState, useTransition } from 'react';
+import { Upload } from 'tus-js-client';
 import { Dropdown, type Opcao } from '@/components/Dropdown';
 import { Modal } from '@/components/equipe/Modal';
 import { toast } from '@/components/equipe/Toast';
 import '@/components/equipe/equipe-comp.css';
 import { exibicaoDeVideo } from '@/lib/aprendizagem';
+import type { EnvioAssinado } from '@/lib/armazenamento';
 import { excluirCurso, prepararEnvioVideo, salvarCurso, type CursoEdicao } from '../../acoes';
 
 /* Editor de um curso: dados, conteúdo, vídeos (por link), materiais e perguntas. Salva tudo de uma vez. */
@@ -17,6 +19,7 @@ type Pergunta = CursoEdicao['perguntas'][number];
 
 const mover = <T,>(l: T[], i: number, d: -1 | 1) => { const j = i + d; if (j < 0 || j >= l.length) return l; const n = [...l]; [n[i], n[j]] = [n[j], n[i]]; return n; };
 const tirar = <T,>(l: T[], i: number) => l.filter((_, k) => k !== i);
+const tamanhoLegivel = (mb: number) => (mb >= 1024 ? `${(mb / 1024).toLocaleString('pt-BR', { maximumFractionDigits: 1 })} GB` : `${mb} MB`);
 const trocar = <T,>(l: T[], i: number, v: T) => l.map((x, k) => (k === i ? v : x));
 
 function Ordem({ i, n, rotulo, onMover, onTirar }: { i: number; n: number; rotulo: string; onMover: (d: -1 | 1) => void; onTirar: () => void }) {
@@ -29,7 +32,7 @@ function Ordem({ i, n, rotulo, onMover, onTirar }: { i: number; n: number; rotul
   );
 }
 
-export function EditorCurso({ inicial, etapas, trilhaId, tentativas }: { inicial: CursoEdicao; etapas: Opcao[]; trilhaId: string; tentativas: number }) {
+export function EditorCurso({ inicial, etapas, trilhaId, tentativas, limiteMb }: { inicial: CursoEdicao; etapas: Opcao[]; trilhaId: string; tentativas: number; limiteMb: number }) {
   const router = useRouter();
   const [c, setC] = useState(inicial);
   const [salvo, setSalvo] = useState(inicial);
@@ -87,7 +90,7 @@ export function EditorCurso({ inicial, etapas, trilhaId, tentativas }: { inicial
       <section className="mod ed-bloco">
         <div className="mod-h"><div><h2>Vídeos ({c.videos.length})</h2><p>Envie o arquivo do vídeo. Ele fica guardado de forma privada e só toca para quem está logado na plataforma.</p></div></div>
         {c.videos.map((v, i) => (
-          <VideoEditor key={i} cursoId={c.id} v={v} i={i} n={c.videos.length} onChange={(x) => set('videos', trocar(c.videos, i, x))} onMover={(d) => set('videos', mover(c.videos, i, d))} onTirar={() => set('videos', tirar(c.videos, i))} />
+          <VideoEditor key={i} cursoId={c.id} limiteMb={limiteMb} v={v} i={i} n={c.videos.length} onChange={(x) => set('videos', trocar(c.videos, i, x))} onMover={(d) => set('videos', mover(c.videos, i, d))} onTirar={() => set('videos', tirar(c.videos, i))} />
         ))}
         <div><button type="button" className="btn btn-m btn-outlined" onClick={() => set('videos', [...c.videos, { titulo: '', duracao: '', url: '', arquivo: '', nomeArquivo: '' } as Video])}><span className="icon">add</span>Adicionar vídeo</button></div>
       </section>
@@ -142,23 +145,27 @@ export function EditorCurso({ inicial, etapas, trilhaId, tentativas }: { inicial
   );
 }
 
-/** Envia o arquivo direto do navegador para o Storage, com barra de progresso. */
-function enviarArquivo(url: string, arquivo: File, progresso: (pct: number) => void) {
+/** Envia o arquivo direto do navegador para o Storage em partes de 6 MB (TUS).
+    Se a conexão oscilar, cada parte é reenviada sozinha, sem recomeçar o vídeo inteiro. */
+function enviarArquivo(e: EnvioAssinado, arquivo: File, progresso: (pct: number) => void) {
   return new Promise<void>((ok, falha) => {
-    const xhr = new XMLHttpRequest();
-    xhr.open('PUT', url);
-    xhr.setRequestHeader('x-upsert', 'false');
-    xhr.upload.onprogress = (e) => { if (e.lengthComputable) progresso(Math.round((e.loaded / e.total) * 100)); };
-    xhr.onload = () => (xhr.status >= 200 && xhr.status < 300 ? ok() : falha(new Error(String(xhr.status))));
-    xhr.onerror = () => falha(new Error('rede'));
-    const corpo = new FormData();
-    corpo.append('cacheControl', '3600');
-    corpo.append('', arquivo);
-    xhr.send(corpo);
+    const envio = new Upload(arquivo, {
+      endpoint: e.endpoint,
+      headers: { 'x-signature': e.token, 'x-upsert': 'false' },
+      metadata: { bucketName: e.bucket, objectName: e.caminho, contentType: arquivo.type, cacheControl: '3600' },
+      chunkSize: 6 * 1024 * 1024, // exigido pelo Supabase
+      uploadDataDuringCreation: true,
+      storeFingerprintForResuming: false, // cada envio tem um caminho novo; não retoma envios antigos
+      retryDelays: [0, 3000, 5000, 10000, 20000],
+      onProgress: (enviado, total) => progresso(Math.min(99, Math.round((enviado / total) * 100))),
+      onSuccess: () => { progresso(100); ok(); },
+      onError: falha,
+    });
+    envio.start();
   });
 }
 
-function VideoEditor({ cursoId, v, i, n, onChange, onMover, onTirar }: { cursoId: string; v: Video; i: number; n: number; onChange: (v: Video) => void; onMover: (d: -1 | 1) => void; onTirar: () => void }) {
+function VideoEditor({ cursoId, limiteMb, v, i, n, onChange, onMover, onTirar }: { cursoId: string; limiteMb: number; v: Video; i: number; n: number; onChange: (v: Video) => void; onMover: (d: -1 | 1) => void; onTirar: () => void }) {
   const [pct, setPct] = useState<number | null>(null);
   const [erro, setErro] = useState('');
   const [link, setLink] = useState(!v.arquivo && !!v.url);
@@ -166,12 +173,13 @@ function VideoEditor({ cursoId, v, i, n, onChange, onMover, onTirar }: { cursoId
   const escolher = async (arquivo: File | undefined) => {
     if (!arquivo) return;
     setErro('');
+    if (arquivo.size > limiteMb * 1024 * 1024) { setErro(`O vídeo tem ${Math.ceil(arquivo.size / 1024 / 1024)} MB. O limite é de ${tamanhoLegivel(limiteMb)} por arquivo.`); return; }
     setPct(0);
     try {
       const r = await prepararEnvioVideo({ cursoId, nome: arquivo.name, tipo: arquivo.type, tamanho: arquivo.size });
       if (!r.ok) { setErro(r.erro); setPct(null); return; }
-      await enviarArquivo(r.url, arquivo, setPct);
-      onChange({ ...v, titulo: v.titulo || arquivo.name.replace(/\.[^.]+$/, ''), arquivo: r.caminho, nomeArquivo: arquivo.name, url: '' });
+      await enviarArquivo(r.envio, arquivo, setPct);
+      onChange({ ...v, titulo: v.titulo || arquivo.name.replace(/\.[^.]+$/, ''), arquivo: r.envio.caminho, nomeArquivo: arquivo.name, url: '' });
       toast('Vídeo enviado. Clique em "Salvar curso" para guardar.', 'upload');
     } catch {
       setErro('O envio falhou. Confira sua conexão e tente de novo.');
@@ -195,7 +203,7 @@ function VideoEditor({ cursoId, v, i, n, onChange, onMover, onTirar }: { cursoId
           ) : (
             <div className="ed-arq">
               <label className="btn btn-m btn-outlined"><span className="icon">upload</span>Enviar vídeo<input type="file" accept={TIPOS} hidden onChange={(e) => { void escolher(e.target.files?.[0]); e.target.value = ''; }} /></label>
-              <span className="ed-arq-n">MP4, WebM ou MOV, até 50 MB.</span>
+              <span className="ed-arq-n">MP4, WebM ou MOV, até {tamanhoLegivel(limiteMb)}.</span>
               {!link && <button type="button" className="linkbtn" onClick={() => setLink(true)}>Usar um link</button>}
             </div>
           )}

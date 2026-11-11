@@ -4,7 +4,7 @@ import { refresh } from 'next/cache';
 import { db } from '@/lib/db';
 import { randomBytes } from 'node:crypto';
 import { linkValido } from '@/lib/aprendizagem';
-import { LIMITE_VIDEO_MB, TIPOS_VIDEO, apagarArquivos, armazenamentoAtivo, caminhoDoVideo, ehCaminhoDoCurso, linkDeEnvio } from '@/lib/armazenamento';
+import { TIPOS_VIDEO, apagarArquivos, armazenamentoAtivo, caminhoDoVideo, ehCaminhoDoCurso, limiteVideoMb, linkDeEnvio, type EnvioAssinado } from '@/lib/armazenamento';
 import { exigirEditorConteudo } from '@/lib/sessao';
 
 /* Edição de trilhas, etapas e cursos (gestor e RH). Toda ação confere a permissão no servidor. */
@@ -185,7 +185,7 @@ export async function excluirCurso(id: string): Promise<Resultado> {
 }
 
 /* ---------- Envio de vídeo ---------- */
-export type ResultadoEnvio = { ok: true; caminho: string; url: string } | { ok: false; erro: string };
+export type ResultadoEnvio = { ok: true; envio: EnvioAssinado } | { ok: false; erro: string };
 const EnvioSchema = z.object({ cursoId: Id, nome: z.string().min(1).max(200), tipo: z.string().max(100), tamanho: z.number().int().positive() });
 
 /** Prepara o envio direto do navegador para o Storage. O arquivo só fica no curso depois de "Salvar curso". */
@@ -195,11 +195,12 @@ export async function prepararEnvioVideo(dados: z.input<typeof EnvioSchema>): Pr
   const p = EnvioSchema.safeParse(dados);
   if (!p.success) return { ok: false, erro: 'Arquivo inválido.' };
   if (!TIPOS_VIDEO.includes(p.data.tipo)) return { ok: false, erro: 'Envie um vídeo em MP4, WebM ou MOV.' };
-  if (p.data.tamanho > LIMITE_VIDEO_MB * 1024 * 1024) return { ok: false, erro: `O vídeo tem ${Math.ceil(p.data.tamanho / 1024 / 1024)} MB. O limite é de ${LIMITE_VIDEO_MB} MB por arquivo.` };
+  const limite = limiteVideoMb();
+  if (p.data.tamanho > limite * 1024 * 1024) return { ok: false, erro: `O vídeo tem ${Math.ceil(p.data.tamanho / 1024 / 1024)} MB. O limite é de ${limite} MB por arquivo.` };
   if (!(await db.curso.findUnique({ where: { id: p.data.cursoId }, select: { id: true } }))) return { ok: false, erro: 'Curso não encontrado.' };
   const caminho = caminhoDoVideo(p.data.cursoId, p.data.nome, randomBytes(6).toString('hex'));
   try {
-    return { ok: true, caminho, url: await linkDeEnvio(caminho) };
+    return { ok: true, envio: await linkDeEnvio(caminho) };
   } catch {
     return { ok: false, erro: 'Não foi possível preparar o envio. Tente de novo em instantes.' };
   }
