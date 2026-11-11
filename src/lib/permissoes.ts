@@ -27,7 +27,7 @@ export const cargosQuePodeDar = (quem: Cargo) => CARGOS.filter((c) => podeAdmini
 
 /** Clonagem de voz: só gestores cujo e-mail está na lista VOZ_ACESSO_EMAILS (separada por vírgula) */
 export function podeClonarVoz(u: { cargo: Cargo; email: string }, lista: string | undefined) {
-  if (u.cargo !== 'gestor') return false;
+  if (u.cargo !== 'gestor' && u.cargo !== 'rh') return false;
   const emails = (lista ?? '').split(',').map((e) => e.trim().toLowerCase()).filter(Boolean);
   return emails.includes(u.email.trim().toLowerCase());
 }

@@ -67,10 +67,10 @@ export async function exigirGestaoPessoas() {
   return u;
 }
 
-/** Só quem pode clonar voz (gestor na lista VOZ_ACESSO_EMAILS). */
+/** Só quem pode clonar voz (gestor ou RH na lista VOZ_ACESSO_EMAILS). */
 export async function exigirAcessoVoz() {
-  const u = await exigirUsuario({ gestor: true });
-  if (!podeClonarVoz(u, process.env.VOZ_ACESSO_EMAILS)) redirect('/equipe/agenda?negado=1');
+  const u = await exigirPessoa();
+  if (!podeClonarVoz(u, process.env.VOZ_ACESSO_EMAILS)) redirect(`${inicioDe(u.cargo)}?negado=1`);
   return u;
 }
 

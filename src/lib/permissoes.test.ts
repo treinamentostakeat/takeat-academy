@@ -29,12 +29,14 @@ test('só gestor e RH editam conteúdo', () => {
   assert.equal(podeEditarConteudo('colaborador'), false);
 });
 
-test('clonagem de voz: só gestor e só com e-mail na lista', () => {
+test('clonagem de voz: só gestor ou RH, e só com e-mail na lista', () => {
   const lista = ' Ana@Takeat.app , outra@takeat.app';
   assert.equal(podeClonarVoz({ cargo: 'gestor', email: 'ana@takeat.app' }, lista), true);
+  assert.equal(podeClonarVoz({ cargo: 'rh', email: 'outra@takeat.app' }, lista), true);
   assert.equal(podeClonarVoz({ cargo: 'gestor', email: 'beto@takeat.app' }, lista), false);
-  assert.equal(podeClonarVoz({ cargo: 'rh', email: 'ana@takeat.app' }, lista), false);
+  assert.equal(podeClonarVoz({ cargo: 'rh', email: 'beto@takeat.app' }, lista), false);
   assert.equal(podeClonarVoz({ cargo: 'instrutor', email: 'ana@takeat.app' }, lista), false);
+  assert.equal(podeClonarVoz({ cargo: 'colaborador', email: 'ana@takeat.app' }, lista), false);
   assert.equal(podeClonarVoz({ cargo: 'gestor', email: 'ana@takeat.app' }, undefined), false);
   assert.equal(podeClonarVoz({ cargo: 'gestor', email: 'ana@takeat.app' }, ''), false);
 });
