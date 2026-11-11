@@ -67,36 +67,7 @@ export async function apagarArquivos(caminhos: string[]) {
 /** Caminho do arquivo de um curso: cursos/<cursoId>/<aleatório>-<nome-limpo>.<ext> */
 export function caminhoDoVideo(cursoId: string, nome: string, aleatorio: string) {
   const ext = (/\.(mp4|webm|mov|m4v)$/i.exec(nome)?.[1] ?? 'mp4').toLowerCase();
-  return `cursos/${cursoId}/${aleatorio}-${nomeLimpo(nome, 'video')}.${ext}`;
+  const base = nome.replace(/\.[A-Za-z0-9]{1,5}$/, '').normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^\w-]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 60) || 'video';
+  return `cursos/${cursoId}/${aleatorio}-${base}.${ext}`;
 }
 export const ehCaminhoDoCurso = (cursoId: string, caminho: string) => new RegExp(`^cursos/${cursoId}/[\\w-]+\\.(mp4|webm|mov|m4v)$`).test(caminho);
-
-/** Nome do arquivo sem acentos, espaços ou barras (nunca sai da pasta) */
-function nomeLimpo(nome: string, padrao: string) {
-  return nome.replace(/\.[A-Za-z0-9]{1,5}$/, '').normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^\w-]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 60) || padrao;
-}
-
-/* ---------- Capas (fotos) da trilha e dos vídeos ---------- */
-export const TIPOS_IMAGEM = ['image/jpeg', 'image/png', 'image/webp'];
-export const LIMITE_IMAGEM_MB = 5;
-const EXT_IMAGEM: Record<string, string> = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp' };
-
-/** Pasta das capas: a da trilha (trilhas/<id>/capas) ou a do curso dono do vídeo (cursos/<id>/capas) */
-export const pastaDaCapa = (dono: 'trilha' | 'curso', id: string) => `${dono === 'trilha' ? 'trilhas' : 'cursos'}/${id}/capas`;
-
-/** Caminho da capa: <pasta>/<aleatório>-<nome-limpo>.<jpg|png|webp>. A extensão vem do tipo, não do nome. */
-export function caminhoDaCapa(pasta: string, nome: string, tipo: string, aleatorio: string) {
-  return `${pasta}/${aleatorio}-${nomeLimpo(nome, 'capa')}.${EXT_IMAGEM[tipo] ?? 'jpg'}`;
-}
-/** Links das fotos de capa, por caminho. Se o Storage falhar, volta vazio: a tela mostra a capa gerada. */
-export async function linksDasCapas(caminhos: string[]): Promise<Record<string, string>> {
-  const unicos = [...new Set(caminhos.filter(Boolean))];
-  if (!unicos.length || !armazenamentoAtivo()) return {};
-  try {
-    const m = await linksDeLeitura(unicos);
-    return Object.fromEntries([...m].filter((x): x is [string, string] => !!x[1]));
-  } catch { return {}; }
-}
-
-export const ehCapaDaPasta =(pasta: string, caminho: string) =>
-  caminho.startsWith(`${pasta}/`) && /^[\w-]+\.(jpg|png|webp)$/.test(caminho.slice(pasta.length + 1));

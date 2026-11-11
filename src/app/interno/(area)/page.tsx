@@ -53,7 +53,7 @@ export default async function Inicio({ searchParams }: { searchParams: Promise<{
         <div className="in-trilhas">
           {trilhas.map((t, i) => (
             <Link key={t.id} className="mod in-trilha" href={`/interno/trilhas/${t.id}`}>
-              <Capa titulo={t.titulo} etapa={`Trilha · ${t.total} ${t.total === 1 ? 'curso' : 'cursos'}`} indiceEtapa={i} icone="route" imagem={t.capaUrl}
+              <Capa titulo={t.titulo} etapa={`Trilha · ${t.total} ${t.total === 1 ? 'curso' : 'cursos'}`} indiceEtapa={i} icone="route"
                 selo={t.total > 0 && t.concluidos === t.total ? <span className="chip chip-teal"><span className="icon s16">check_circle</span>Concluída</span> : !t.publicada ? <span className="chip chip-yellow">Não publicada</span> : null} />
               <h3>{t.titulo}</h3>
               {t.descricao && <p>{t.descricao}</p>}
