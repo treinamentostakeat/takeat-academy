@@ -28,7 +28,7 @@ export async function criarTrilha(titulo: string): Promise<Resultado> {
 }
 
 const Capa = z.string().max(300);
-const TrilhaSchema = z.object({ id: Id, titulo: texto(120).min(3, 'Dê um título com pelo menos 3 letras.'), descricao: texto(600), publico: texto(80), publicada: z.boolean(), capa: Capa });
+const TrilhaSchema = z.object({ id: Id, titulo: texto(120).min(3, 'Dê um título com pelo menos 3 letras.'), descricao: texto(600), publico: texto(80), publicada: z.boolean(), capa: Capa, boasVindas: z.union([z.literal(''), z.string().trim().max(2000).refine(linkValido, 'Cole o link completo do vídeo de boas-vindas, começando com https://')]) });
 export async function salvarTrilha(dados: z.input<typeof TrilhaSchema>): Promise<Resultado> {
   await exigirEditorConteudo();
   const p = TrilhaSchema.safeParse(dados);

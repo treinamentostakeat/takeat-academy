@@ -68,3 +68,45 @@ export async function cursoParaAluno(id: string, u: UsuarioSessao) {
   };
 }
 export type CursoAlunoDados = NonNullable<Awaited<ReturnType<typeof cursoParaAluno>>>;
+
+/* ---------- Jornada: boas-vindas, dia da jornada e turma ---------- */
+
+/** Quando a pessoa abriu a trilha pela primeira vez (null = ainda não viu as boas-vindas). */
+export async function vistaDaTrilha(usuarioId: string, trilhaId: string) {
+  return (await db.trilhaVista.findUnique({ where: { usuarioId_trilhaId: { usuarioId, trilhaId } }, select: { vistaEm: true } }))?.vistaEm ?? null;
+}
+
+/** Marca que a pessoa viu as boas-vindas da trilha (só a primeira vez conta). */
+export async function registrarVista(usuarioId: string, trilhaId: string) {
+  await db.trilhaVista.upsert({ where: { usuarioId_trilhaId: { usuarioId, trilhaId } }, create: { usuarioId, trilhaId }, update: {} });
+}
+
+/** Dia da jornada: 1 no dia em que abriu a trilha, 2 no seguinte… (pelo fuso das aulas). */
+export function diaDaJornada(desde: Date, hoje = new Date()) {
+  const dia = (d: Date) => Date.parse(d.toLocaleDateString('en-CA', { timeZone: process.env.TZ_AULAS || 'America/Sao_Paulo' }));
+  return Math.max(1, Math.round((dia(hoje) - dia(desde)) / 86400000) + 1);
+}
+
+const MESES = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+export const nomeDoMes = (d: Date) => MESES[Number(d.toLocaleDateString('en-CA', { timeZone: process.env.TZ_AULAS || 'America/Sao_Paulo', month: 'numeric' })) - 1];
+
+/** Sua turma: pessoas ativas que entraram no mesmo mês, com o progresso nos cursos da trilha.
+    Volta vazio se a pessoa é a única do mês (a tela esconde o bloco). */
+export async function turmaDe(usuarioId: string, cursoIds: string[]) {
+  const eu = await db.usuario.findUnique({ where: { id: usuarioId }, select: { criadoEm: true } });
+  if (!eu || !cursoIds.length) return { mes: null, pessoas: [] };
+  const ini = new Date(eu.criadoEm.getFullYear(), eu.criadoEm.getMonth(), 1);
+  const fim = new Date(eu.criadoEm.getFullYear(), eu.criadoEm.getMonth() + 1, 1);
+  const outros = await db.usuario.findMany({
+    where: { ativo: true, cargo: 'colaborador', id: { not: usuarioId }, criadoEm: { gte: ini, lt: fim } },
+    orderBy: { nome: 'asc' }, take: 5,
+    select: { id: true, nome: true, _count: { select: { progressos: { where: { cursoId: { in: cursoIds } } } } } },
+  });
+  if (!outros.length) return { mes: nomeDoMes(eu.criadoEm), pessoas: [] };
+  const meus = await db.progresso.count({ where: { usuarioId, cursoId: { in: cursoIds } } });
+  const pct = (n: number) => Math.round((n / cursoIds.length) * 100);
+  return {
+    mes: nomeDoMes(eu.criadoEm),
+    pessoas: [...outros.map((o) => ({ id: o.id, nome: o.nome, pct: pct(o._count.progressos), eu: false })), { id: usuarioId, nome: 'Você', pct: pct(meus), eu: true }],
+  };
+}
