@@ -1,5 +1,5 @@
 import 'server-only';
-import { armazenamentoAtivo, linksDasCapas, linksDeLeitura } from './armazenamento';
+import { armazenamentoAtivo, linksDeLeitura } from './armazenamento';
 import { db } from './db';
 import { podeEditarConteudo } from './permissoes';
 import type { UsuarioSessao } from './sessao';
@@ -17,11 +17,10 @@ export async function trilhasDoUsuario(u: UsuarioSessao) {
     db.progresso.findMany({ where: { usuarioId: u.id }, select: { cursoId: true, acertos: true, total: true } }),
   ]);
   const notas = new Map(feitos.map((p) => [p.cursoId, p]));
-  const capas = await linksDasCapas(trilhas.map((t) => t.capa));
   return trilhas.map((t) => {
     const cursos = t.etapas.flatMap((e) => e.cursos);
     const concluidos = cursos.filter((c) => notas.has(c.id)).length;
-    return { ...t, capaUrl: capas[t.capa] ?? null, total: cursos.length, concluidos, proximo: cursos.find((c) => !notas.has(c.id)) ?? null, notas };
+    return { ...t, total: cursos.length, concluidos, proximo: cursos.find((c) => !notas.has(c.id)) ?? null, notas };
   });
 }
 export type TrilhaAluno = Awaited<ReturnType<typeof trilhasDoUsuario>>[number];
@@ -46,12 +45,9 @@ export async function cursoParaAluno(id: string, u: UsuarioSessao) {
   const pos = ordem.findIndex((x) => x.id === c.id);
   // Vídeo enviado: link assinado e temporário; se o Storage falhar, o vídeo some da lista em vez de quebrar a página
   const arquivos = c.videos.map((v) => v.arquivo).filter(Boolean);
-  const [assinados, capas] = await Promise.all([
-    arquivos.length && armazenamentoAtivo() ? linksDeLeitura(arquivos).catch(() => new Map<string, string | null>()) : new Map<string, string | null>(),
-    linksDasCapas(c.videos.map((v) => v.capa)),
-  ]);
+  const assinados = arquivos.length && armazenamentoAtivo() ? await linksDeLeitura(arquivos).catch(() => new Map<string, string | null>()) : new Map<string, string | null>();
   const videos = c.videos
-    .map((v) => ({ id: v.id, titulo: v.titulo, duracao: v.duracao, url: v.arquivo ? assinados.get(v.arquivo) ?? '' : v.url, capa: capas[v.capa] ?? null }))
+    .map((v) => ({ id: v.id, titulo: v.titulo, duracao: v.duracao, url: v.arquivo ? assinados.get(v.arquivo) ?? '' : v.url }))
     .filter((v) => v.url);
   return {
     id: c.id, titulo: c.titulo, area: c.area, resumo: c.resumo, aprender: c.aprender, texto: c.texto, contato: c.contato,

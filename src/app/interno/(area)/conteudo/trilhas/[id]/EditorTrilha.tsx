@@ -6,11 +6,10 @@ import { Modal } from '@/components/equipe/Modal';
 import { toast } from '@/components/equipe/Toast';
 import '@/components/equipe/equipe-comp.css';
 import { criarCurso, criarEtapa, excluirEtapa, excluirTrilha, moverCurso, moverEtapa, salvarEtapa, salvarTrilha, type Resultado } from '../../acoes';
-import { CampoCapa } from '../../CampoCapa';
 
 type Curso = { id: string; titulo: string; publicado: boolean; perguntas: number; semVideo: number };
 type Etapa = { id: string; nome: string; descricao: string; cursos: Curso[] };
-type Trilha = { id: string; titulo: string; descricao: string; publico: string; publicada: boolean; capa: string };
+type Trilha = { id: string; titulo: string; descricao: string; publico: string; publicada: boolean };
 
 /** Roda uma ação e mostra o resultado no toast */
 function useAcao() {
@@ -25,13 +24,12 @@ function useAcao() {
   return { pend, rodar };
 }
 
-export function EditorTrilha({ trilha, etapas, previaCapa }: { trilha: Trilha; etapas: Etapa[]; previaCapa: string | null }) {
+export function EditorTrilha({ trilha, etapas }: { trilha: Trilha; etapas: Etapa[] }) {
   const router = useRouter();
   const [t, setT] = useState(trilha);
-  const [previa, setPrevia] = useState(previaCapa);
   const [excluir, setExcluir] = useState(false);
   const { pend, rodar } = useAcao();
-  const mudou = t.titulo !== trilha.titulo || t.descricao !== trilha.descricao || t.publico !== trilha.publico || t.publicada !== trilha.publicada || t.capa !== trilha.capa;
+  const mudou = t.titulo !== trilha.titulo || t.descricao !== trilha.descricao || t.publico !== trilha.publico || t.publicada !== trilha.publicada;
 
   return (
     <>
@@ -46,11 +44,6 @@ export function EditorTrilha({ trilha, etapas, previaCapa }: { trilha: Trilha; e
           <div className="fld"><label htmlFor="t-t">Título</label><input id="t-t" maxLength={120} value={t.titulo} onChange={(e) => setT({ ...t, titulo: e.target.value })} /></div>
           <div className="fld"><label htmlFor="t-p">Público</label><input id="t-p" maxLength={80} placeholder="Ex.: Novos colaboradores" value={t.publico} onChange={(e) => setT({ ...t, publico: e.target.value })} /></div>
           <div className="fld ed-full"><label htmlFor="t-d">Descrição</label><textarea id="t-d" maxLength={600} value={t.descricao} onChange={(e) => setT({ ...t, descricao: e.target.value })} /></div>
-          <div className="fld ed-full">
-            <CampoCapa id="t-c" rotulo="Foto de capa (opcional)" dono="trilha" donoId={trilha.id} aoSalvar='Clique em "Salvar trilha" para guardar.'
-              valor={t.capa} previa={previa} onChange={(capa, url) => { setT((x) => ({ ...x, capa })); setPrevia(url); }} />
-            <div className="info">Sem foto, a trilha usa a capa colorida com ícone.</div>
-          </div>
         </div>
         <label className="ed-check"><input type="checkbox" checked={t.publicada} onChange={(e) => setT({ ...t, publicada: e.target.checked })} /><span><b>Publicada</b><small>Os colaboradores veem a trilha e os cursos publicados dela.</small></span></label>
         <div className="ed-acts">

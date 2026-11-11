@@ -130,7 +130,6 @@ model Trilha {
   descricao    String   @default("")
   publico      String   @default("")
   publicada    Boolean  @default(false)
-  capa         String   @default("") // foto de capa: caminho no bucket "academy" (vazio = capa gerada)
   criadoEm     DateTime @default(now())
   atualizadoEm DateTime @updatedAt
   etapas       Etapa[]
@@ -177,7 +176,6 @@ model Video {
   url         String @default("")
   arquivo     String @default("") // caminho no bucket "academy"
   nomeArquivo String @default("") // nome original, só para o editor
-  capa        String @default("") // foto de capa: caminho no bucket "academy" (vazio = sem foto)
   ordem   Int
   curso   Curso  @relation(fields: [cursoId], references: [id], onDelete: Cascade)
 }
