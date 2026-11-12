@@ -90,23 +90,28 @@ export function diaDaJornada(desde: Date, hoje = new Date()) {
 const MESES = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
 export const nomeDoMes = (d: Date) => MESES[Number(d.toLocaleDateString('en-CA', { timeZone: process.env.TZ_AULAS || 'America/Sao_Paulo', month: 'numeric' })) - 1];
 
-/** Sua turma: pessoas ativas que entraram no mesmo mês, com o progresso nos cursos da trilha.
-    Volta vazio se a pessoa é a única do mês (a tela esconde o bloco). */
+/** Mês e ano no fuso das aulas, ex. "2026-11" (a virada do mês segue o horário de Brasília, não o do servidor) */
+export const mesDe = (d: Date) => d.toLocaleDateString('en-CA', { timeZone: process.env.TZ_AULAS || 'America/Sao_Paulo' }).slice(0, 7);
+
+/** Ordena a turma: mais progresso primeiro; empate em ordem alfabética */
+export const ordenarTurma = <T extends { nome: string; pct: number }>(l: T[]) =>
+  [...l].sort((a, b) => b.pct - a.pct || a.nome.localeCompare(b.nome, 'pt-BR'));
+
+/** Sua turma: colaboradores ativos cuja conta foi criada no mesmo mês ("Turma de novembro"), com o progresso
+    nos cursos da trilha. Traz a turma inteira, já ordenada; a pessoa sempre aparece (como "Você"). */
 export async function turmaDe(usuarioId: string, cursoIds: string[]) {
   const eu = await db.usuario.findUnique({ where: { id: usuarioId }, select: { criadoEm: true } });
-  if (!eu || !cursoIds.length) return { mes: null, pessoas: [] };
-  const ini = new Date(eu.criadoEm.getFullYear(), eu.criadoEm.getMonth(), 1);
-  const fim = new Date(eu.criadoEm.getFullYear(), eu.criadoEm.getMonth() + 1, 1);
-  const outros = await db.usuario.findMany({
-    where: { ativo: true, cargo: 'colaborador', id: { not: usuarioId }, criadoEm: { gte: ini, lt: fim } },
-    orderBy: { nome: 'asc' }, take: 5,
-    select: { id: true, nome: true, _count: { select: { progressos: { where: { cursoId: { in: cursoIds } } } } } },
+  if (!eu) return { mes: null, pessoas: [] };
+  const mes = mesDe(eu.criadoEm);
+  // Janela larga no banco e o corte exato do mês aqui, pelo fuso de Brasília
+  const de = new Date(eu.criadoEm.getTime() - 32 * 86400000), ate = new Date(eu.criadoEm.getTime() + 32 * 86400000);
+  const candidatos = await db.usuario.findMany({
+    where: { ativo: true, OR: [{ cargo: 'colaborador' }, { id: usuarioId }], criadoEm: { gte: de, lte: ate } },
+    select: { id: true, nome: true, criadoEm: true, _count: { select: { progressos: { where: { cursoId: { in: cursoIds } } } } } },
   });
-  if (!outros.length) return { mes: nomeDoMes(eu.criadoEm), pessoas: [] };
-  const meus = await db.progresso.count({ where: { usuarioId, cursoId: { in: cursoIds } } });
-  const pct = (n: number) => Math.round((n / cursoIds.length) * 100);
-  return {
-    mes: nomeDoMes(eu.criadoEm),
-    pessoas: [...outros.map((o) => ({ id: o.id, nome: o.nome, pct: pct(o._count.progressos), eu: false })), { id: usuarioId, nome: 'Você', pct: pct(meus), eu: true }],
-  };
+  const pct = (n: number) => (cursoIds.length ? Math.round((n / cursoIds.length) * 100) : 0);
+  const pessoas = candidatos
+    .filter((c) => c.id === usuarioId || mesDe(c.criadoEm) === mes)
+    .map((c) => ({ id: c.id, nome: c.id === usuarioId ? 'Você' : c.nome, pct: pct(c._count.progressos), eu: c.id === usuarioId }));
+  return { mes: nomeDoMes(eu.criadoEm), pessoas: ordenarTurma(pessoas) };
 }

@@ -155,18 +155,33 @@ export default async function Trilha({ params }: { params: Promise<{ id: string 
       })}
 
       <section className="ac-duo">
-        {turma.pessoas.length > 0 && (
-          <div>
-            <div><h2>Sua turma</h2><p>Quem chegou em {turma.mes} com você</p></div>
-            {turma.pessoas.map((p) => (
-              <div key={p.id} className="ac-pessoa">
-                <span className="ac-av" aria-hidden="true">{p.eu ? iniciais(u.nome) : iniciais(p.nome)}</span>
-                <div><p>{p.nome}</p><div className="ac-barra" role="progressbar" aria-valuenow={p.pct} aria-valuemin={0} aria-valuemax={100} aria-label={`Progresso de ${p.nome}`}><i style={{ width: `${p.pct}%` }} /></div></div>
-                <span>{p.pct}%</span>
-              </div>
-            ))}
-          </div>
-        )}
+        {turma.mes && (() => {
+          // No card: as 5 mais adiantadas; quem está vendo sempre aparece, com a posição na turma
+          const TOPO = 5;
+          const pos = turma.pessoas.findIndex((p) => p.eu);
+          const topo = turma.pessoas.slice(0, TOPO);
+          const linha = (p: (typeof turma.pessoas)[number], i: number) => (
+            <div key={p.id} className={`ac-pessoa${p.eu ? ' eu' : ''}`}>
+              <span className="ac-pos" aria-label={`${i + 1}º lugar`}>{i + 1}º</span>
+              <span className="ac-av" aria-hidden="true">{p.eu ? iniciais(u.nome) : iniciais(p.nome)}</span>
+              <div><p>{p.nome}</p><div className="ac-barra" role="progressbar" aria-valuenow={p.pct} aria-valuemin={0} aria-valuemax={100} aria-label={`Progresso de ${p.nome}`}><i style={{ width: `${p.pct}%` }} /></div></div>
+              <span>{p.pct}%</span>
+            </div>
+          );
+          return (
+            <div>
+              <div><h2>Turma de {turma.mes}</h2><p>{turma.pessoas.length > 1 ? `${turma.pessoas.length} pessoas chegaram em ${turma.mes}, junto com você` : `Você é a primeira pessoa da turma de ${turma.mes}`}</p></div>
+              {topo.map((p, i) => linha(p, i))}
+              {pos >= TOPO && <>{pos > TOPO && <span className="ac-reticencias" aria-hidden="true">⋯</span>}{linha(turma.pessoas[pos], pos)}</>}
+              {turma.pessoas.length > TOPO && (
+                <details className="ac-turma-toda">
+                  <summary>Ver a turma toda ({turma.pessoas.length} pessoas)</summary>
+                  <div>{turma.pessoas.map((p, i) => linha(p, i))}</div>
+                </details>
+              )}
+            </div>
+          );
+        })()}
         <div>
           <div><h2>Aprenda o sistema como o cliente</h2><p>Os mesmos treinamentos que os restaurantes fazem</p></div>
           <Link className="ac-lin" href="/aulas">
