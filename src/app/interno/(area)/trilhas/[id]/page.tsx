@@ -20,6 +20,7 @@ export default async function Trilha({ params }: { params: Promise<{ id: string 
       <nav className="crumb" aria-label="Você está em"><Link href="/interno">Início</Link><span className="icon s16">chevron_right</span><span aria-current="page">{t.titulo}</span></nav>
       <div className="in-thead">
         <div className="mod">
+          {t.capaUrl && <Capa titulo={t.titulo} etapa="" indiceEtapa={0} grande imagem={t.capaUrl} />}
           <div className="in-chips">
             <span className="chip chip-red">Trilha · {t.total} cursos</span>
             {t.publico && <span className="chip chip-neutral">{t.publico}</span>}
