@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Toaster } from '@/components/equipe/Toast';
-import { limiteVideoMb } from '@/lib/armazenamento';
+import { limiteVideoMb, linksDasCapas } from '@/lib/armazenamento';
 import { db } from '@/lib/db';
 import { exigirEditorConteudo } from '@/lib/sessao';
 import { EditorCurso } from './EditorCurso';
@@ -33,10 +33,11 @@ export default async function EditarCurso({ params }: { params: Promise<{ id: st
         etapas={trilha.etapas.map((e) => ({ value: e.id, label: e.nome }))}
         tentativas={c._count.tentativas}
         limiteMb={limiteVideoMb()}
+        capas={await linksDasCapas(c.videos.map((v) => v.capa))}
         inicial={{
           id: c.id, etapaId: c.etapaId, titulo: c.titulo, area: c.area, resumo: c.resumo, aprender: c.aprender, texto: c.texto, contato: c.contato,
           aprovacao: c.aprovacao, publicado: c.publicado,
-          videos: c.videos.map((v) => ({ titulo: v.titulo, duracao: v.duracao, url: v.url, arquivo: v.arquivo, nomeArquivo: v.nomeArquivo })),
+          videos: c.videos.map((v) => ({ titulo: v.titulo, duracao: v.duracao, url: v.url, arquivo: v.arquivo, nomeArquivo: v.nomeArquivo, capa: v.capa })),
           materiais: c.materiais.map((m) => ({ titulo: m.titulo, descricao: m.descricao, url: m.url })),
           perguntas: c.perguntas.map((q) => ({ enunciado: q.enunciado, alternativas: q.alternativas, correta: q.correta })),
         }}

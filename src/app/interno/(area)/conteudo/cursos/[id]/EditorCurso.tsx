@@ -2,16 +2,15 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState, useTransition } from 'react';
-import { Upload } from 'tus-js-client';
 import { Dropdown, type Opcao } from '@/components/Dropdown';
 import { Modal } from '@/components/equipe/Modal';
 import { toast } from '@/components/equipe/Toast';
 import '@/components/equipe/equipe-comp.css';
 import { exibicaoDeVideo } from '@/lib/aprendizagem';
-import type { EnvioAssinado } from '@/lib/armazenamento';
 import { excluirCurso, prepararEnvioVideo, salvarCurso, type CursoEdicao } from '../../acoes';
+import { CampoCapa, enviarArquivo } from '../../CampoCapa';
 
-/* Editor de um curso: dados, conteúdo, vídeos (por link), materiais e perguntas. Salva tudo de uma vez. */
+/* Editor de um curso: dados, conteúdo, vídeos (arquivo ou link, com foto de capa), materiais e perguntas. Salva tudo de uma vez. */
 
 type Video = CursoEdicao['videos'][number];
 type Material = CursoEdicao['materiais'][number];
@@ -32,13 +31,15 @@ function Ordem({ i, n, rotulo, onMover, onTirar }: { i: number; n: number; rotul
   );
 }
 
-export function EditorCurso({ inicial, etapas, trilhaId, tentativas, limiteMb }: { inicial: CursoEdicao; etapas: Opcao[]; trilhaId: string; tentativas: number; limiteMb: number }) {
+export function EditorCurso({ inicial, etapas, trilhaId, tentativas, limiteMb, capas }: { inicial: CursoEdicao; etapas: Opcao[]; trilhaId: string; tentativas: number; limiteMb: number; capas: Record<string, string> }) {
   const router = useRouter();
   const [c, setC] = useState(inicial);
   const [salvo, setSalvo] = useState(inicial);
   const [aprender, setAprender] = useState(inicial.aprender.join('\n'));
   const [erro, setErro] = useState('');
   const [excluir, setExcluir] = useState(false);
+  // Prévia das fotos de capa, por caminho no Storage (as já salvas vêm assinadas do servidor)
+  const [previas, setPrevias] = useState(capas);
   const [pend, start] = useTransition();
   const atual = { ...c, aprender: aprender.split('\n').map((s) => s.trim()).filter(Boolean) };
   const mudou = JSON.stringify(atual) !== JSON.stringify(salvo);
@@ -90,9 +91,9 @@ export function EditorCurso({ inicial, etapas, trilhaId, tentativas, limiteMb }:
       <section className="mod ed-bloco">
         <div className="mod-h"><div><h2>Vídeos ({c.videos.length})</h2><p>Envie o arquivo do vídeo. Ele fica guardado de forma privada e só toca para quem está logado na plataforma.</p></div></div>
         {c.videos.map((v, i) => (
-          <VideoEditor key={i} cursoId={c.id} limiteMb={limiteMb} v={v} i={i} n={c.videos.length} onChange={(x) => set('videos', trocar(c.videos, i, x))} onMover={(d) => set('videos', mover(c.videos, i, d))} onTirar={() => set('videos', tirar(c.videos, i))} />
+          <VideoEditor key={i} cursoId={c.id} limiteMb={limiteMb} previas={previas} onPrevia={(k, url) => setPrevias((p) => ({ ...p, [k]: url }))} v={v} i={i} n={c.videos.length} onChange={(x) => set('videos', trocar(c.videos, i, x))} onMover={(d) => set('videos', mover(c.videos, i, d))} onTirar={() => set('videos', tirar(c.videos, i))} />
         ))}
-        <div><button type="button" className="btn btn-m btn-outlined" onClick={() => set('videos', [...c.videos, { titulo: '', duracao: '', url: '', arquivo: '', nomeArquivo: '' } as Video])}><span className="icon">add</span>Adicionar vídeo</button></div>
+        <div><button type="button" className="btn btn-m btn-outlined" onClick={() => set('videos', [...c.videos, { titulo: '', duracao: '', url: '', arquivo: '', nomeArquivo: '', capa: '' } as Video])}><span className="icon">add</span>Adicionar vídeo</button></div>
       </section>
 
       <section className="mod ed-bloco">
@@ -145,27 +146,10 @@ export function EditorCurso({ inicial, etapas, trilhaId, tentativas, limiteMb }:
   );
 }
 
-/** Envia o arquivo direto do navegador para o Storage em partes de 6 MB (TUS).
-    Se a conexão oscilar, cada parte é reenviada sozinha, sem recomeçar o vídeo inteiro. */
-function enviarArquivo(e: EnvioAssinado, arquivo: File, progresso: (pct: number) => void) {
-  return new Promise<void>((ok, falha) => {
-    const envio = new Upload(arquivo, {
-      endpoint: e.endpoint,
-      headers: { 'x-signature': e.token, 'x-upsert': 'false' },
-      metadata: { bucketName: e.bucket, objectName: e.caminho, contentType: arquivo.type, cacheControl: '3600' },
-      chunkSize: 6 * 1024 * 1024, // exigido pelo Supabase
-      uploadDataDuringCreation: true,
-      storeFingerprintForResuming: false, // cada envio tem um caminho novo; não retoma envios antigos
-      retryDelays: [0, 3000, 5000, 10000, 20000],
-      onProgress: (enviado, total) => progresso(Math.min(99, Math.round((enviado / total) * 100))),
-      onSuccess: () => { progresso(100); ok(); },
-      onError: falha,
-    });
-    envio.start();
-  });
-}
-
-function VideoEditor({ cursoId, limiteMb, v, i, n, onChange, onMover, onTirar }: { cursoId: string; limiteMb: number; v: Video; i: number; n: number; onChange: (v: Video) => void; onMover: (d: -1 | 1) => void; onTirar: () => void }) {
+function VideoEditor({ cursoId, limiteMb, previas, onPrevia, v, i, n, onChange, onMover, onTirar }: {
+  cursoId: string; limiteMb: number; previas: Record<string, string>; onPrevia: (caminho: string, url: string) => void;
+  v: Video; i: number; n: number; onChange: (v: Video) => void; onMover: (d: -1 | 1) => void; onTirar: () => void;
+}) {
   const [pct, setPct] = useState<number | null>(null);
   const [erro, setErro] = useState('');
   const [link, setLink] = useState(!v.arquivo && !!v.url);
@@ -223,6 +207,11 @@ function VideoEditor({ cursoId, limiteMb, v, i, n, onChange, onMover, onTirar }:
             </div>
           </div>
         )}
+        <div className="fld ed-full">
+          <CampoCapa id={`v-c-${i}`} rotulo="Foto de capa (opcional)" dono="curso" donoId={cursoId} aoSalvar='Clique em "Salvar curso" para guardar.'
+            valor={v.capa} previa={previas[v.capa] ?? null}
+            onChange={(caminho, url) => { if (caminho && url) onPrevia(caminho, url); onChange({ ...v, capa: caminho }); }} />
+        </div>
       </div>
       <Ordem i={i} n={n} rotulo={`vídeo ${i + 1}`} onMover={onMover} onTirar={onTirar} />
     </div>

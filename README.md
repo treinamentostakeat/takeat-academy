@@ -63,7 +63,7 @@ A aba `/equipe/voz` envia amostras de áudio para a ElevenLabs, clona a voz, ger
 
 ## Trilhas da área interna
 
-O RH e o gestor editam tudo em `/interno/conteudo`: trilhas, etapas, cursos, vídeos (arquivo enviado ou link do YouTube, Vimeo ou Google Drive), materiais e perguntas. O arquivo vai do navegador direto para o Supabase Storage em partes de 6 MB, que são reenviadas sozinhas se a conexão cair; o limite por vídeo vem de `VIDEO_LIMITE_MB` (50 MB no plano Free do Supabase). Só aparece para os colaboradores o que estiver publicado. O quiz é corrigido no servidor; o gabarito nunca vai para o navegador antes da resposta.
+O RH e o gestor editam tudo em `/interno/conteudo`: trilhas, etapas, cursos, vídeos (arquivo enviado ou link do YouTube, Vimeo ou Google Drive), materiais e perguntas. O arquivo vai do navegador direto para o Supabase Storage em partes de 6 MB, que são reenviadas sozinhas se a conexão cair; o limite por vídeo vem de `VIDEO_LIMITE_MB` (50 MB no plano Free do Supabase). A trilha e cada vídeo podem ter uma foto de capa (JPG, PNG ou WebP, até 5 MB), guardada no mesmo bucket; sem foto, a trilha usa a capa colorida gerada. Só aparece para os colaboradores o que estiver publicado. O quiz é corrigido no servidor; o gabarito nunca vai para o navegador antes da resposta.
 
 Para importar a trilha do protótipo do RH (21 cursos e 210 perguntas, que entra como rascunho e sem os vídeos):
 
