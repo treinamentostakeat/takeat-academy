@@ -20,7 +20,7 @@ export default async function EditarTrilha({ params }: { params: Promise<{ id: s
     <div className="in">
       <nav className="crumb" aria-label="Você está em"><Link href="/interno/conteudo">Conteúdo</Link><span className="icon s16">chevron_right</span><span aria-current="page">{t.titulo}</span></nav>
       <EditorTrilha
-        trilha={{ id: t.id, titulo: t.titulo, descricao: t.descricao, publico: t.publico, publicada: t.publicada, capa: t.capa }}
+        trilha={{ id: t.id, titulo: t.titulo, descricao: t.descricao, publico: t.publico, publicada: t.publicada, capa: t.capa, boasVindas: t.boasVindas }}
         previaCapa={(await linksDasCapas([t.capa]))[t.capa] ?? null}
         etapas={t.etapas.map((e) => ({ id: e.id, nome: e.nome, descricao: e.descricao, cursos: e.cursos.map((c) => ({ id: c.id, titulo: c.titulo, publicado: c.publicado, perguntas: c._count.perguntas, semVideo: c._count.videos })) }))}
       />

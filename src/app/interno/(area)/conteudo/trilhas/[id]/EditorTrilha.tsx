@@ -10,7 +10,7 @@ import { CampoCapa } from '../../CampoCapa';
 
 type Curso = { id: string; titulo: string; publicado: boolean; perguntas: number; semVideo: number };
 type Etapa = { id: string; nome: string; descricao: string; cursos: Curso[] };
-type Trilha = { id: string; titulo: string; descricao: string; publico: string; publicada: boolean; capa: string };
+type Trilha = { id: string; titulo: string; descricao: string; publico: string; publicada: boolean; capa: string; boasVindas: string };
 
 /** Roda uma ação e mostra o resultado no toast */
 function useAcao() {
@@ -31,7 +31,7 @@ export function EditorTrilha({ trilha, etapas, previaCapa }: { trilha: Trilha; e
   const [previa, setPrevia] = useState(previaCapa);
   const [excluir, setExcluir] = useState(false);
   const { pend, rodar } = useAcao();
-  const mudou = t.titulo !== trilha.titulo || t.descricao !== trilha.descricao || t.publico !== trilha.publico || t.publicada !== trilha.publicada || t.capa !== trilha.capa;
+  const mudou = t.titulo !== trilha.titulo || t.descricao !== trilha.descricao || t.publico !== trilha.publico || t.publicada !== trilha.publicada || t.capa !== trilha.capa || t.boasVindas !== trilha.boasVindas;
 
   return (
     <>
@@ -49,7 +49,12 @@ export function EditorTrilha({ trilha, etapas, previaCapa }: { trilha: Trilha; e
           <div className="fld ed-full">
             <CampoCapa id="t-c" rotulo="Foto de capa (opcional)" dono="trilha" donoId={trilha.id} aoSalvar='Clique em "Salvar trilha" para guardar.'
               valor={t.capa} previa={previa} onChange={(capa, url) => { setT((x) => ({ ...x, capa })); setPrevia(url); }} />
-            <div className="info">Sem foto, a trilha usa a capa colorida com ícone.</div>
+            <div className="info">Sem foto, a trilha usa a capa ilustrada.</div>
+          </div>
+          <div className="fld ed-full">
+            <label htmlFor="t-bv">Vídeo de boas-vindas (opcional)</label>
+            <input id="t-bv" type="url" maxLength={2000} placeholder="https://" value={t.boasVindas} onChange={(e) => setT({ ...t, boasVindas: e.target.value })} aria-describedby="t-bv-i" />
+            <div className="info" id="t-bv-i">Link do YouTube, Vimeo ou Google Drive. Aparece na tela de boas-vindas, que a pessoa vê na primeira vez que abre a trilha.</div>
           </div>
         </div>
         <label className="ed-check"><input type="checkbox" checked={t.publicada} onChange={(e) => setT({ ...t, publicada: e.target.checked })} /><span><b>Publicada</b><small>Os colaboradores veem a trilha e os cursos publicados dela.</small></span></label>
