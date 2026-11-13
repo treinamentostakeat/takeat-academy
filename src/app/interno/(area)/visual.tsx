@@ -13,16 +13,17 @@ export function iniciaisDe(titulo: string) {
 }
 
 /** Capa ilustrada de curso: quatro desenhos em rodízio sobre a cor do curso */
-export function CapaCurso({ indice, numero, selo }: { indice: number; numero: string; selo?: React.ReactNode }) {
+export function CapaCurso({ indice, numero, selo, imagem }: { indice: number; numero: string; selo?: React.ReactNode; imagem?: string | null }) {
   const desenho = ((indice % 4) + 4) % 4;
   return (
-    <div className="ac-ccapa" style={{ background: em(FUNDOS_CURSO, indice) }}>
-      <svg aria-hidden="true" viewBox="0 0 300 150" preserveAspectRatio="xMidYMid slice">
+    <div className={`ac-ccapa${imagem ? ' foto' : ''}`} style={imagem ? undefined : { background: em(FUNDOS_CURSO, indice) }}>
+      {/* eslint-disable-next-line @next/next/no-img-element -- link assinado e temporário do Storage */}
+      {imagem ? <img src={imagem} alt="" loading="lazy" /> : <svg aria-hidden="true" viewBox="0 0 300 150" preserveAspectRatio="xMidYMid slice">
         {desenho === 0 && <><rect x="150" y="22" width="56" height="56" rx="12" fill="#FFFFFF" opacity=".9" /><rect x="214" y="22" width="56" height="34" rx="10" fill="none" stroke="#FFFFFF" strokeWidth="2.5" /><rect x="150" y="86" width="56" height="34" rx="10" fill="none" stroke="#FFFFFF" strokeWidth="2.5" /><rect x="214" y="64" width="56" height="56" rx="12" fill="#F5A623" /></>}
         {desenho === 1 && <><circle cx="230" cy="75" r="70" fill="none" stroke="#FFFFFF" strokeWidth="2" opacity=".35" /><circle cx="230" cy="75" r="48" fill="none" stroke="#FFFFFF" strokeWidth="2" opacity=".6" /><circle cx="230" cy="75" r="24" fill="#FFFFFF" /><circle cx="230" cy="75" r="8" fill="#C8131A" /></>}
         {desenho === 2 && <><path d="M225 25 L235 65 L275 75 L235 85 L225 125 L215 85 L175 75 L215 65 Z" fill="#FFFFFF" /><path d="M160 30 L165 45 L180 50 L165 55 L160 70 L155 55 L140 50 L155 45 Z" fill="#F5A623" /><circle cx="170" cy="115" r="5" fill="#FFFFFF" opacity=".6" /><circle cx="270" cy="30" r="4" fill="#FFFFFF" opacity=".6" /></>}
         {desenho === 3 && <><circle cx="228" cy="62" r="38" fill="#F5A623" /><rect x="212" y="104" width="32" height="10" rx="4" fill="#FFFFFF" /><rect x="216" y="118" width="24" height="8" rx="4" fill="#FFFFFF" opacity=".7" /><path d="M150 62h22M284 62h-18M182 22l12 10M274 22l-12 10" stroke="#FFFFFF" strokeWidth="3" strokeLinecap="round" /></>}
-      </svg>
+      </svg>}
       <span className="ac-ccapa-n">{numero}</span>
       {selo && <span className="ac-ccapa-s">{selo}</span>}
     </div>
