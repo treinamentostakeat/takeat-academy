@@ -10,7 +10,8 @@ import { exibicaoDeVideo } from '@/lib/aprendizagem';
 import { excluirCurso, prepararEnvioVideo, salvarCurso, type CursoEdicao } from '../../acoes';
 import { CampoCapa, enviarArquivo } from '../../CampoCapa';
 
-/* Editor de um curso: dados, conteúdo, vídeos (arquivo ou link, com foto de capa), materiais e perguntas. Salva tudo de uma vez. */
+/* Editor de um curso: dados (com a foto de capa do curso), conteúdo, vídeos (arquivo ou link), materiais e perguntas. Salva tudo de uma vez.
+   A foto de capa por vídeo saiu da tela; vídeo que já tinha uma continua mostrando o campo, para trocar ou remover. */
 
 type Video = CursoEdicao['videos'][number];
 type Material = CursoEdicao['materiais'][number];
@@ -79,6 +80,12 @@ export function EditorCurso({ inicial, etapas, trilhaId, tentativas, limiteMb, c
           <div className="fld"><label htmlFor="c-a">Área</label><input id="c-a" maxLength={60} placeholder="Ex.: Setor, Produto" value={c.area} onChange={(e) => set('area', e.target.value)} /></div>
           <div className="fld"><label htmlFor="c-ct">Com quem falar</label><input id="c-ct" maxLength={200} placeholder="Ex.: Gerente Financeiro · financeiro@takeat.app" value={c.contato} onChange={(e) => set('contato', e.target.value)} /></div>
           <div className="fld ed-full"><label htmlFor="c-r">Resumo</label><input id="c-r" maxLength={300} value={c.resumo} onChange={(e) => set('resumo', e.target.value)} /></div>
+          <div className="fld ed-full">
+            <CampoCapa id="c-capa" rotulo="Foto de capa do curso (opcional)" dono="curso" donoId={c.id} aoSalvar='Clique em "Salvar curso" para guardar.'
+              valor={c.capa} previa={previas[c.capa] ?? null}
+              onChange={(caminho, url) => { if (caminho && url) setPrevias((p) => ({ ...p, [caminho]: url })); set('capa', caminho); }} />
+            <div className="info">Aparece no topo do curso e no card da trilha. Sem foto, fica a capa gerada.</div>
+          </div>
           <div className="fld ed-full"><label htmlFor="c-ap">O que você vai aprender</label><textarea id="c-ap" value={aprender} onChange={(e) => setAprender(e.target.value)} /><div className="info">Um item por linha, até 10.</div></div>
         </div>
       </section>
@@ -207,11 +214,11 @@ function VideoEditor({ cursoId, limiteMb, previas, onPrevia, v, i, n, onChange, 
             </div>
           </div>
         )}
-        <div className="fld ed-full">
+        {v.capa && <div className="fld ed-full">
           <CampoCapa id={`v-c-${i}`} rotulo="Foto de capa (opcional)" dono="curso" donoId={cursoId} aoSalvar='Clique em "Salvar curso" para guardar.'
             valor={v.capa} previa={previas[v.capa] ?? null}
             onChange={(caminho, url) => { if (caminho && url) onPrevia(caminho, url); onChange({ ...v, capa: caminho }); }} />
-        </div>
+        </div>}
       </div>
       <Ordem i={i} n={n} rotulo={`vídeo ${i + 1}`} onMover={onMover} onTirar={onTirar} />
     </div>
