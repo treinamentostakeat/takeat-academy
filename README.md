@@ -59,7 +59,7 @@ Cadastro de colaboradores e recuperação de senha por API, documentados em [doc
 
 ## Clonagem de voz (ElevenLabs)
 
-A aba `/equipe/voz` envia amostras de áudio para a ElevenLabs, clona a voz, gera falas de teste e apaga vozes. Ela só aparece para gestores e RH cujo e-mail está em `VOZ_ACESSO_EMAILS` (separados por vírgula). O RH acessa pela área interna, em `/interno/voz`. A chave fica em `ELEVENLABS_API_KEY`, só no servidor, e precisa das permissões de texto para fala e de leitura e escrita de vozes (`voices_read` e `voices_write`). Para clonar, é obrigatório confirmar a autorização da pessoa dona da voz. Cada ação fica registrada na tabela `Integracao`, no canal `elevenlabs`.
+A aba `/equipe/voz` (Voz e fala) transforma texto em fala com as vozes prontas da ElevenLabs ou com as clonadas, até 2.500 caracteres por vez, e também envia amostras de áudio para a ElevenLabs, clona a voz, gera falas de teste e apaga vozes. Ela só aparece para gestores e RH cujo e-mail está em `VOZ_ACESSO_EMAILS` (separados por vírgula). O RH acessa pela área interna, em `/interno/voz`. A chave fica em `ELEVENLABS_API_KEY`, só no servidor, e precisa das permissões de texto para fala e de leitura e escrita de vozes (`voices_read` e `voices_write`). Para clonar, é obrigatório confirmar a autorização da pessoa dona da voz. Cada ação fica registrada na tabela `Integracao`, no canal `elevenlabs`.
 
 ## Trilhas da área interna
 

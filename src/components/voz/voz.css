@@ -3,6 +3,11 @@
 .vz .vz-aviso .icon { color: var(--red-ink); }
 .vz .vz-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 16px; align-items: start; }
 .vz .vz-form { display: grid; gap: 16px; }
+.vz .vz-tts { margin-bottom: 16px; }
+.vz .vz-voz-esc { display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; }
+.vz .vz-voz-esc .fld { flex: 1 1 320px; }
+.vz .fld select { width: 100%; height: 40px; padding: 0 12px; border: 1px solid var(--stroke-strong); border-radius: 12px; background: var(--surface-raised); color: var(--text-primary); font: inherit; outline: 0; }
+.vz .fld select:focus { border-color: var(--focus); }
 .vz .fld input, .vz .fld textarea { color: var(--text-primary); }
 .vz .fld input[type="file"] { height: auto; padding: 10px 12px; }
 .vz .vz-check { display: flex; gap: 12px; align-items: flex-start; color: var(--text-secondary); cursor: pointer; }

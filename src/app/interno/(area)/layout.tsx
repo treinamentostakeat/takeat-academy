@@ -25,7 +25,7 @@ export default async function LayoutInterno({ children }: { children: React.Reac
   const admin: ItemNav[] = [
     ...(editor ? [{ href: '/interno/conteudo', icon: 'edit_note', label: 'Editar conteúdo' }] : []),
     ...(podeGerirPessoas(usuario.cargo) ? [{ href: '/interno/pessoas', icon: 'group', label: 'Pessoas' }] : []),
-    ...(podeClonarVoz(usuario, process.env.VOZ_ACESSO_EMAILS) ? [{ href: '/interno/voz', icon: 'record_voice_over', label: 'Clonagem de voz' }] : []),
+    ...(podeClonarVoz(usuario, process.env.VOZ_ACESSO_EMAILS) ? [{ href: '/interno/voz', icon: 'record_voice_over', label: 'Voz e fala' }] : []),
     ...(ehEquipe(usuario.cargo) ? [{ href: '/equipe/agenda', icon: 'calendar_month', label: 'Área da equipe' }] : []),
   ];
   const conta: ItemNav[] = [{ href: '/interno/senha', icon: 'lock', label: 'Trocar senha' }];
