@@ -12,14 +12,13 @@ export async function trilhasDoUsuario(u: UsuarioSessao) {
     db.trilha.findMany({
       where: editor ? {} : { publicada: true },
       orderBy: { criadoEm: 'asc' },
-      include: { etapas: { orderBy: { ordem: 'asc' }, include: { cursos: { where: editor ? {} : { publicado: true }, orderBy: { ordem: 'asc' }, select: { id: true, titulo: true, resumo: true, area: true, publicado: true, capa: true, _count: { select: { perguntas: true } } } } } } },
+      include: { etapas: { orderBy: { ordem: 'asc' }, include: { cursos: { where: editor ? {} : { publicado: true }, orderBy: { ordem: 'asc' }, select: { id: true, titulo: true, resumo: true, area: true, publicado: true, _count: { select: { perguntas: true } } } } } } },
     }),
     db.progresso.findMany({ where: { usuarioId: u.id }, select: { cursoId: true, acertos: true, total: true } }),
   ]);
   const notas = new Map(feitos.map((p) => [p.cursoId, p]));
-  const capas = await linksDasCapas([...trilhas.map((t) => t.capa), ...trilhas.flatMap((t) => t.etapas.flatMap((e) => e.cursos.map((c) => c.capa)))]);
-  return trilhas.map((t0) => {
-    const t = { ...t0, etapas: t0.etapas.map((e) => ({ ...e, cursos: e.cursos.map((c) => ({ ...c, capaUrl: capas[c.capa] ?? null })) })) };
+  const capas = await linksDasCapas(trilhas.map((t) => t.capa));
+  return trilhas.map((t) => {
     const cursos = t.etapas.flatMap((e) => e.cursos);
     const concluidos = cursos.filter((c) => notas.has(c.id)).length;
     return { ...t, capaUrl: capas[t.capa] ?? null, total: cursos.length, concluidos, proximo: cursos.find((c) => !notas.has(c.id)) ?? null, notas };
@@ -49,13 +48,13 @@ export async function cursoParaAluno(id: string, u: UsuarioSessao) {
   const arquivos = c.videos.map((v) => v.arquivo).filter(Boolean);
   const [assinados, capas] = await Promise.all([
     arquivos.length && armazenamentoAtivo() ? linksDeLeitura(arquivos).catch(() => new Map<string, string | null>()) : new Map<string, string | null>(),
-    linksDasCapas([c.capa, ...c.videos.map((v) => v.capa)]),
+    linksDasCapas(c.videos.map((v) => v.capa)),
   ]);
   const videos = c.videos
     .map((v) => ({ id: v.id, titulo: v.titulo, duracao: v.duracao, url: v.arquivo ? assinados.get(v.arquivo) ?? '' : v.url, capa: capas[v.capa] ?? null }))
     .filter((v) => v.url);
   return {
-    id: c.id, titulo: c.titulo, capa: capas[c.capa] ?? null, area: c.area, resumo: c.resumo, aprender: c.aprender, texto: c.texto, contato: c.contato,
+    id: c.id, titulo: c.titulo, area: c.area, resumo: c.resumo, aprender: c.aprender, texto: c.texto, contato: c.contato,
     aprovacao: Math.min(c.aprovacao, c.perguntas.length), publicado: c.publicado,
     videos,
     materiais: c.materiais.map((m) => ({ id: m.id, titulo: m.titulo, descricao: m.descricao, url: m.url })),

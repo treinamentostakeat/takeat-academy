@@ -27,7 +27,7 @@ export function CursoAluno({ curso, editar }: { curso: CursoAlunoDados; editar: 
       </aside>
       <div className="in-curso-b">
         <div className="mod in-head">
-          <Capa titulo={curso.titulo} etapa={curso.etapa} indiceEtapa={curso.indiceEtapa} imagem={curso.capa} grande />
+          <Capa titulo={curso.titulo} etapa={curso.etapa} indiceEtapa={curso.indiceEtapa} grande />
           <div className="in-chips">
             {curso.area &&<span className="chip chip-neutral">{curso.area}</span>}
             {curso.progresso && <span className="chip chip-teal">Concluído com {curso.progresso.acertos}/{curso.progresso.total}</span>}

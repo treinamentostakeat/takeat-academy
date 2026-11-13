@@ -163,7 +163,6 @@ model Curso {
   aprovacao  Int         @default(7)
   publicado  Boolean     @default(true)
   ordem      Int
-  capa       String      @default("") // foto de capa do curso: caminho no bucket "academy" (vazio = capa gerada)
   etapa      Etapa       @relation(fields: [etapaId], references: [id], onDelete: Cascade)
   videos     Video[]
   materiais  Material[]

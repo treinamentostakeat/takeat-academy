@@ -286,10 +286,6 @@ a.ac-sis:hover { border-color: var(--ac-line-strong); }
 .ac-ccard:hover { border-color: var(--ac-line-strong); }
 .ac-ccapa { height: 150px; position: relative; overflow: hidden; }
 .ac-ccapa svg { position: absolute; inset: 0; width: 100%; height: 100%; }
-.ac-ccapa.foto { background: var(--ac-surface-2); }
-.ac-ccapa.foto img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.ac-ccapa.foto::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0, 0, 0, .45) 0%, rgba(0, 0, 0, 0) 45%); }
-.ac-ccapa.foto .ac-ccapa-n, .ac-ccapa.foto .ac-ccapa-s { z-index: 1; }
 .ac-ccapa-n { position: absolute; left: 18px; top: 16px; font-size: 11px; font-weight: 700; letter-spacing: 2px; color: #FFFFFF; }
 .ac-ccapa-s { position: absolute; right: 12px; top: 12px; }
 .ac-ccorpo { padding: 20px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
