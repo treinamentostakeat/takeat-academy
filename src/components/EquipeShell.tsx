@@ -14,7 +14,7 @@ export function EquipeShell({ usuario, sairAction, podeVoz = false, children }: 
     { t: 'Administração', items: gestor ? [
       { href: '/equipe/usuarios', icon: 'group', label: 'Usuários e cargos' },
       { href: '/interno/pessoas', icon: 'badge', label: 'Onboarding interno' },
-      ...(podeVoz ? [{ href: '/equipe/voz', icon: 'record_voice_over', label: 'Clonagem de voz' }] : []),
+      ...(podeVoz ? [{ href: '/equipe/voz', icon: 'record_voice_over', label: 'Voz e fala' }] : []),
     ] : [] },
     { t: 'Conta', items: [{ href: '/equipe/conta', icon: 'person', label: 'Minha conta' }] },
   ];

@@ -10,7 +10,8 @@ export const elevenlabsAtivo = () => !!chave();
 
 export const MODELO_FALA = 'eleven_multilingual_v2';
 export const LIMITE_AMOSTRAS_MB = 4; // limite do corpo da requisição no Vercel (4,5 MB) com folga
-export const LIMITE_TEXTO = 500;
+export const LIMITE_TEXTO = 500; // fala de teste da voz clonada
+export const LIMITE_TEXTO_FALA = 2500; // texto para fala
 
 export class ErroElevenLabs extends Error {
   constructor(public status: number, mensagem: string) { super(mensagem); }
@@ -43,6 +44,24 @@ export async function listarVozes(): Promise<VozClonada[]> {
   }));
 }
 
+export type VozPronta = { voiceId: string; nome: string; descricao: string; previa: string | null };
+
+const GENERO: Record<string, string> = { female: 'feminina', male: 'masculina', neutral: 'neutra' };
+const IDADE: Record<string, string> = { young: 'jovem', 'middle aged': 'adulta', 'middle-aged': 'adulta', old: 'madura' };
+
+/** Vozes prontas da ElevenLabs (biblioteca padrão), com a amostra de áudio de cada uma */
+export async function listarVozesProntas(): Promise<VozPronta[]> {
+  const r = await chamar('/v2/voices?category=premade&page_size=100');
+  const j = (await r.json()) as { voices?: { voice_id: string; name: string; preview_url?: string | null; labels?: Record<string, string> | null }[] };
+  return (j.voices ?? [])
+    .map((v) => {
+      const l = v.labels ?? {};
+      const descricao = [GENERO[l.gender] ?? '', IDADE[l.age] ?? '', l.accent ? `sotaque ${l.accent}` : ''].filter(Boolean).join(' · ');
+      return { voiceId: v.voice_id, nome: v.name, descricao, previa: v.preview_url ?? null };
+    })
+    .sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR'));
+}
+
 /** Clona uma voz a partir de amostras de áudio. Devolve o voice_id, que identifica a voz nas próximas chamadas. */
 export async function clonarVoz(nome: string, amostras: File[], descricao = '') {
   const corpo = new FormData();
@@ -55,7 +74,7 @@ export async function clonarVoz(nome: string, amostras: File[], descricao = '') 
   return { voiceId: j.voice_id, requerVerificacao: !!j.requires_verification };
 }
 
-/** Texto falado na voz clonada, em MP3 */
+/** Texto falado na voz escolhida (clonada ou pronta), em MP3 */
 export async function falar(voiceId: string, texto: string) {
   const r = await chamar(`/v1/text-to-speech/${encodeURIComponent(voiceId)}?output_format=mp3_44100_128`, {
     method: 'POST',

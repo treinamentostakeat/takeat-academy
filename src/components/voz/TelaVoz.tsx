@@ -1,5 +1,5 @@
 import { Toaster } from '@/components/equipe/Toast';
-import { ErroElevenLabs, LIMITE_AMOSTRAS_MB, LIMITE_TEXTO, elevenlabsAtivo, listarVozes, type VozClonada } from '@/lib/integracoes/elevenlabs';
+import { ErroElevenLabs, LIMITE_AMOSTRAS_MB, LIMITE_TEXTO, LIMITE_TEXTO_FALA, elevenlabsAtivo, listarVozes, listarVozesProntas, type VozClonada, type VozPronta } from '@/lib/integracoes/elevenlabs';
 import { exigirAcessoVoz } from '@/lib/sessao';
 import { VozPainel } from './VozPainel';
 import './voz.css';
@@ -9,21 +9,26 @@ import './voz.css';
 export async function TelaVoz() {
   await exigirAcessoVoz();
   let vozes: VozClonada[] = [];
+  let prontas: VozPronta[] = [];
   let aviso: string | null = null;
+  const msg = (e: unknown) => (e instanceof ErroElevenLabs ? e.message : 'Não foi possível carregar as vozes da ElevenLabs.');
   if (!elevenlabsAtivo()) aviso = 'A integração com a ElevenLabs não está configurada neste servidor (ELEVENLABS_API_KEY).';
   else {
-    try { vozes = await listarVozes(); } catch (e) { aviso = e instanceof ErroElevenLabs ? e.message : 'Não foi possível carregar as vozes da ElevenLabs.'; }
+    // Uma lista falhar não derruba a outra
+    const [c, p] = await Promise.allSettled([listarVozes(), listarVozesProntas()]);
+    if (c.status === 'fulfilled') vozes = c.value; else aviso = msg(c.reason);
+    if (p.status === 'fulfilled') prontas = p.value; else aviso ??= msg(p.reason);
   }
   return (
     <div className="vz">
       <div className="rp-head">
         <div>
-          <h1>Clonagem de voz</h1>
-          <p>Envie amostras de áudio para clonar uma voz na ElevenLabs e gerar falas com ela. Só as pessoas da lista de acesso veem esta área.</p>
+          <h1>Voz e fala</h1>
+          <p>Transforme texto em fala com as vozes da ElevenLabs ou clone uma voz a partir de amostras de áudio. Só as pessoas da lista de acesso veem esta área.</p>
         </div>
       </div>
       {aviso && <div className="notice vz-aviso" role="alert"><span className="icon">error</span><div>{aviso}</div></div>}
-      <VozPainel vozes={vozes} limiteMb={LIMITE_AMOSTRAS_MB} limiteTexto={LIMITE_TEXTO} desligado={!elevenlabsAtivo()} />
+      <VozPainel vozes={vozes} prontas={prontas} limiteMb={LIMITE_AMOSTRAS_MB} limiteTexto={LIMITE_TEXTO} limiteFala={LIMITE_TEXTO_FALA} desligado={!elevenlabsAtivo()} />
       <Toaster />
     </div>
   );
