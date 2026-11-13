@@ -119,7 +119,7 @@ export default async function Trilha({ params }: { params: Promise<{ id: string 
                   const nota = t.notas.get(c.id);
                   return (
                     <Link key={c.id} className="ac-ccard" href={`/interno/cursos/${c.id}`}>
-                      <CapaCurso indice={k} numero={String(k + 1).padStart(2, '0')}
+                      <CapaCurso indice={k} numero={String(k + 1).padStart(2, '0')} imagem={c.capaUrl}
                         selo={nota ? <span className="ac-selo ok"><span className="icon" aria-hidden="true">check_circle</span>{nota.acertos}/{nota.total}</span> : !c.publicado ? <span className="ac-selo am">Não publicado</span> : null} />
                       <div className="ac-ccorpo">
                         <h3>{c.titulo}</h3>
