@@ -66,6 +66,7 @@ export default async function Trilha({ params }: { params: Promise<{ id: string 
               <p className="ac-eyebrow">{t.total ? 'Trilha concluída' : 'Em construção'}</p>
               <h2>{t.total ? 'Você se formou nesta trilha' : 'Os cursos desta trilha estão chegando'}</h2>
               <p className="lead">{t.total ? 'Todos os cursos concluídos. Pode rever qualquer um quando quiser.' : 'Assim que o RH publicar os cursos, eles aparecem aqui.'}</p>
+              {t.total > 0 && <div className="ac-comece-acts"><Link className="ac-btn branco" href={`/interno/formatura/${t.id}`}><span className="icon" aria-hidden="true">school</span>Ver minha formatura</Link></div>}
             </>
           )}
         </div>
@@ -96,11 +97,19 @@ export default async function Trilha({ params }: { params: Promise<{ id: string 
                 </a>
               );
             })}
-            <div className="forma">
-              <span className="ac-num"><span className="icon" aria-hidden="true">school</span></span>
-              <b>Formatura</b>
-              <small>{t.total && t.concluidos === t.total ? 'Concluída' : `Ao concluir os ${t.total} cursos`}</small>
-            </div>
+            {t.total > 0 && t.concluidos === t.total ? (
+              <Link className="forma feita" href={`/interno/formatura/${t.id}`}>
+                <span className="ac-num"><span className="icon" aria-hidden="true">school</span></span>
+                <b>Formatura</b>
+                <small>Concluída · ver formatura</small>
+              </Link>
+            ) : (
+              <div className="forma">
+                <span className="ac-num"><span className="icon" aria-hidden="true">school</span></span>
+                <b>Formatura</b>
+                <small>{`Ao concluir os ${t.total} cursos`}</small>
+              </div>
+            )}
           </div>
         </section>
       )}

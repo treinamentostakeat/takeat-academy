@@ -47,10 +47,13 @@ export async function cursoParaAluno(id: string, u: UsuarioSessao) {
   const pos = ordem.findIndex((x) => x.id === c.id);
   // Vídeo enviado: link assinado e temporário; se o Storage falhar, o vídeo some da lista em vez de quebrar a página
   const arquivos = c.videos.map((v) => v.arquivo).filter(Boolean);
-  const [assinados, capas] = await Promise.all([
+  const [assinados, capas, feitos] = await Promise.all([
     arquivos.length && armazenamentoAtivo() ? linksDeLeitura(arquivos).catch(() => new Map<string, string | null>()) : new Map<string, string | null>(),
     linksDasCapas([c.capa, ...c.videos.map((v) => v.capa)]),
+    db.progresso.findMany({ where: { usuarioId: u.id, cursoId: { in: ordem.map((x) => x.id) } }, select: { cursoId: true } }).then((l) => new Set(l.map((p) => p.cursoId))),
   ]);
+  const pendentes = ordem.map((x, k) => ({ id: x.id, titulo: x.titulo, k })).filter((x) => x.id !== c.id && !feitos.has(x.id));
+  const seguir = pendentes.find((x) => x.k > pos) ?? pendentes[0] ?? null;
   const videos = c.videos
     .map((v) => ({ id: v.id, titulo: v.titulo, duracao: v.duracao, url: v.arquivo ? assinados.get(v.arquivo) ?? '' : v.url, capa: capas[v.capa] ?? null }))
     .filter((v) => v.url);
@@ -66,6 +69,10 @@ export async function cursoParaAluno(id: string, u: UsuarioSessao) {
     indiceEtapa: trilha.etapas.findIndex((e) => e.id === c.etapaId),
     posicao: pos + 1, totalCursos: ordem.length,
     proximo: ordem[pos + 1] ?? null,
+    /** Próximo curso ainda não concluído; null quando este é o último que falta (ou todos já foram feitos) */
+    seguir: seguir ? { id: seguir.id, titulo: seguir.titulo } : null,
+    /** Concluir este curso fecha a trilha */
+    ultimo: pendentes.length === 0,
   };
 }
 export type CursoAlunoDados = NonNullable<Awaited<ReturnType<typeof cursoParaAluno>>>;
