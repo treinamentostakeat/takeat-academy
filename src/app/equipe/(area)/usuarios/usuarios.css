@@ -56,3 +56,10 @@
 .md .cred .pw { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 16px; line-height: 24px; letter-spacing: 1px; font-weight: 600; color: var(--text-primary); user-select: all; }
 .md .notice.aviso-y { background: var(--yellow-tint); }
 .md .notice.aviso-y .icon { color: var(--yellow-ink); }
+/* Envio do acesso pelo WhatsApp */
+.md .zap { display: flex; gap: 12px; align-items: flex-start; flex-wrap: wrap; padding: 16px; border-radius: 12px; background: var(--surface-nested); }
+.md .zap .fld { flex: 1 1 220px; }
+.md .zap .fld input { color: var(--text-primary); }
+.md .zap .fld input[aria-invalid="true"] { border-color: var(--red); }
+.md .zap > .btn { margin-top: 28px; }
+@media (max-width: 600px) { .md .zap > .btn { margin-top: 0; width: 100%; } }
