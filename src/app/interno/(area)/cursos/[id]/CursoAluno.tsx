@@ -43,7 +43,10 @@ export function CursoAluno({ curso, editar }: { curso: CursoAlunoDados; editar: 
             <p className="in-lead">{curso.resumo}</p>
             {curso.aprender.length > 0 && <ul className="in-learn">{curso.aprender.map((a) => <li key={a}><span className="icon s16">check</span>{a}</li>)}</ul>}
             {curso.contato && <p className="in-contato"><b>Com quem falar:</b> {curso.contato}</p>}
-            <div className="in-acts"><button type="button" className="btn btn-l btn-filled" onClick={() => ir('conteudo')}>{curso.progresso ? 'Rever conteúdo' : 'Começar curso'}</button></div>
+            <div className="in-acts">
+              {curso.progresso && <Seguir curso={curso} />}
+              <button type="button" className={`btn btn-l ${curso.progresso ? 'btn-outlined' : 'btn-filled'}`} onClick={() => ir('conteudo')}>{curso.progresso ? 'Rever conteúdo' : 'Começar curso'}</button>
+            </div>
           </section>
         )}
 
@@ -123,6 +126,13 @@ function Videos({ videos }: { videos: CursoAlunoDados['videos'] }) {
   );
 }
 
+/** Botão de seguir: próximo curso que falta ou, se este fechou a trilha, a formatura */
+function Seguir({ curso }: { curso: CursoAlunoDados }) {
+  if (curso.seguir) return <Link className="btn btn-l btn-filled" href={`/interno/cursos/${curso.seguir.id}`}>Seguir para o próximo curso<span className="icon">arrow_forward</span></Link>;
+  if (curso.ultimo) return <Link className="btn btn-l btn-filled" href={`/interno/formatura/${curso.trilha.id}`}><span className="icon">school</span>Ver minha formatura</Link>;
+  return null;
+}
+
 /** Embaralha as alternativas só na tela; a resposta enviada é a posição original. */
 const embaralhar = (n: number) => { const a = Array.from({ length: n }, (_, i) => i); for (let i = n - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 
@@ -145,10 +155,10 @@ function Quiz({ curso }: { curso: CursoAlunoDados }) {
         <div className={`in-res ${res.aprovada ? 'ok' : 'nao'}`}>
           <span className="in-nota">{res.acertos}/{res.total}</span>
           <div><b>{res.aprovada ? 'Curso concluído!' : 'Ainda não foi dessa vez.'}</b>
-            <span>{res.aprovada ? (curso.proximo ? 'Siga para o próximo curso sugerido da trilha.' : 'Você chegou ao fim da trilha.') : `Você precisa de ${res.minimo} acertos. Revise o conteúdo e tente de novo.`}</span></div>
-          {res.aprovada && curso.proximo
-            ? <Link className="btn btn-l btn-filled" href={`/interno/cursos/${curso.proximo.id}`}>Próximo: {curso.proximo.titulo}</Link>
-            : !res.aprovada && <button type="button" className="btn btn-l btn-filled" onClick={refazer}>Refazer quiz</button>}
+            <span>{!res.aprovada ? `Você precisa de ${res.minimo} acertos. Revise o conteúdo e tente de novo.`
+              : curso.seguir ? `Próximo curso: ${curso.seguir.titulo}.`
+                : curso.ultimo ? 'Você concluiu todos os cursos da trilha. Sua formatura está pronta!' : 'Você chegou ao fim da trilha.'}</span></div>
+          {res.aprovada ? <Seguir curso={curso} /> : <button type="button" className="btn btn-l btn-filled" onClick={refazer}>Refazer quiz</button>}
         </div>
         <h3 className="in-h3">Suas respostas</h3>
         <ol className="in-rev">
