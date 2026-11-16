@@ -35,7 +35,7 @@ export default async function Formatura({ params }: { params: Promise<{ id: stri
         <div className="ac-brilho" aria-hidden="true" />
         <Confetes />
         <header className="ac-bv-top">
-          <span className="ac-marca"><span className="ac-marca-t">Takeat</span><span className="ac-marca-s">ACADEMY</span></span>
+          <span className="ac-marca"><span className="ac-marca-t">Takeat</span><span className="ac-marca-s">Academy</span></span>
           <Link className="pular" href={home}>Voltar para a trilha</Link>
         </header>
 
@@ -54,7 +54,8 @@ export default async function Formatura({ params }: { params: Promise<{ id: stri
           <p className="ac-fm-data">Concluída em {fmtData(fim)}</p>
 
           <div className="ac-bv-acts">
-            <Link className="ac-btn prim grande" href="/interno">Ir para o início<span className="icon" aria-hidden="true">arrow_forward</span></Link>
+            <a className="ac-btn prim grande" href={`/interno/certificado/${t.id}`}><span className="icon" aria-hidden="true">workspace_premium</span>Baixar certificado (PDF)</a>
+            <Link className="ac-btn sec grande" href="/interno">Ir para o início<span className="icon" aria-hidden="true">arrow_forward</span></Link>
             <Link className="ac-btn sec grande" href={home}><span className="icon" aria-hidden="true">route</span>Rever a trilha</Link>
           </div>
         </main>

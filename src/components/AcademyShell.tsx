@@ -10,8 +10,11 @@ import type { ItemNav } from './Shell';
 /* Moldura da Takeat Academy (área interna): tema escuro, menu lateral com "Aprender" em cima
    e administração/conta no rodapé, pessoa e botão de sair no topo do conteúdo. Estilos em academy.css. */
 
-export function AcademyShell({ usuario, sairAction, aprender, admin, conta, children }: {
-  usuario: UsuarioSessao; sairAction: () => Promise<void>; aprender: ItemNav[]; admin: ItemNav[]; conta: ItemNav[]; children: React.ReactNode;
+/** Resumo da gamificação no topo: nível, XP, progresso até o próximo nível e semanas seguidas */
+export type Placar = { nivel: string; xp: number; pct: number; prox: string | null; streak: number };
+
+export function AcademyShell({ usuario, sairAction, aprender, admin, conta, placar, children }: {
+  usuario: UsuarioSessao; sairAction: () => Promise<void>; aprender: ItemNav[]; admin: ItemNav[]; conta: ItemNav[]; placar?: Placar; children: React.ReactNode;
 }) {
   const path = usePathname();
   const [menu, setMenu] = useState(false);
@@ -47,7 +50,14 @@ export function AcademyShell({ usuario, sairAction, aprender, admin, conta, chil
       </nav>
       <main className="ac-main" id="eq-main">
         <header className="ac-top">
-          <div className="ac-quem"><p className="n">{usuario.nome}</p><p className="c">{ROTULO_CARGO[usuario.cargo]}</p></div>
+          {placar && (
+            <Link href="/interno/perfil" className="ac-placar" aria-label={`Nível ${placar.nivel}, ${placar.xp} XP${placar.streak ? `, ${placar.streak} semanas seguidas` : ''}. Ver meu perfil`}>
+              {placar.streak > 0 && <span className="ac-fogo" title={`${placar.streak} ${placar.streak === 1 ? 'semana seguida' : 'semanas seguidas'} com atividade`}><span className="icon" aria-hidden="true">local_fire_department</span>{placar.streak}</span>}
+              <span className="ac-placar-n"><b>{placar.nivel}</b><small>{placar.xp.toLocaleString('pt-BR')} XP</small></span>
+              <span className="ac-placar-b" aria-hidden="true" title={placar.prox ? `${placar.pct}% até ${placar.prox}` : 'Nível máximo'}><i style={{ width: `${placar.pct}%` }} /></span>
+            </Link>
+          )}
+          <Link href="/interno/perfil" className="ac-quem"><p className="n">{usuario.nome}</p><p className="c">{ROTULO_CARGO[usuario.cargo]}</p></Link>
           <span className="ac-av" aria-hidden="true">{iniciais(usuario.nome)}</span>
           <form action={sairAction}><button className="ac-sair" type="submit" aria-label="Sair" title="Sair"><span className="icon" aria-hidden="true">logout</span></button></form>
         </header>
