@@ -224,3 +224,6 @@ a.in-sis:hover { border-color: var(--brand); }
 .in-sis-t small { font-size: 12px; line-height: 16px; letter-spacing: .4px; color: var(--text-secondary); }
 .in-sis > .icon:last-child { color: var(--text-tertiary); }
 @media (max-width: 900px) { .in-sistema { grid-template-columns: minmax(0, 1fr); } }
+
+/* Aviso de que o vídeo continua de onde a pessoa parou */
+.in-retomar { display: flex; align-items: center; gap: 6px; margin: 0; font-size: 13px; color: var(--text-tertiary); }

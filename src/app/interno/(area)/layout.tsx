@@ -20,7 +20,7 @@ export default async function LayoutInterno({ children }: { children: React.Reac
   const aprender: ItemNav[] = [
     { href: '/interno', icon: 'home', label: 'Início', exato: true },
     ...(trilha ? [{ href: `/interno/trilhas/${trilha.id}`, icon: 'route', label: 'Minha trilha' }] : []),
-    { href: '/aulas', icon: 'videocam', label: 'Aulas ao vivo' },
+    { href: '/interno/aulas', icon: 'videocam', label: 'Aulas ao vivo' },
   ];
   const admin: ItemNav[] = [
     ...(editor ? [{ href: '/interno/conteudo', icon: 'edit_note', label: 'Editar conteúdo' }] : []),

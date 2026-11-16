@@ -8,13 +8,14 @@ import type { UsuarioSessao } from './sessao';
 
 export async function trilhasDoUsuario(u: UsuarioSessao) {
   const editor = podeEditarConteudo(u.cargo);
-  const [trilhas, feitos] = await Promise.all([
+  const [trilhas, feitos, comecados] = await Promise.all([
     db.trilha.findMany({
       where: editor ? {} : { publicada: true },
       orderBy: { criadoEm: 'asc' },
       include: { etapas: { orderBy: { ordem: 'asc' }, include: { cursos: { where: editor ? {} : { publicado: true }, orderBy: { ordem: 'asc' }, select: { id: true, titulo: true, resumo: true, area: true, publicado: true, capa: true, _count: { select: { perguntas: true } } } } } } },
     }),
     db.progresso.findMany({ where: { usuarioId: u.id }, select: { cursoId: true, acertos: true, total: true } }),
+    cursosComecados(u.id),
   ]);
   const notas = new Map(feitos.map((p) => [p.cursoId, p]));
   const capas = await linksDasCapas([...trilhas.map((t) => t.capa), ...trilhas.flatMap((t) => t.etapas.flatMap((e) => e.cursos.map((c) => c.capa)))]);
@@ -22,10 +23,19 @@ export async function trilhasDoUsuario(u: UsuarioSessao) {
     const t = { ...t0, etapas: t0.etapas.map((e) => ({ ...e, cursos: e.cursos.map((c) => ({ ...c, capaUrl: capas[c.capa] ?? null })) })) };
     const cursos = t.etapas.flatMap((e) => e.cursos);
     const concluidos = cursos.filter((c) => notas.has(c.id)).length;
-    return { ...t, capaUrl: capas[t.capa] ?? null, total: cursos.length, concluidos, proximo: cursos.find((c) => !notas.has(c.id)) ?? null, notas };
+    return { ...t, capaUrl: capas[t.capa] ?? null, total: cursos.length, concluidos, proximo: cursos.find((c) => !notas.has(c.id)) ?? null, notas, comecados };
   });
 }
 export type TrilhaAluno = Awaited<ReturnType<typeof trilhasDoUsuario>>[number];
+
+/** Cursos que a pessoa já começou: abriu algum vídeo ou tentou o quiz (para "Continuar curso") */
+async function cursosComecados(usuarioId: string) {
+  const [vistos, tentativas] = await Promise.all([
+    db.videoVisto.findMany({ where: { usuarioId }, select: { video: { select: { cursoId: true } } } }),
+    db.tentativa.findMany({ where: { usuarioId }, select: { cursoId: true }, distinct: ['cursoId'] }),
+  ]);
+  return new Set([...vistos.map((v) => v.video.cursoId), ...tentativas.map((t) => t.cursoId)]);
+}
 
 /** Curso para quem aprende: sem o gabarito das perguntas. null se não existe ou não está publicado. */
 export async function cursoParaAluno(id: string, u: UsuarioSessao) {
@@ -47,10 +57,12 @@ export async function cursoParaAluno(id: string, u: UsuarioSessao) {
   const pos = ordem.findIndex((x) => x.id === c.id);
   // Vídeo enviado: link assinado e temporário; se o Storage falhar, o vídeo some da lista em vez de quebrar a página
   const arquivos = c.videos.map((v) => v.arquivo).filter(Boolean);
-  const [assinados, capas, feitos] = await Promise.all([
+  const [assinados, capas, feitos, vistos, tentou] = await Promise.all([
     arquivos.length && armazenamentoAtivo() ? linksDeLeitura(arquivos).catch(() => new Map<string, string | null>()) : new Map<string, string | null>(),
     linksDasCapas([c.capa, ...c.videos.map((v) => v.capa)]),
     db.progresso.findMany({ where: { usuarioId: u.id, cursoId: { in: ordem.map((x) => x.id) } }, select: { cursoId: true } }).then((l) => new Set(l.map((p) => p.cursoId))),
+    db.videoVisto.findMany({ where: { usuarioId: u.id, videoId: { in: c.videos.map((v) => v.id) } }, orderBy: { atualizadoEm: 'desc' }, select: { videoId: true, segundos: true } }),
+    db.tentativa.count({ where: { usuarioId: u.id, cursoId: c.id } }),
   ]);
   const pendentes = ordem.map((x, k) => ({ id: x.id, titulo: x.titulo, k })).filter((x) => x.id !== c.id && !feitos.has(x.id));
   const seguir = pendentes.find((x) => x.k > pos) ?? pendentes[0] ?? null;
@@ -73,6 +85,10 @@ export async function cursoParaAluno(id: string, u: UsuarioSessao) {
     seguir: seguir ? { id: seguir.id, titulo: seguir.titulo } : null,
     /** Concluir este curso fecha a trilha */
     ultimo: pendentes.length === 0,
+    /** Até onde assistiu cada vídeo (segundos) e o último vídeo aberto, para continuar de onde parou */
+    posicoes: Object.fromEntries(vistos.map((v) => [v.videoId, v.segundos])) as Record<string, number>,
+    ultimoVideo: vistos.find((v) => videos.some((x) => x.id === v.videoId))?.videoId ?? null,
+    comecado: vistos.length > 0 || tentou > 0,
   };
 }
 export type CursoAlunoDados = NonNullable<Awaited<ReturnType<typeof cursoParaAluno>>>;

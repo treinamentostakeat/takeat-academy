@@ -72,15 +72,39 @@ export function DecoBlocos() {
 
 /** Anel de progresso: feitos de total */
 export function AnelProgresso({ feitos, total }: { feitos: number; total: number }) {
-  const r = 72, circ = 2 * Math.PI * r;
-  const len = total ? (feitos / total) * circ : 0;
+  // Anel de 184px com traço de 10px: o miolo livre (cerca de 150px) cabe o número e a legenda em duas linhas
+  const t = 184, traco = 10, r = (t - traco) / 2 - 2, circ = 2 * Math.PI * r;
+  const len = total ? Math.min(1, feitos / total) * circ : 0;
   return (
     <div className="ac-anel" role="img" aria-label={`${feitos} de ${total} cursos concluídos`}>
-      <svg width="168" height="168" viewBox="0 0 168 168" aria-hidden="true">
-        <circle cx="84" cy="84" r={r} fill="none" stroke="#2A2A2F" strokeWidth="14" />
-        {len > 0 && <circle cx="84" cy="84" r={r} fill="none" stroke="#C8131A" strokeWidth="14" strokeLinecap="round" strokeDasharray={`${len} ${circ}`} transform="rotate(-90 84 84)" />}
+      <svg width={t} height={t} viewBox={`0 0 ${t} ${t}`} aria-hidden="true">
+        <circle className="trilho" cx={t / 2} cy={t / 2} r={r} fill="none" strokeWidth={traco} />
+        {/* Com 0% só aparece o trilho cinza; o arco cresce até a fração concluída ao abrir a tela */}
+        {len > 0 && <circle className="arco" cx={t / 2} cy={t / 2} r={r} fill="none" strokeWidth={traco} strokeLinecap="round"
+          strokeDasharray={circ} strokeDashoffset={circ - len} transform={`rotate(-90 ${t / 2} ${t / 2})`} style={{ '--ac-anel-de': circ } as React.CSSProperties} />}
       </svg>
-      <div aria-hidden="true"><b>{feitos}<small>/{total}</small></b><span>cursos concluídos</span></div>
+      <div aria-hidden="true"><b>{feitos}<small>/{total}</small></b><span>cursos<br />concluídos</span></div>
+    </div>
+  );
+}
+
+/** Card de algo que ainda não tem conteúdo: sem link, sem seta, mais apagado, com o selo "Em breve".
+    `linha` = versão em linha (listas laterais); sem ela, card de grade. */
+export function EmBreve({ icon, titulo, texto, linha }: { icon: string; titulo: string; texto?: string; linha?: boolean }) {
+  const selo = <span className="ac-embreve">Em breve</span>;
+  if (linha) {
+    return (
+      <div className="ac-lin off" aria-disabled="true">
+        <span className="ac-ic peq" aria-hidden="true"><span className="icon">{icon}</span></span>
+        <span><b>{titulo}</b>{texto && <small>{texto}</small>}</span>
+        {selo}
+      </div>
+    );
+  }
+  return (
+    <div className="ac-sis off" aria-disabled="true">
+      <div className="ac-sis-h"><span className="ac-ic" aria-hidden="true"><span className="icon">{icon}</span></span>{selo}</div>
+      <b>{titulo}</b>{texto && <p>{texto}</p>}
     </div>
   );
 }

@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { refresh } from 'next/cache';
 import { db } from '@/lib/db';
 import { corrigir } from '@/lib/aprendizagem';
+import { podeEditarConteudo } from '@/lib/permissoes';
 import { exigirPessoa } from '@/lib/sessao';
 import { cursoParaAluno } from '@/lib/trilhas';
 
@@ -41,4 +42,17 @@ export async function enviarQuiz(dados: z.input<typeof Entrada>): Promise<Result
     ok: true, ...r,
     revisao: curso.perguntas.map((q, i) => ({ enunciado: q.enunciado, alternativas: q.alternativas, marcada: marcadas[i], correta: q.correta })),
   };
+}
+
+const Posicao = z.object({ videoId: z.string().min(1).max(64), segundos: z.number().int().min(0).max(86400) });
+
+/** Guarda até onde a pessoa assistiu o vídeo (e marca o curso como começado). Mesma regra de visibilidade do curso. */
+export async function salvarPosicao(dados: z.input<typeof Posicao>) {
+  const eu = await exigirPessoa();
+  const p = Posicao.safeParse(dados);
+  if (!p.success) return;
+  const v = await db.video.findUnique({ where: { id: p.data.videoId }, select: { curso: { select: { publicado: true, etapa: { select: { trilha: { select: { publicada: true } } } } } } } });
+  if (!v || (!podeEditarConteudo(eu.cargo) && (!v.curso.publicado || !v.curso.etapa.trilha.publicada))) return;
+  const chave = { usuarioId_videoId: { usuarioId: eu.id, videoId: p.data.videoId } };
+  await db.videoVisto.upsert({ where: chave, create: { usuarioId: eu.id, videoId: p.data.videoId, segundos: p.data.segundos }, update: { segundos: p.data.segundos } });
 }
