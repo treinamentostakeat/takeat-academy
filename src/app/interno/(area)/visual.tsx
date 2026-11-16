@@ -26,7 +26,7 @@ export function CapaCurso({ titulo, numero, selo, imagem }: { titulo: string; nu
   );
 }
 
-/** Medalha em traço fino, dourada (conquistas) */
+/** Medalha em traço fino, amarela (conquistas) */
 export function IconeMedalha({ tamanho = 16 }: { tamanho?: number }) {
   return (
     <svg className="ac-medalha" width={tamanho} height={tamanho} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">

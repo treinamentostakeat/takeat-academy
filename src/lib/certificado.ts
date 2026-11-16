@@ -1,11 +1,11 @@
 import 'server-only';
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
 
-/* Certificado em PDF com cara de diploma: fundo marfim, moldura fina dourada, nome em serifada grande,
+/* Certificado em PDF com cara de diploma: fundo marfim, moldura fina em vermelho e amarelo Takeat, nome em serifada grande,
    trilha, data, assinatura e código de validação. Usa as fontes padrão do PDF (Times e Helvetica), sem baixar nada. */
 
 const MARFIM = rgb(0.969, 0.953, 0.918);
-const OURO = rgb(0.788, 0.663, 0.431);
+const OURO = rgb(0.902, 0.588, 0.102); // amarelo Takeat um pouco mais escuro, para ler bem no papel claro
 const TINTA = rgb(0.086, 0.082, 0.078);
 const CINZA = rgb(0.42, 0.4, 0.37);
 const VERMELHO = rgb(0.784, 0.075, 0.102);
@@ -33,9 +33,9 @@ export async function gerarCertificado(d: { nome: string; trilha: string; data: 
   // Texto que pode ser longo (nome, trilha): diminui até caber
   const caber = (t: string, f: Fonte, tam: number, max: number) => { let s = tam; while (s > 14 && f.widthOfTextAtSize(seguro(t), s) > max) s -= 1; return s; };
 
-  // Fundo e moldura dupla dourada
+  // Fundo e moldura dupla: vermelho por fora, amarelo por dentro
   pg.drawRectangle({ x: 0, y: 0, width: W, height: H, color: MARFIM });
-  pg.drawRectangle({ x: 24, y: 24, width: W - 48, height: H - 48, borderColor: OURO, borderWidth: 1.2 });
+  pg.drawRectangle({ x: 24, y: 24, width: W - 48, height: H - 48, borderColor: VERMELHO, borderWidth: 1.2 });
   pg.drawRectangle({ x: 32, y: 32, width: W - 64, height: H - 64, borderColor: OURO, borderWidth: 0.5 });
   // Cantos
   for (const [x, y] of [[32, 32], [W - 32, 32], [32, H - 32], [W - 32, H - 32]]) pg.drawCircle({ x, y, size: 3, color: OURO });

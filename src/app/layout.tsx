@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Fraunces, Inter } from 'next/font/google';
+import { Inter, Tinos } from 'next/font/google';
 import '@/styles/tokens.css';
 import '@/styles/sala.css';
 import '@/styles/equipe.css';
@@ -12,8 +12,9 @@ export const metadata: Metadata = {
 };
 export const viewport: Viewport = { width: 'device-width', initialScale: 1 };
 
-// Fontes da Academy (área interna): serifada nos títulos e Inter no texto. Sem preload: a área de clientes não usa.
-const serifada = Fraunces({ subsets: ['latin'], style: ['normal', 'italic'], axes: ['opsz'], variable: '--font-fraunces', display: 'swap', preload: false });
+// Fontes da Academy (área interna): Times New Roman nos títulos (Tinos onde o aparelho não tem a Times) e Inter no texto.
+// Sem preload: a área de clientes não usa.
+const serifada = Tinos({ subsets: ['latin'], weight: ['400', '700'], style: ['normal', 'italic'], variable: '--font-tinos', display: 'swap', preload: false });
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap', preload: false });
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
