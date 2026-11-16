@@ -11,9 +11,10 @@ const CINZA = rgb(0.42, 0.4, 0.37);
 const VERMELHO = rgb(0.784, 0.075, 0.102);
 
 /** As fontes padrão do PDF só têm o alfabeto latino (WinAnsi): o que não couber sai do texto em vez de quebrar o arquivo */
-const seguro = (s: string) => s.normalize('NFC').replace(/[^\x20-\x7E -ÿ]/g, '').trim();
+const seguro = (s: string) => s.normalize('NFC').replace(/[^\x20-\x7E\u00A0-\u00FF]/g, '').trim();
 
-export async function gerarCertificado(d: { nome: string; trilha: string; data: string; codigo: string; validarEm: string }) {
+/** previa = modelo para quem edita o conteúdo: selo "Prévia" e sem código de validação */
+export async function gerarCertificado(d: { nome: string; trilha: string; data: string; codigo: string; validarEm: string; previa?: boolean }) {
   const pdf = await PDFDocument.create();
   pdf.setTitle(`Certificado - ${seguro(d.trilha)} - ${seguro(d.nome)}`);
   pdf.setAuthor('Takeat Academy');
@@ -57,8 +58,15 @@ export async function gerarCertificado(d: { nome: string; trilha: string; data: 
   centro('Takeat', 94, sans, 10, CINZA, 1);
 
   // Código de validação
-  centro(`Código de validação: ${d.codigo}`, 58, sans, 9, CINZA, 0.5);
-  centro(`Confira em ${d.validarEm}`, 46, sans, 8, CINZA);
+  if (d.previa) {
+    centro('Prévia do certificado: o código de validação aparece no certificado de quem concluir a trilha', 52, sans, 9, CINZA);
+    const selo = 'PRÉVIA', tam = 11, w = sansB.widthOfTextAtSize(selo, tam) + 6 * 2.5;
+    pg.drawRectangle({ x: W - 64 - w - 16, y: H - 86, width: w + 16, height: 24, borderColor: VERMELHO, borderWidth: 1 });
+    pg.drawText(selo, { x: W - 64 - w - 8, y: H - 78, size: tam, font: sansB, color: VERMELHO, characterSpacing: 2.5 } as Parameters<typeof pg.drawText>[1]);
+  } else {
+    centro(`Código de validação: ${d.codigo}`, 58, sans, 9, CINZA, 0.5);
+    centro(`Confira em ${d.validarEm}`, 46, sans, 8, CINZA);
+  }
 
   return pdf.save();
 }
