@@ -1,7 +1,8 @@
 'use client';
 import { useEffect, useRef, useState, useTransition } from 'react';
 import { createPortal } from 'react-dom';
-import { iniciais } from '@/lib/formato';
+import { linkWhatsApp, mensagemDeAcesso, numeroWhatsApp } from '@/lib/acesso-whatsapp';
+import { iniciais, mascaraTelefone } from '@/lib/formato';
 import { DESCRICAO_CARGO, ROTULO_CARGO, ehEquipe, loginDe, type Cargo } from '@/lib/permissoes';
 import { Dropdown } from '@/components/Dropdown';
 import { BotaoExportar, Paginacao, usePaginacao } from '@/components/equipe/Tabela';
@@ -15,7 +16,7 @@ type Filtro = { q: string; cargo: '' | Cargo; sit: '' | 'ativo' | 'off' };
 type Aberto =
   | { t: 'novo' }
   | { t: 'cargo' | 'senha' | 'desativar'; u: Linha }
-  | { t: 'senhaGerada'; nome: string; email: string; cargo: Cargo; senha: string; nova: boolean }
+  | { t: 'senhaGerada'; nome: string; email: string; cargo: Cargo; senha: string; nova: boolean; whatsapp: string }
   | null;
 
 const CARGO: Record<Cargo, { l: string; cls: string }> = {
@@ -171,10 +172,10 @@ export function UsuariosTabela({ linhas, filtro, cargos, titulo, subtitulo, rotu
       </section>
 
       {menu && <MenuAcoes u={menu.u} btn={menu.btn} podeTrocarCargo={cargos.length > 1} onFechar={() => setMenu(null)} onAcao={acao} />}
-      {aberto?.t === 'novo' && <ModalNovo cargos={cargos} onFechar={() => setAberto(null)} onCriado={(r) => setAberto({ t: 'senhaGerada', nome: r.nome, email: r.email, cargo: r.cargo, senha: r.senha, nova: false })} />}
+      {aberto?.t === 'novo' && <ModalNovo cargos={cargos} onFechar={() => setAberto(null)} onCriado={(r) => setAberto({ t: 'senhaGerada', nome: r.nome, email: r.email, cargo: r.cargo, senha: r.senha, nova: false, whatsapp: r.whatsapp })} />}
       {aberto?.t === 'cargo' && <ModalCargo u={aberto.u} cargos={cargos} onFechar={() => setAberto(null)} />}
       {aberto?.t === 'desativar' && <ModalDesativar u={aberto.u} onFechar={() => setAberto(null)} />}
-      {aberto?.t === 'senha' && <ModalNovaSenha u={aberto.u} onFechar={() => setAberto(null)} onGerada={(senha) => setAberto({ t: 'senhaGerada', nome: aberto.u.nome, email: aberto.u.email, cargo: aberto.u.cargo, senha, nova: true })} />}
+      {aberto?.t === 'senha' && <ModalNovaSenha u={aberto.u} onFechar={() => setAberto(null)} onGerada={(senha) => setAberto({ t: 'senhaGerada', nome: aberto.u.nome, email: aberto.u.email, cargo: aberto.u.cargo, senha, nova: true, whatsapp: '' })} />}
       {aberto?.t === 'senhaGerada' && <ModalSenha {...aberto} onFechar={() => setAberto(null)} />}
     </>
   );
@@ -252,8 +253,9 @@ function Cargos({ opcoes, valor, onChange, nome }: { opcoes: Cargo[]; valor: str
   );
 }
 
-function ModalNovo({ cargos, onFechar, onCriado }: { cargos: Cargo[]; onFechar: () => void; onCriado: (r: { nome: string; email: string; cargo: Cargo; senha: string }) => void }) {
+function ModalNovo({ cargos, onFechar, onCriado }: { cargos: Cargo[]; onFechar: () => void; onCriado: (r: { nome: string; email: string; cargo: Cargo; senha: string; whatsapp: string }) => void }) {
   const [nome, setNome] = useState('');
+  const [whatsapp, setWhatsapp] = useState('');
   const [email, setEmail] = useState('');
   const [departamento, setDepartamento] = useState('');
   const [cargo, setCargo] = useState<Cargo>(cargos.includes('colaborador') ? 'colaborador' : cargos[0]);
@@ -261,7 +263,7 @@ function ModalNovo({ cargos, onFechar, onCriado }: { cargos: Cargo[]; onFechar: 
   const interno = !ehEquipe(cargo);
   const enviar = (e?: React.FormEvent) => {
     e?.preventDefault();
-    rodar(() => criarUsuario({ nome, email, cargo, departamento: interno ? departamento : undefined }), (r) => { toast(r.msg, 'person_add'); onCriado({ nome: nome.trim(), email: r.email!, cargo, senha: r.senha! }); });
+    rodar(() => criarUsuario({ nome, email, cargo, departamento: interno ? departamento : undefined }), (r) => { toast(r.msg, 'person_add'); onCriado({ nome: nome.trim(), email: r.email!, cargo, senha: r.senha!, whatsapp }); });
   };
   return (
     <Modal titulo="Adicionar pessoa" onFechar={onFechar} rodape={<>
@@ -287,6 +289,11 @@ function ModalNovo({ cargos, onFechar, onCriado }: { cargos: Cargo[]; onFechar: 
             {erro?.campo === 'departamento' && <div className="err">{erro.msg}</div>}
           </div>
         )}
+        <div className="fld">
+          <label htmlFor="nv-w">WhatsApp (opcional)</label>
+          <input id="nv-w" type="tel" inputMode="numeric" autoComplete="off" placeholder="(27) 99999-9999" value={whatsapp} onChange={(e) => setWhatsapp(mascaraTelefone(e.target.value))} />
+          <div className="info">Para mandar o acesso pelo WhatsApp na próxima tela, com a mensagem pronta. Não fica salvo.</div>
+        </div>
         {cargos.length > 1 && <div className="fld"><label id="nv-cl">Cargo</label><Cargos opcoes={cargos} valor={cargo} onChange={setCargo} nome="nv-c" /></div>}
         {erro && !erro.campo && <p className="err" role="alert">{erro.msg}</p>}
       </form>
@@ -294,8 +301,15 @@ function ModalNovo({ cargos, onFechar, onCriado }: { cargos: Cargo[]; onFechar: 
   );
 }
 
-function ModalSenha({ nome, email, cargo, senha, nova, onFechar }: { nome: string; email: string; cargo: Cargo; senha: string; nova: boolean; onFechar: () => void }) {
+function ModalSenha({ nome, email, cargo, senha, nova, whatsapp, onFechar }: { nome: string; email: string; cargo: Cargo; senha: string; nova: boolean; whatsapp: string; onFechar: () => void }) {
   const [copiado, setCopiado] = useState(false);
+  const [numero, setNumero] = useState(whatsapp);
+  const endereco = typeof window !== 'undefined' ? `${location.origin}${loginDe(cargo)}` : loginDe(cargo);
+  const invalido = !!numero && !numeroWhatsApp(numero);
+  const abrirWhatsApp = () => {
+    if (invalido) return;
+    window.open(linkWhatsApp(numero, mensagemDeAcesso({ nome, endereco, email, senha, nova })), '_blank', 'noopener,noreferrer');
+  };
   const copiar = async () => {
     try { await navigator.clipboard.writeText(senha); setCopiado(true); toast('Senha copiada.', 'content_copy'); }
     catch { toast('Não foi possível copiar. Selecione a senha e copie.', 'error'); }
@@ -303,11 +317,19 @@ function ModalSenha({ nome, email, cargo, senha, nova, onFechar }: { nome: strin
   return (
     <Modal titulo={nova ? 'Nova senha provisória' : 'Pessoa adicionada'} onFechar={onFechar} foco=".md-f .btn-outlined" rodape={<>
       <button type="button" className="btn btn-l btn-outlined" onClick={copiar}><span className="icon">{copiado ? 'check' : 'content_copy'}</span>{copiado ? 'Copiada' : 'Copiar senha'}</button>
-      <button type="button" className="btn btn-l btn-filled" onClick={onFechar}>Concluir</button>
+      <button type="button" className="btn btn-l btn-outlined" onClick={onFechar}>Concluir</button>
     </>}>
-      <p>Passe o acesso de <b className="forte">{nome}</b> por um canal seguro (por exemplo, mensagem direta). Ainda não há envio automático por e-mail.</p>
+      <p>Mande o acesso de <b className="forte">{nome}</b> pelo WhatsApp: a mensagem já vai pronta, com o endereço, o e-mail e a senha. Você só confere e aperta enviar.</p>
+      <div className="zap">
+        <div className="fld">
+          <label htmlFor="sg-w">WhatsApp de {nome.split(' ')[0]}</label>
+          <input id="sg-w" type="tel" inputMode="numeric" autoComplete="off" placeholder="(27) 99999-9999" value={numero} onChange={(e) => setNumero(mascaraTelefone(e.target.value))} aria-invalid={invalido} onKeyDown={(e) => { if (e.key === 'Enter') abrirWhatsApp(); }} />
+          <div className={invalido ? 'err' : 'info'}>{invalido ? 'Confira o número: DDD + número, ex. (27) 99999-9999.' : 'Sem número, o WhatsApp pede para você escolher o contato.'}</div>
+        </div>
+        <button type="button" className="btn btn-l btn-filled" disabled={invalido} onClick={abrirWhatsApp}><span className="icon">send</span>Enviar no WhatsApp</button>
+      </div>
       <dl className="cred">
-        <dt>Endereço</dt><dd>{typeof window !== 'undefined' ? `${location.origin}${loginDe(cargo)}` : loginDe(cargo)}</dd>
+        <dt>Endereço</dt><dd>{endereco}</dd>
         <dt>E-mail</dt><dd>{email}</dd>
         <dt>Senha provisória</dt><dd><code className="pw">{senha}</code></dd>
       </dl>
