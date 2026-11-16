@@ -1,5 +1,4 @@
 import { corDaEtapa, iconeDoCurso } from '@/lib/aprendizagem';
-import { Monograma } from './visual';
 
 /* Peças pequenas da área interna */
 
@@ -23,10 +22,8 @@ export function Capa({ titulo, etapa, indiceEtapa, selo, grande, icone, imagem }
         ? <img className="in-capa-img" src={imagem} alt="" loading="lazy" />
         : <>
           <span className="in-capa-e">{etapa}</span>
-          {grande
-            ? <Monograma texto={titulo} />
-            // icone = padrão quando o título não indica assunto (ex.: trilhas)
-            : <span className="icon in-capa-i">{doTitulo === 'school' && icone ? icone : doTitulo}</span>}
+          {/* icone = padrão quando o título não indica assunto (ex.: trilhas) */}
+          <span className="icon in-capa-i">{doTitulo === 'school' && icone ? icone : doTitulo}</span>
         </>}
       {selo && <span className="in-capa-s">{selo}</span>}
     </div>

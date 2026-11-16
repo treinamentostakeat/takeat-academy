@@ -4,7 +4,7 @@ import { exigirPessoa } from '@/lib/sessao';
 import { jogoDe } from '@/lib/gamificacao';
 import { trilhasDoUsuario } from '@/lib/trilhas';
 import { BarraNivel, Comanda } from './jogo';
-import { DecoCapelo, EmBreve, Monograma, Progresso } from './visual';
+import { DecoCapelo, DecoTrilha, EmBreve, Progresso } from './visual';
 import './interno.css';
 
 export const metadata = { title: 'Início' };
@@ -17,7 +17,7 @@ const SISTEMA: { icon: string; titulo: string; texto: string; href?: string; mai
   { icon: 'help', titulo: 'Dúvidas frequentes', texto: 'As perguntas mais comuns dos clientes, respondidas.' },
 ];
 
-/* Início da Academy: faixa de boas-vindas, a semana (nível e comanda), trilhas e o sistema visto como cliente. */
+/* Início da Academy: faixa de boas-vindas, trilhas e o sistema visto como cliente. */
 export default async function Inicio({ searchParams }: { searchParams: Promise<{ negado?: string }> }) {
   const u = await exigirPessoa();
   const { negado } = await searchParams;
@@ -59,14 +59,15 @@ export default async function Inicio({ searchParams }: { searchParams: Promise<{
                     {t.capaUrl
                       // eslint-disable-next-line @next/next/no-img-element -- link assinado e temporário do Storage
                       ? <img src={t.capaUrl} alt="" />
-                      : <Monograma texto={t.titulo} />}
+                      : <DecoTrilha />}
+                    <span className="ac-tcapa-t">Trilha · {t.total} {t.total === 1 ? 'curso' : 'cursos'}</span>
                     <span className="ac-tcapa-s">
                       {concluida && <span className="ac-selo ok"><span className="icon" aria-hidden="true">check_circle</span>Concluída</span>}
                       {!t.publicada && <span className="ac-selo am">Não publicada</span>}
                     </span>
-                    <div className="ac-tcapa-t"><small>Trilha · {t.total} {t.total === 1 ? 'curso' : 'cursos'}</small><h3>{t.titulo}</h3></div>
                   </div>
                   <div className="ac-tcorpo">
+                    <h3>{t.titulo}</h3>
                     {t.descricao && <p>{t.descricao}</p>}
                     <Progresso feitos={t.concluidos} total={t.total} />
                     <span className="ac-btn prim">{concluida ? 'Rever trilha' : t.concluidos || t.comecados.size ? 'Continuar trilha' : 'Abrir trilha'}<span className="icon" aria-hidden="true">arrow_forward</span></span>
