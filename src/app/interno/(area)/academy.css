@@ -1,6 +1,6 @@
 /* Takeat Academy (área interna): tema "editorial escuro" (universidade corporativa).
-   Serifada (Fraunces) nos títulos, Inter no texto. Vermelho só como assinatura: botão principal, item ativo do menu,
-   arco de progresso e selo "Ao vivo". Dourado para conquistas (medalhas, níveis, formatura).
+   Times New Roman nos títulos, Inter no texto. Vermelho Takeat nos toques de marca: botões, rótulos, menu ativo,
+   progresso, etapa atual e "Ao vivo". Amarelo Takeat (com degradê do vermelho) para conquistas: medalhas, níveis, formatura.
    Os tokens valem na página inteira enquanto a moldura .ac estiver na tela (inclusive modais e menus em portal),
    então cursos, editores e telas de administração herdam o tema sem mudar de componente.
    Vermelho #C8131A só em fundos (botões, progresso); texto vermelho usa #FF6B6F (contraste no escuro). */
@@ -24,12 +24,12 @@
   --ac-red-num: rgba(200, 19, 26, .18);
   /* Sem vermelho chapado: superfície escura com um brilho vinho bem sutil */
   --ac-grad: radial-gradient(120% 140% at 100% 0%, rgba(122, 16, 22, .32) 0%, rgba(122, 16, 22, 0) 55%), linear-gradient(160deg, #1E1C1A 0%, #121110 100%);
-  --ac-gold: #C9A96E;
-  --ac-gold-soft: rgba(201, 169, 110, .12);
+  --ac-gold: #F5A623; /* amarelo Takeat: conquistas */
+  --ac-gold-soft: rgba(245, 166, 35, .12);
   --ac-yellow: var(--ac-gold);
   --ac-yellow-soft: var(--ac-gold-soft);
-  --ac-yellow-num: rgba(201, 169, 110, .18);
-  --ac-serif: var(--font-fraunces), "Iowan Old Style", Georgia, serif;
+  --ac-yellow-num: rgba(245, 166, 35, .18);
+  --ac-serif: "Times New Roman", var(--font-tinos), Times, serif;
   --ac-sans: var(--font-inter), system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
 
   /* Tokens do kit apontando para a paleta da Academy */
@@ -400,7 +400,7 @@ a.ac-sis:hover { border-color: var(--ac-line-strong); }
 .ac .icon { font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24; }
 
 /* Tipografia: títulos em serifada, rótulos pequenos em maiúsculas cinza-quente */
-.ac h1, .ac h2, .ac-hero h1, .ac-th h1, .ac-pg-h h1, .ac-comece h2, .ac-bv h1, .ac .in h1, .ac .rp-head h1 { font-family: var(--ac-serif); font-weight: 400; letter-spacing: -.02em; font-optical-sizing: auto; }
+.ac h1, .ac h2, .ac-hero h1, .ac-th h1, .ac-pg-h h1, .ac-comece h2, .ac-bv h1, .ac .in h1, .ac .rp-head h1 { font-family: var(--ac-serif); font-weight: 400; letter-spacing: -.01em; }
 .ac h3 { font-family: var(--ac-sans); font-weight: 500; letter-spacing: -.005em; }
 .ac h1 em, .ac h2 em, .ac .lead em { font-family: var(--ac-serif); font-style: italic; color: inherit; }
 .ac-eyebrow, .ac-label, .ac-grp-t, .ac .in-eyebrow, .ac .in-toc-t { font-family: var(--ac-sans); font-size: 11px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: var(--ac-label); }
@@ -433,11 +433,11 @@ a.ac-tcard:hover, a.ac-ccard:hover, a.ac-sis:hover, a.ac-escolha:hover, a.ac-set
 
 /* Pílulas e selos */
 .ac-pilula { font-weight: 500; background: transparent; border: 1px solid var(--ac-line-strong); color: var(--ac-text-2); }
-.ac-pilula.ouro, .ac-pilula.ok { color: var(--ac-gold); border-color: rgba(201, 169, 110, .35); background: transparent; }
-.ac-pilula.am { border-color: rgba(201, 169, 110, .35); background: transparent; }
+.ac-pilula.ouro, .ac-pilula.ok { color: var(--ac-gold); border-color: rgba(245, 166, 35, .35); background: transparent; }
+.ac-pilula.am { border-color: rgba(245, 166, 35, .35); background: transparent; }
 .ac-selo { font-weight: 500; backdrop-filter: blur(6px); }
 .ac-selo.ok { color: #1A1510; background: var(--ac-gold); }
-.ac-selo.am { color: var(--ac-gold); background: rgba(14, 13, 12, .72); border: 1px solid rgba(201, 169, 110, .4); }
+.ac-selo.am { color: var(--ac-gold); background: rgba(14, 13, 12, .72); border: 1px solid rgba(245, 166, 35, .4); }
 .ac-medalha { flex: none; color: var(--ac-gold); }
 
 /* Ícone em quadrado: linha, sem fundo vermelho */
@@ -447,10 +447,10 @@ a.ac-tcard:hover, a.ac-ccard:hover, a.ac-sis:hover, a.ac-escolha:hover, a.ac-set
 /* Capa sem foto: textura escura e monograma em serifada */
 .ac-mono { position: absolute; inset: 0; display: grid; place-items: center; overflow: hidden;
   background:
-    radial-gradient(90% 120% at 85% 0%, rgba(201, 169, 110, .10) 0%, rgba(201, 169, 110, 0) 60%),
+    radial-gradient(90% 120% at 85% 0%, rgba(245, 166, 35, .10) 0%, rgba(245, 166, 35, 0) 60%),
     repeating-linear-gradient(135deg, rgba(255, 255, 255, .025) 0 1px, transparent 1px 9px),
     linear-gradient(160deg, #22201D 0%, #141312 100%); }
-.ac .ac-mono-i { font-size: 56px; width: 56px; height: 56px; color: rgba(201, 169, 110, .75); font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' -25, 'opsz' 48; }
+.ac .ac-mono-i { font-size: 56px; width: 56px; height: 56px; color: rgba(245, 166, 35, .75); font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' -25, 'opsz' 48; }
 
 /* ----- Menu lateral: estreito e silencioso; ativo com barra vermelha de 2px ----- */
 .ac-nav { flex-basis: 232px; padding: 32px 16px; gap: 36px; border-right: 1px solid var(--ac-line); }
@@ -509,11 +509,11 @@ a.ac-tcard:hover, a.ac-ccard:hover, a.ac-sis:hover, a.ac-escolha:hover, a.ac-set
 .ac-anel b small { font-family: var(--ac-sans); font-size: 16px; font-weight: 400; margin-left: 2px; }
 .ac-anel span { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--ac-label); }
 .ac-mapa .aqui { border: 1px solid rgba(244, 241, 236, .5); padding: 22px; }
-.ac-mapa .feita { border-color: rgba(201, 169, 110, .3); }
-.ac-mapa .forma { border: 1px dashed rgba(201, 169, 110, .35); }
+.ac-mapa .feita { border-color: rgba(245, 166, 35, .3); }
+.ac-mapa .forma { border: 1px dashed rgba(245, 166, 35, .35); }
 .ac-mapa .ac-num { background: transparent; border: 1px solid var(--ac-line-strong); color: var(--ac-text-2); font-weight: 500; }
 .ac-mapa .aqui .ac-num { background: var(--ac-text); border-color: var(--ac-text); color: #161514; }
-.ac-mapa .feita .ac-num, .ac-mapa .forma .ac-num { background: transparent; border-color: rgba(201, 169, 110, .5); color: var(--ac-gold); }
+.ac-mapa .feita .ac-num, .ac-mapa .forma .ac-num { background: transparent; border-color: rgba(245, 166, 35, .5); color: var(--ac-gold); }
 .ac-mapa-h span:last-child { font-size: 10px; letter-spacing: .12em; font-weight: 500; }
 .ac-mapa b { font-family: var(--ac-serif); font-size: 20px; font-weight: 400; }
 .ac-num { background: transparent; border: 1px solid var(--ac-line-strong); color: var(--ac-text-2); }
@@ -614,7 +614,7 @@ a.ac-quem { text-decoration: none; color: var(--ac-text); }
 .ac-nivel-h b { font-family: var(--ac-serif); font-weight: 400; font-size: clamp(34px, 4vw, 46px); line-height: 1; letter-spacing: -.02em; color: var(--ac-gold); }
 .ac-nivel-xp { font-family: var(--ac-serif); font-size: 22px; color: var(--ac-text); }
 .ac-nivel-barra { height: 4px; border-radius: 4px; background: var(--ac-surface-3); overflow: hidden; }
-.ac-nivel-barra i { display: block; height: 100%; border-radius: 4px; background: linear-gradient(90deg, #A88A52, var(--ac-gold)); animation: ac-cresce 1s cubic-bezier(.2, .7, .2, 1) both; transform-origin: left; }
+.ac-nivel-barra i { display: block; height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--ac-red), var(--ac-gold)); animation: ac-cresce 1s cubic-bezier(.2, .7, .2, 1) both; transform-origin: left; }
 @keyframes ac-cresce { from { transform: scaleX(0); } }
 .ac-nivel p { margin: 0; font-size: 14px; color: var(--ac-muted); }
 .ac-nivel p b { color: var(--ac-text); font-weight: 500; }
@@ -632,7 +632,7 @@ a.ac-quem { text-decoration: none; color: var(--ac-text); }
 .ac-comanda li.ok .tx { text-decoration: line-through; text-decoration-color: rgba(200, 19, 26, .7); color: #5A544C; }
 .ac-comanda li.ok .ck { background: #1E1C1A; color: #F4F1EC; }
 .ac-comanda footer { display: flex; justify-content: space-between; gap: 8px; padding-top: 10px; border-top: 1px dashed rgba(30, 28, 26, .35); text-transform: uppercase; letter-spacing: .06em; font-size: 12px; }
-.ac-comanda footer b { color: #8A6A2E; }
+.ac-comanda footer b { color: var(--ac-red); }
 .ac-comanda-pe { margin: 0; font-size: 11px; color: #7A746B; text-align: center; }
 .ac-comanda-carimbo { position: absolute; right: 22px; top: 54px; padding: 4px 12px; border: 2px solid var(--ac-red); border-radius: 6px; color: var(--ac-red); font-family: var(--ac-sans); font-weight: 600; font-size: 18px; letter-spacing: .2em; text-transform: uppercase; transform: rotate(-12deg); opacity: .85; animation: ac-carimba .5s cubic-bezier(.3, 1.6, .5, 1) both; }
 @keyframes ac-carimba { from { transform: rotate(-12deg) scale(1.8); opacity: 0; } }
@@ -644,17 +644,17 @@ a.ac-quem { text-decoration: none; color: var(--ac-text); }
 .ac-passaporte-h p:not(.ac-eyebrow) { margin: 0; font-size: 15px; color: var(--ac-muted); max-width: 560px; }
 .ac-selo-forma { width: 72px; height: 72px; flex: none; border-radius: 999px; border: 1px dashed var(--ac-line-strong); display: grid; place-items: center; color: var(--ac-label); }
 .ac-selo-forma .icon { font-size: 32px; width: 32px; height: 32px; }
-.ac-selo-forma.ok { border: 2px solid var(--ac-gold); color: var(--ac-gold); box-shadow: inset 0 0 0 4px var(--ac-surface), inset 0 0 0 5px rgba(201, 169, 110, .5); }
+.ac-selo-forma.ok { border: 2px solid var(--ac-gold); color: var(--ac-gold); box-shadow: inset 0 0 0 4px var(--ac-surface), inset 0 0 0 5px rgba(245, 166, 35, .5); }
 .ac-carimbos { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); gap: 20px; }
 .ac-carimbo { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; aspect-ratio: 1; padding: 14px; border-radius: 999px; border: 1px dashed var(--ac-line-strong); text-align: center; text-decoration: none; color: var(--ac-label); transition: border-color .18s ease-out, transform .18s ease-out; }
 .ac-carimbo:hover { color: var(--ac-text-2); border-color: var(--ac-muted); }
 .ac-carimbo .ini { font-family: var(--ac-serif); font-style: italic; font-size: 26px; line-height: 1; }
 .ac-carimbo .nm { font-size: 11px; line-height: 1.25; max-width: 100%; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
 .ac-carimbo .dt { font-size: 10px; letter-spacing: .12em; text-transform: uppercase; }
-.ac-carimbo.ok { border: 2px solid var(--ac-gold); color: var(--ac-gold); transform: rotate(var(--giro, -6deg)); box-shadow: inset 0 0 0 4px var(--ac-surface), inset 0 0 0 5px rgba(201, 169, 110, .45); }
-.ac-carimbo.ok:hover { color: #E0C48D; transform: rotate(0deg) scale(1.03); }
-.ac-pass-faixa { display: flex; align-items: center; gap: 14px; padding: 16px 20px; border-radius: 12px; border: 1px solid rgba(201, 169, 110, .3); text-decoration: none; color: var(--ac-text); }
-.ac-pass-faixa:hover { border-color: rgba(201, 169, 110, .6); color: var(--ac-text); }
+.ac-carimbo.ok { border: 2px solid var(--ac-gold); color: var(--ac-gold); transform: rotate(var(--giro, -6deg)); box-shadow: inset 0 0 0 4px var(--ac-surface), inset 0 0 0 5px rgba(245, 166, 35, .45); }
+.ac-carimbo.ok:hover { color: #FFC266; transform: rotate(0deg) scale(1.03); }
+.ac-pass-faixa { display: flex; align-items: center; gap: 14px; padding: 16px 20px; border-radius: 12px; border: 1px solid rgba(245, 166, 35, .3); text-decoration: none; color: var(--ac-text); }
+.ac-pass-faixa:hover { border-color: rgba(245, 166, 35, .6); color: var(--ac-text); }
 .ac-pass-faixa > .icon:first-child { color: var(--ac-gold); }
 .ac-pass-faixa > span:nth-child(2) { flex: 1; min-width: 0; }
 .ac-pass-faixa b { display: block; font-weight: 500; }
@@ -668,7 +668,7 @@ a.ac-quem { text-decoration: none; color: var(--ac-text); }
 .ac-cardapio-sec h3 { margin: 0 0 16px; text-align: center; font-family: var(--ac-serif); font-style: italic; font-weight: 400; font-size: 24px; color: var(--ac-gold); }
 .ac-cardapio-sec ul { margin: 0 auto; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 18px; max-width: 760px; }
 .ac-cardapio li { display: flex; align-items: center; gap: 14px; }
-.ac-cardapio .ic { width: 40px; height: 40px; flex: none; border-radius: 999px; border: 1px solid rgba(201, 169, 110, .5); display: grid; place-items: center; color: var(--ac-gold); }
+.ac-cardapio .ic { width: 40px; height: 40px; flex: none; border-radius: 999px; border: 1px solid rgba(245, 166, 35, .5); display: grid; place-items: center; color: var(--ac-gold); }
 .ac-cardapio .ic .icon { font-size: 20px; width: 20px; height: 20px; }
 .ac-cardapio .tx { min-width: 0; }
 .ac-cardapio .tx b { display: block; font-family: var(--ac-serif); font-weight: 400; font-size: 19px; color: var(--ac-text); }
@@ -699,7 +699,7 @@ a.ac-quem { text-decoration: none; color: var(--ac-text); }
 
 /* Perfil */
 .ac-perfil { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
-.ac-perfil-av { width: 88px; height: 88px; flex: none; border-radius: 999px; border: 1px solid var(--ac-gold); display: grid; place-items: center; font-family: var(--ac-serif); font-size: 32px; color: var(--ac-text); background: var(--ac-surface-2); box-shadow: inset 0 0 0 4px var(--ac-bg), inset 0 0 0 5px rgba(201, 169, 110, .4); }
+.ac-perfil-av { width: 88px; height: 88px; flex: none; border-radius: 999px; border: 1px solid var(--ac-gold); display: grid; place-items: center; font-family: var(--ac-serif); font-size: 32px; color: var(--ac-text); background: var(--ac-surface-2); box-shadow: inset 0 0 0 4px var(--ac-bg), inset 0 0 0 5px rgba(245, 166, 35, .4); }
 .ac-perfil h1 { margin: 6px 0 8px; font-size: clamp(32px, 4vw, 48px); line-height: 1.05; }
 .ac-perfil-sub { margin: 0; display: flex; gap: 18px; flex-wrap: wrap; align-items: center; font-size: 15px; color: var(--ac-gold); font-family: var(--ac-serif); }
 .ac-perfil-sub .ac-fogo { font-family: var(--ac-sans); }
@@ -708,7 +708,7 @@ a.ac-quem { text-decoration: none; color: var(--ac-text); }
 .ac-nums b { font-family: var(--ac-serif); font-weight: 400; font-size: 36px; line-height: 1; }
 .ac-nums span { font-size: 13px; color: var(--ac-muted); }
 .ac-certs { display: flex; flex-direction: column; gap: 12px; }
-.ac-cert { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; padding: 20px 24px; border-radius: 16px; border: 1px solid rgba(201, 169, 110, .3); background: var(--ac-surface); }
+.ac-cert { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; padding: 20px 24px; border-radius: 16px; border: 1px solid rgba(245, 166, 35, .3); background: var(--ac-surface); }
 .ac-cert-i { width: 48px; height: 48px; flex: none; border-radius: 999px; border: 1px solid var(--ac-gold); color: var(--ac-gold); display: grid; place-items: center; }
 .ac-cert > div { flex: 1; min-width: 200px; }
 .ac-cert b { display: block; font-family: var(--ac-serif); font-weight: 400; font-size: 21px; }
@@ -742,3 +742,61 @@ a.ac-quem { text-decoration: none; color: var(--ac-text); }
   .ac-placar, .ac-carimbo { transition: none; }
   .ac-carimbo.ok:hover { transform: rotate(var(--giro, -6deg)); }
 }
+
+/* =====================================================================
+   Toques de vermelho Takeat e ajustes para a Times New Roman
+   ===================================================================== */
+/* Times: menos aperto entre letras que a serifada anterior */
+.ac-hero h1, .ac-nivel-h b, .ac-anel b, .ac-th h1 { letter-spacing: -.01em; }
+.ac .ac-hero h1 em, .ac h1 em, .ac h2 em { font-style: italic; }
+
+/* Rótulos e chamadas em vermelho */
+.ac-eyebrow, .ac .in-eyebrow { color: var(--ac-red-text); }
+.ac-sis .mais, .ac-escolha .mais, .ac-turma-toda summary, .ac .in-toc-f a, .ac-voltar { color: var(--ac-red-text); }
+.ac-voltar:hover { color: #FF8A8D; }
+
+/* Título de seção com um traço vermelho embaixo */
+.ac-sec-h h2::after, .ac-sec > h2::after, .ac-pg-h h1::after, .ac-passaporte-h h2::after, .ac-desafio h2::after { content: ""; display: block; width: 32px; height: 2px; margin-top: 12px; border-radius: 2px; background: var(--ac-red); }
+
+/* Ícones de destaque em vermelho */
+.ac-ic.red { background: var(--ac-red); border-color: var(--ac-red); color: #FFFFFF; }
+.ac-ic { color: var(--ac-red-text); }
+.ac .in-learn .icon, .ac .in-mat > .icon:first-child { color: var(--ac-red-text); }
+
+/* Cartões: no hover, a borda ganha um tom de vermelho */
+a.ac-tcard:hover, a.ac-ccard:hover, a.ac-sis:hover, a.ac-escolha:hover, a.ac-setor:hover, .ac-mapa > a:hover, a.ac-lin:hover, .ac-placar:hover { border-color: rgba(200, 19, 26, .55); }
+
+/* Capas sem foto: brilho vermelho no canto e ícone em vermelho */
+.ac-mono { background:
+  radial-gradient(90% 120% at 90% 0%, rgba(200, 19, 26, .28) 0%, rgba(200, 19, 26, 0) 60%),
+  repeating-linear-gradient(135deg, rgba(255, 255, 255, .025) 0 1px, transparent 1px 9px),
+  linear-gradient(160deg, #22201D 0%, #141312 100%); }
+.ac .ac-mono-i { color: rgba(255, 107, 111, .85); }
+.ac-ccapa-n { color: var(--ac-red-text); }
+
+/* Jornada: a etapa atual em vermelho */
+.ac-mapa .aqui { border: 2px solid var(--ac-red); padding: 21px; }
+.ac-mapa .aqui .ac-num { background: var(--ac-red); border-color: var(--ac-red); color: #FFFFFF; }
+.ac-mapa-h span:last-child { color: var(--ac-red-text); }
+
+/* Card "Comece por aqui" e faixa de nível com brilho vermelho mais presente */
+.ac-comece, .ac-nivel { background:
+  radial-gradient(120% 140% at 100% 0%, rgba(200, 19, 26, .42) 0%, rgba(200, 19, 26, 0) 58%),
+  linear-gradient(160deg, #1E1C1A 0%, #121110 100%); }
+
+/* Curso: item atual do sumário e alternativa marcada no quiz em vermelho */
+.ac .in-toc button[aria-current="true"] { color: var(--ac-red-text); }
+.ac .in-vitem[aria-current="true"] { border-color: rgba(200, 19, 26, .6); }
+.ac .in-vitem[aria-current="true"] .n { background: var(--ac-red); border-color: var(--ac-red); color: #FFFFFF; }
+.ac .in-opt.sel { border-color: var(--ac-red); background: var(--ac-red-soft); }
+.ac .in-opt input { accent-color: var(--ac-red); }
+
+/* Turma: você em destaque com um toque de vermelho */
+.ac-pessoa.eu { background: var(--ac-red-soft); }
+.ac-pessoa.eu p { color: var(--ac-red-text); }
+
+/* Conquistas: barra do topo e selos com o degradê vermelho → amarelo */
+.ac-placar-b i, .ac-desafio li:first-child .br i { background: linear-gradient(90deg, var(--ac-red), var(--ac-gold)); }
+.ac-placar-n b { color: var(--ac-text); }
+.ac-nivel-h b { background: linear-gradient(90deg, #FF6B6F, var(--ac-gold)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.ac-cardapio-sec h3, .ac-desafio .pos { color: var(--ac-red-text); }

@@ -87,7 +87,7 @@ export function Passaporte({ jogo }: { jogo: JogoCompleto }) {
   );
 }
 
-/** Cardápio de conquistas: as conquistadas em dourado, as outras em silhueta com a dica */
+/** Cardápio de conquistas: as conquistadas em amarelo Takeat, as outras em silhueta com a dica */
 export function Cardapio({ jogo }: { jogo: JogoCompleto }) {
   const secoes: Secao[] = ['Entradas', 'Pratos principais', 'Sobremesas'];
   const total = jogo.conquistas.filter((c) => c.ok).length;
