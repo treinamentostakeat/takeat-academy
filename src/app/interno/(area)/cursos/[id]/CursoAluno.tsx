@@ -1,10 +1,10 @@
 'use client';
 import Link from 'next/link';
-import { useState, useTransition } from 'react';
+import { useEffect, useRef, useState, useTransition } from 'react';
 import { exibicaoDeVideo } from '@/lib/aprendizagem';
 import type { CursoAlunoDados } from '@/lib/trilhas';
 import { Capa } from '../../pecas';
-import { enviarQuiz, type ResultadoQuiz } from './acoes';
+import { enviarQuiz, salvarPosicao, type ResultadoQuiz } from './acoes';
 
 /* Curso para quem aprende: visão geral, conteúdo (vídeos e texto), materiais e quiz final. */
 
@@ -45,7 +45,7 @@ export function CursoAluno({ curso, editar }: { curso: CursoAlunoDados; editar: 
             {curso.contato && <p className="in-contato"><b>Com quem falar:</b> {curso.contato}</p>}
             <div className="in-acts">
               {curso.progresso && <Seguir curso={curso} />}
-              <button type="button" className={`btn btn-l ${curso.progresso ? 'btn-outlined' : 'btn-filled'}`} onClick={() => ir('conteudo')}>{curso.progresso ? 'Rever conteúdo' : 'Começar curso'}</button>
+              <button type="button" className={`btn btn-l ${curso.progresso ? 'btn-outlined' : 'btn-filled'}`} onClick={() => ir('conteudo')}>{curso.progresso ? 'Rever conteúdo' : curso.comecado ? 'Continuar curso' : 'Começar curso'}</button>
             </div>
           </section>
         )}
@@ -53,7 +53,7 @@ export function CursoAluno({ curso, editar }: { curso: CursoAlunoDados; editar: 
         {secao === 'conteudo' && (
           <section className="mod">
             <h2 className="in-h2">Conteúdo</h2>
-            {curso.videos.length > 0 && <Videos videos={curso.videos} />}
+            {curso.videos.length > 0 && <Videos videos={curso.videos} posicoes={curso.posicoes} ultimo={curso.ultimoVideo} />}
             <div className="in-texto">{curso.texto.split(/\n\s*\n/).filter(Boolean).map((p, i) => <p key={i}>{p}</p>)}</div>
             {curso.contato && <p className="in-contato"><b>Com quem falar:</b> {curso.contato}</p>}
             <div className="in-acts">
@@ -85,13 +85,38 @@ export function CursoAluno({ curso, editar }: { curso: CursoAlunoDados; editar: 
   );
 }
 
-function Videos({ videos }: { videos: CursoAlunoDados['videos'] }) {
-  const [i, setI] = useState(0);
+/** Formata segundos como 3:07 ou 1:02:45 */
+const tempo = (s: number) => {
+  const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), ss = String(s % 60).padStart(2, '0');
+  return h ? `${h}:${String(m).padStart(2, '0')}:${ss}` : `${m}:${ss}`;
+};
+
+function Videos({ videos, posicoes, ultimo }: { videos: CursoAlunoDados['videos']; posicoes: Record<string, number>; ultimo: string | null }) {
+  // Abre no último vídeo que a pessoa assistiu
+  const [i, setI] = useState(() => Math.max(0, videos.findIndex((x) => x.id === ultimo)));
+  // Posições conhecidas nesta tela (as do servidor + as salvas agora) e os vídeos que já contam como abertos
+  const [pos, setPos] = useState<Record<string, number>>(posicoes);
+  const abertos = useRef(new Set(Object.keys(posicoes)));
+  const salvoEm = useRef(0);
   // Vídeo incorporado (YouTube, Vimeo…) com foto de capa: mostra a foto até a pessoa clicar em assistir
   const [aberto, setAberto] = useState<string | null>(null);
   const v = videos[Math.min(i, videos.length - 1)];
   const ex = exibicaoDeVideo(v.url);
   const capaAntes = ex?.tipo === 'iframe' && v.capa && aberto !== v.id;
+  const retomar = pos[v.id] ?? 0;
+
+  // Abriu o vídeo: o curso conta como começado (vídeos do YouTube e outros sites não informam o tempo assistido)
+  useEffect(() => {
+    if (!abertos.current.has(v.id)) { abertos.current.add(v.id); void salvarPosicao({ videoId: v.id, segundos: 0 }); }
+  }, [v.id]);
+
+  const guardar = (el: HTMLVideoElement, agora = false) => {
+    const s = Math.floor(el.duration && el.currentTime >= el.duration - 5 ? 0 : el.currentTime); // terminou: a próxima vez começa do início
+    if (!agora && Date.now() - salvoEm.current < 10000) return;
+    if (s === pos[v.id]) return;
+    salvoEm.current = Date.now(); setPos((p) => ({ ...p, [v.id]: s }));
+    void salvarPosicao({ videoId: v.id, segundos: s });
+  };
   return (
     <div className="in-vbox">
       <div className="in-player">
@@ -102,13 +127,18 @@ function Videos({ videos }: { videos: CursoAlunoDados['videos'] }) {
           </button>
         )}
         {ex?.tipo === 'iframe' && !capaAntes && <iframe key={ex.src} src={ex.src} title={v.titulo} allow="autoplay; fullscreen; picture-in-picture" allowFullScreen referrerPolicy="strict-origin-when-cross-origin" />}
-        {ex?.tipo === 'video' && <video key={ex.src} src={ex.src} poster={v.capa ?? undefined} controls playsInline preload="metadata" />}
+        {ex?.tipo === 'video' && (
+          <video key={ex.src} src={ex.src} poster={v.capa ?? undefined} controls playsInline preload="metadata"
+            onLoadedMetadata={(e) => { const el = e.currentTarget; if (retomar > 5 && retomar < el.duration - 5) el.currentTime = retomar; }}
+            onTimeUpdate={(e) => guardar(e.currentTarget)} onPause={(e) => guardar(e.currentTarget, true)} onEnded={(e) => guardar(e.currentTarget, true)} />
+        )}
         {(ex?.tipo === 'link' || !ex) && (
           <div className={`in-player-link${v.capa ? ' com-capa' : ''}`} style={v.capa ? { backgroundImage: `url("${v.capa}")` } : undefined}><span className="icon">play_circle</span><b>{v.titulo}</b>
             {ex?.tipo === 'link' && <a className="btn btn-l btn-outlined" href={ex.href} target="_blank" rel="noopener noreferrer"><span className="icon">open_in_new</span>Abrir vídeo</a>}
           </div>
         )}
       </div>
+      {ex?.tipo === 'video' && (posicoes[v.id] ?? 0) > 5 && <p className="in-retomar"><span className="icon s16">history</span>Continua de onde você parou, em {tempo(posicoes[v.id])}</p>}
       {videos.length > 1 && (
         <div className="in-vlist">
           {videos.map((x, k) => (

@@ -30,6 +30,7 @@ model Usuario {
   progressos Progresso[]
   tentativas Tentativa[]
   trilhasVistas TrilhaVista[]
+  videosVistos VideoVisto[]
   aulas      Turma[]     @relation("instrutor")
   plantoes   Turma[]     @relation("plantao")
   gradeAulas GradeSlot[] @relation("gradeInstrutor")
@@ -184,6 +185,7 @@ model Video {
   capa        String @default("") // foto de capa: caminho no bucket "academy" (vazio = sem foto)
   ordem   Int
   curso   Curso  @relation(fields: [cursoId], references: [id], onDelete: Cascade)
+  vistos  VideoVisto[]
 }
 
 model Material {
@@ -246,4 +248,17 @@ model TrilhaVista {
   trilha    Trilha   @relation(fields: [trilhaId], references: [id], onDelete: Cascade)
 
   @@unique([usuarioId, trilhaId])
+}
+
+/// Até onde a pessoa assistiu cada vídeo: retoma do mesmo ponto e marca o curso como começado.
+model VideoVisto {
+  id           String   @id @default(cuid())
+  usuarioId    String
+  videoId      String
+  segundos     Int      @default(0)
+  atualizadoEm DateTime @updatedAt
+  usuario      Usuario  @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  video        Video    @relation(fields: [videoId], references: [id], onDelete: Cascade)
+
+  @@unique([usuarioId, videoId])
 }

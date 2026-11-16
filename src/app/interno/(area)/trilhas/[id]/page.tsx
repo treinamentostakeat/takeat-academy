@@ -4,7 +4,7 @@ import { iniciais } from '@/lib/formato';
 import { podeEditarConteudo } from '@/lib/permissoes';
 import { exigirPessoa } from '@/lib/sessao';
 import { diaDaJornada, trilhasDoUsuario, turmaDe, vistaDaTrilha } from '@/lib/trilhas';
-import { AnelProgresso, CapaCurso, DecoBlocos, FUNDOS_SETOR, iniciaisDe } from '../../visual';
+import { AnelProgresso, CapaCurso, DecoBlocos, FUNDOS_SETOR, iniciaisDe, EmBreve } from '../../visual';
 import '../../interno.css';
 
 export const metadata = { title: 'Minha trilha' };
@@ -53,11 +53,11 @@ export default async function Trilha({ params }: { params: Promise<{ id: string 
           <DecoBlocos />
           {t.proximo && etapaAtual ? (
             <>
-              <p className="ac-eyebrow">{t.concluidos ? 'Continue de onde parou' : 'Comece por aqui'} · {etapaAtual.nome} {posAtual} de {etapaAtual.cursos.length}</p>
+              <p className="ac-eyebrow">{t.concluidos || t.comecados.has(t.proximo.id) ? 'Continue de onde parou' : 'Comece por aqui'} · {etapaAtual.nome} {posAtual} de {etapaAtual.cursos.length}</p>
               <h2>{t.proximo.titulo}</h2>
               {t.proximo.resumo && <p className="lead">{t.proximo.resumo}</p>}
               <div className="ac-comece-acts">
-                <Link className="ac-btn branco" href={`/interno/cursos/${t.proximo.id}`}><span className="icon" aria-hidden="true">play_arrow</span>{t.concluidos ? 'Continuar' : 'Começar curso'}</Link>
+                <Link className="ac-btn branco" href={`/interno/cursos/${t.proximo.id}`}><span className="icon" aria-hidden="true">play_arrow</span>{t.comecados.has(t.proximo.id) ? 'Continuar curso' : 'Começar curso'}</Link>
                 {t.proximo._count.perguntas > 0 && <span className="ac-pilula">● Quiz de {t.proximo._count.perguntas} perguntas</span>}
               </div>
             </>
@@ -198,10 +198,7 @@ export default async function Trilha({ params }: { params: Promise<{ id: string 
             <span><b>Aulas ao vivo</b><small>Por tema e horário</small></span>
             <span className="ac-aovivo">● AO VIVO</span>
           </Link>
-          <div className="ac-lin off">
-            <span className="ac-ic peq" aria-hidden="true"><span className="icon">play_circle</span></span>
-            <span><b>Vídeos do sistema e dúvidas frequentes</b><small>Em preparação</small></span>
-          </div>
+          <EmBreve linha icon="play_circle" titulo="Vídeos do sistema e dúvidas frequentes" texto="Em preparação" />
         </div>
       </section>
     </>

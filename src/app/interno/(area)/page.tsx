@@ -2,14 +2,14 @@ import Link from 'next/link';
 import { podeEditarConteudo } from '@/lib/permissoes';
 import { exigirPessoa } from '@/lib/sessao';
 import { trilhasDoUsuario } from '@/lib/trilhas';
-import { DecoCapelo, DecoTrilha, Progresso } from './visual';
+import { DecoCapelo, DecoTrilha, EmBreve, Progresso } from './visual';
 import './interno.css';
 
 export const metadata = { title: 'Início' };
 
 /* Treinamentos do lado do cliente: o colaborador aprende o sistema como o cliente aprende.
-   Sem href = ainda não existe; aparece como teaser. "breve" = mês previsto (sem mês, o teaser fica sem data). */
-const SISTEMA: { icon: string; titulo: string; texto: string; href?: string; mais?: string; breve?: string }[] = [
+   Sem href = ainda não existe; aparece como card "Em breve", sem link. */
+const SISTEMA: { icon: string; titulo: string; texto: string; href?: string; mais?: string }[] = [
   { icon: 'videocam', titulo: 'Aulas ao vivo', texto: 'Os treinamentos que os clientes fazem, por tema e horário.', href: '/aulas', mais: 'Ver agenda' },
   { icon: 'play_circle', titulo: 'Vídeos do sistema', texto: 'Aulas gravadas sobre cada parte do sistema Takeat.' },
   { icon: 'help', titulo: 'Dúvidas frequentes', texto: 'As perguntas mais comuns dos clientes, respondidas.' },
@@ -60,7 +60,7 @@ export default async function Inicio({ searchParams }: { searchParams: Promise<{
                     <h3>{t.titulo}</h3>
                     {t.descricao && <p>{t.descricao}</p>}
                     <Progresso feitos={t.concluidos} total={t.total} />
-                    <span className="ac-btn prim">{concluida ? 'Rever trilha' : t.concluidos ? 'Continuar trilha' : 'Abrir trilha'}<span className="icon" aria-hidden="true">arrow_forward</span></span>
+                    <span className="ac-btn prim">{concluida ? 'Rever trilha' : t.concluidos || t.comecados.size ? 'Continuar trilha' : 'Abrir trilha'}<span className="icon" aria-hidden="true">arrow_forward</span></span>
                   </div>
                 </Link>
               );
@@ -85,13 +85,7 @@ export default async function Inicio({ searchParams }: { searchParams: Promise<{
               <b>{s.titulo}</b><p>{s.texto}</p>
               <span className="mais">{s.mais} →</span>
             </Link>
-          ) : (
-            <div key={s.titulo} className="ac-sis off">
-              <span className="ac-ic" aria-hidden="true"><span className="icon">{s.icon}</span></span>
-              <b>{s.titulo}</b><p>{s.texto}</p>
-              {s.breve && <span className="breve">Chega em {s.breve}</span>}
-            </div>
-          ))}
+          ) : <EmBreve key={s.titulo} icon={s.icon} titulo={s.titulo} texto={s.texto} />)}
         </div>
       </section>
     </>
