@@ -1,3 +1,5 @@
+import { iconeDoCurso } from '@/lib/aprendizagem';
+
 /* Peças visuais da Academy (redesign escuro). Tudo decorativo fica com aria-hidden. */
 
 /** Iniciais de um título: "Sucesso do Cliente" → "SC", "Comercial" → "CO" */
@@ -7,10 +9,9 @@ export function iniciaisDe(titulo: string) {
   return (p.length === 1 ? p[0].slice(0, 2) : p[0][0] + p[1][0]).toUpperCase();
 }
 
-/** Capa sem foto: textura escura com o monograma do título em serifada (no lugar de formas coloridas) */
+/** Capa sem foto: textura escura com o ícone de traço do assunto do título (sem letras) */
 export function Monograma({ texto }: { texto: string }) {
-  const ini = iniciaisDe(texto);
-  return <span className="ac-mono" aria-hidden="true"><span>{ini[0]}{ini.slice(1).toLowerCase()}</span></span>;
+  return <span className="ac-mono" aria-hidden="true"><span className="icon ac-mono-i">{iconeDoCurso(texto)}</span></span>;
 }
 
 /** Capa de curso: foto com degradê escuro ou monograma; número e selo por cima */
@@ -30,6 +31,18 @@ export function IconeMedalha({ tamanho = 16 }: { tamanho?: number }) {
   return (
     <svg className="ac-medalha" width={tamanho} height={tamanho} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d="M7.5 2.5h9l-2.6 6.2M7.5 2.5l2.6 6.2" /><circle cx="12" cy="15" r="6" /><path d="M12 12.3l.9 1.8 2 .3-1.45 1.4.35 2-1.8-.95-1.8.95.35-2-1.45-1.4 2-.3z" />
+    </svg>
+  );
+}
+
+/** Capelo de formatura da faixa de boas-vindas do início */
+export function DecoCapelo() {
+  return (
+    <svg className="ac-chapeu" aria-hidden="true" width="260" height="200" viewBox="0 0 260 200">
+      <path d="M130 20L250 70 130 120 10 70z" fill="none" stroke="#3A3A40" strokeWidth="2" />
+      <path d="M60 92v46c40 26 100 26 140 0V92" fill="none" stroke="#3A3A40" strokeWidth="2" />
+      <path d="M230 78v58" stroke="#F5A623" strokeWidth="3" strokeLinecap="round" />
+      <circle cx="230" cy="142" r="8" fill="#F5A623" />
     </svg>
   );
 }

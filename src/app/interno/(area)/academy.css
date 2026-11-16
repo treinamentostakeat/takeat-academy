@@ -450,8 +450,7 @@ a.ac-tcard:hover, a.ac-ccard:hover, a.ac-sis:hover, a.ac-escolha:hover, a.ac-set
     radial-gradient(90% 120% at 85% 0%, rgba(201, 169, 110, .10) 0%, rgba(201, 169, 110, 0) 60%),
     repeating-linear-gradient(135deg, rgba(255, 255, 255, .025) 0 1px, transparent 1px 9px),
     linear-gradient(160deg, #22201D 0%, #141312 100%); }
-.ac-mono span { font-family: var(--ac-serif); font-style: italic; font-weight: 400; font-size: 72px; line-height: 1; letter-spacing: -.02em; color: rgba(244, 241, 236, .82); }
-.ac-mono span::after { content: ""; display: block; width: 28px; height: 1px; margin: 14px auto 0; background: var(--ac-gold); opacity: .8; }
+.ac .ac-mono-i { font-size: 56px; width: 56px; height: 56px; color: rgba(201, 169, 110, .75); font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' -25, 'opsz' 48; }
 
 /* ----- Menu lateral: estreito e silencioso; ativo com barra vermelha de 2px ----- */
 .ac-nav { flex-basis: 232px; padding: 32px 16px; gap: 36px; border-right: 1px solid var(--ac-line); }
@@ -476,28 +475,17 @@ a.ac-tcard:hover, a.ac-ccard:hover, a.ac-sis:hover, a.ac-escolha:hover, a.ac-set
   .ac-main { gap: 28px; }
 }
 
-/* ----- Início: saudação em serifada com a capa do curso atual ----- */
-.ac-hero { flex-direction: row; flex-wrap: wrap; align-items: stretch; gap: 40px; padding: clamp(28px, 4vw, 48px); background: var(--ac-surface); }
-.ac-hero .ac-brilho { right: auto; left: -220px; top: -260px; background: radial-gradient(circle, rgba(122, 16, 22, .30) 0%, rgba(122, 16, 22, 0) 65%); }
-.ac-hero-txt { flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; justify-content: center; gap: 18px; }
-.ac-hero h1 { font-size: clamp(40px, 5vw, 56px); line-height: 1.04; font-weight: 400; max-width: none; }
-.ac-hero p.lead { font-size: 16px; color: var(--ac-muted); max-width: 520px; }
-.ac-hero p.lead em { font-size: 1.08em; color: var(--ac-text); }
-.ac-hero p.lead b { font-weight: 500; color: var(--ac-text); }
-.ac-hero-acts { margin-top: 8px; }
-.ac-hero-capa { position: relative; flex: 1 1 340px; min-width: 0; min-height: 260px; aspect-ratio: 4 / 3; max-height: 340px; border-radius: 12px; overflow: hidden; border: 1px solid var(--ac-line); text-decoration: none; }
-.ac-hero-capa img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .6s cubic-bezier(.2, .7, .2, 1); }
-.ac-hero-capa:hover img { transform: scale(1.03); }
-.ac-hero-capa::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(14, 13, 12, 0) 35%, rgba(14, 13, 12, .88) 100%); }
-.ac-hero-capa-t { position: absolute; z-index: 1; left: 24px; right: 24px; bottom: 22px; font-family: var(--ac-serif); font-size: 26px; line-height: 1.15; color: var(--ac-text); }
-.ac-hero-capa-t small { display: block; margin-bottom: 6px; font-family: var(--ac-sans); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--ac-text-2); }
-.ac-hero-capa .ac-mono span { font-size: 96px; transform: translateY(-24px); }
-.ac-hero-capa:hover, .ac-hero-capa { color: var(--ac-text); }
+/* ----- Início: abertura colorida (brilho vermelho, rótulo amarelo, capelo), com a serifada ----- */
+.ac-hero { padding: clamp(32px, 4.5vw, 56px); gap: 18px; }
+.ac-hero .ac-eyebrow { font-size: 13px; font-weight: 600; letter-spacing: 3px; color: #F5A623; }
+.ac-hero h1 { font-size: clamp(38px, 4.6vw, 60px); line-height: 1.05; font-weight: 400; letter-spacing: -.02em; max-width: 720px; }
+.ac-hero h1 em { font-style: italic; color: var(--ac-red-text); }
+.ac-hero p.lead { font-size: 17px; color: var(--ac-text-2); }
 
 /* Trilhas como coleções: foto (ou monograma) com degradê e título em serifada por cima */
 .ac-tcapa { height: 220px; background: var(--ac-surface-2); }
 .ac-tcapa::after, .ac-tcapa.foto::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(14, 13, 12, .15) 0%, rgba(14, 13, 12, 0) 35%, rgba(14, 13, 12, .9) 100%); }
-.ac-tcapa .ac-mono span { transform: translateY(-28px); }
+.ac-tcapa .ac-mono-i { transform: translateY(-30px); }
 .ac-tcapa-t { top: auto; left: 24px; right: 24px; bottom: 20px; font-size: inherit; letter-spacing: 0; text-transform: none; font-weight: 400; }
 .ac-tcapa-t small { display: block; margin-bottom: 6px; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--ac-text-2); }
 .ac-tcapa-t h3 { margin: 0; font-family: var(--ac-serif); font-size: 28px; line-height: 1.1; font-weight: 400; color: var(--ac-text); }
@@ -531,8 +519,7 @@ a.ac-tcard:hover, a.ac-ccard:hover, a.ac-sis:hover, a.ac-escolha:hover, a.ac-set
 .ac-num { background: transparent; border: 1px solid var(--ac-line-strong); color: var(--ac-text-2); }
 .ac-ccapa { height: 160px; background: var(--ac-surface-2); }
 .ac-ccapa.foto::after { background: linear-gradient(180deg, rgba(14, 13, 12, .5) 0%, rgba(14, 13, 12, 0) 45%, rgba(14, 13, 12, .35) 100%); }
-.ac-ccapa .ac-mono span { font-size: 48px; }
-.ac-ccapa .ac-mono span::after { margin-top: 10px; width: 20px; }
+.ac .ac-ccapa .ac-mono-i { font-size: 44px; width: 44px; height: 44px; }
 .ac-ccapa-n { z-index: 1; font-weight: 500; letter-spacing: .12em; color: var(--ac-text-2); }
 .ac-ccorpo { padding: 22px 24px 24px; }
 .ac-ccorpo h3 { font-family: var(--ac-serif); font-size: 21px; font-weight: 400; line-height: 1.2; }
@@ -560,7 +547,7 @@ a.ac-lin:hover { border-color: var(--ac-line-strong); }
 .ac .in-capa.grande { height: 200px; }
 .ac .in-capa.grande:not(.foto) { background: var(--ac-surface-2); }
 .ac .in-capa.grande:not(.foto)::after { content: none; }
-.ac .in-capa .ac-mono span { font-size: 64px; }
+.ac .in-capa .ac-mono-i { font-size: 52px; width: 52px; height: 52px; }
 .ac .in-capa-e { z-index: 2; left: 20px; top: 16px; color: var(--ac-text-2); font-weight: 500; letter-spacing: .12em; }
 .ac .in-toc { border-radius: 16px; padding: 16px 14px; border-color: var(--ac-line); }
 .ac .in-toc button { position: relative; border-radius: 8px; font-weight: 400; color: var(--ac-muted); }
@@ -595,8 +582,8 @@ a.ac-lin:hover { border-color: var(--ac-line-strong); }
 .ac-main > :nth-child(n+5) { animation-delay: .16s; }
 @media (prefers-reduced-motion: reduce) {
   .ac-main > * { animation: none; }
-  .ac-tcard, .ac-ccard, .ac-sis, .ac-escolha, .ac-setor, .ac-mapa > a, .ac-lin, .ac-hero-capa img { transition: none; }
-  a.ac-tcard:hover, a.ac-ccard:hover, a.ac-sis:hover, a.ac-escolha:hover, a.ac-setor:hover, .ac-mapa > a:hover, .ac-hero-capa:hover img { transform: none; }
+  .ac-tcard, .ac-ccard, .ac-sis, .ac-escolha, .ac-setor, .ac-mapa > a, .ac-lin { transition: none; }
+  a.ac-tcard:hover, a.ac-ccard:hover, a.ac-sis:hover, a.ac-escolha:hover, a.ac-setor:hover, .ac-mapa > a:hover { transform: none; }
 }
 
 /* =====================================================================
