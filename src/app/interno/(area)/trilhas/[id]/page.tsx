@@ -142,6 +142,14 @@ export default async function Trilha({ params }: { params: Promise<{ id: string 
                 })}
               </div>
             ) : (
+              <>
+              {i === 1 && (
+                <Link className="ac-pass-faixa" href="/interno/conquistas#passaporte">
+                  <span className="icon" aria-hidden="true">travel_explore</span>
+                  <span><b>Passaporte dos setores</b><small>Cada setor concluído carimba o seu passaporte. {feitos} de {e.cursos.length} carimbos.</small></span>
+                  <span className="icon" aria-hidden="true">arrow_forward</span>
+                </Link>
+              )}
               <div className="ac-setores">
                 {e.cursos.map((c) => {
                   const nota = t.notas.get(c.id);
@@ -157,6 +165,7 @@ export default async function Trilha({ params }: { params: Promise<{ id: string 
                   );
                 })}
               </div>
+              </>
             )}
           </section>
         );

@@ -1,7 +1,9 @@
 import Link from 'next/link';
 import { podeEditarConteudo } from '@/lib/permissoes';
 import { exigirPessoa } from '@/lib/sessao';
+import { jogoDe } from '@/lib/gamificacao';
 import { trilhasDoUsuario } from '@/lib/trilhas';
+import { BarraNivel, Comanda } from './jogo';
 import { EmBreve, Monograma, Progresso } from './visual';
 import './interno.css';
 
@@ -25,7 +27,7 @@ function saudacao(agora = new Date()) {
 export default async function Inicio({ searchParams }: { searchParams: Promise<{ negado?: string }> }) {
   const u = await exigirPessoa();
   const { negado } = await searchParams;
-  const trilhas = await trilhasDoUsuario(u);
+  const [trilhas, jogo] = await Promise.all([trilhasDoUsuario(u), jogoDe(u)]);
   const editor = podeEditarConteudo(u.cargo);
   // Curso atual: o próximo que falta na primeira trilha que ainda tem curso pendente
   const atual = trilhas.find((t) => t.proximo);
@@ -59,6 +61,14 @@ export default async function Inicio({ searchParams }: { searchParams: Promise<{
             <span className="ac-hero-capa-t"><small>{atual!.titulo}</small>{curso.titulo}</span>
           </Link>
         )}
+      </section>
+
+      <section className="ac-sec" aria-labelledby="t-semana">
+        <div className="ac-sec-h"><div><h2 id="t-semana">Sua semana</h2><p>Feche a comanda e suba de nível na cozinha</p></div><Link className="ac-voltar" href="/interno/conquistas">Ver conquistas<span className="icon s16" aria-hidden="true">arrow_forward</span></Link></div>
+        <div className="ac-jogo-topo">
+          <BarraNivel jogo={jogo} />
+          <Comanda jogo={jogo} mesa={u.nome.split(' ')[0]} />
+        </div>
       </section>
 
       <section className="ac-sec" aria-labelledby="t-trilhas">

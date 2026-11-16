@@ -598,3 +598,160 @@ a.ac-lin:hover { border-color: var(--ac-line-strong); }
   .ac-tcard, .ac-ccard, .ac-sis, .ac-escolha, .ac-setor, .ac-mapa > a, .ac-lin, .ac-hero-capa img { transition: none; }
   a.ac-tcard:hover, a.ac-ccard:hover, a.ac-sis:hover, a.ac-escolha:hover, a.ac-setor:hover, .ac-mapa > a:hover, .ac-hero-capa:hover img { transform: none; }
 }
+
+/* =====================================================================
+   Gamificação: placar no topo, nível, comanda, passaporte, cardápio, desafio, perfil e certificado
+   ===================================================================== */
+.ac-top { gap: 16px; }
+.ac-placar { display: flex; align-items: center; gap: 14px; margin-right: auto; padding: 8px 16px 8px 12px; border: 1px solid var(--ac-line); border-radius: 999px; text-decoration: none; color: var(--ac-text); transition: border-color .18s ease-out; }
+.ac-placar:hover { border-color: var(--ac-line-strong); color: var(--ac-text); }
+.ac-placar-n { display: flex; flex-direction: column; line-height: 1.15; }
+.ac-placar-n b { font-family: var(--ac-serif); font-weight: 400; font-size: 16px; color: var(--ac-gold); }
+.ac-placar-n small { font-size: 11px; color: var(--ac-label); letter-spacing: .04em; }
+.ac-placar-b { width: 96px; height: 3px; border-radius: 3px; background: var(--ac-surface-3); overflow: hidden; }
+.ac-placar-b i { display: block; height: 100%; background: var(--ac-gold); border-radius: 3px; transition: width .6s cubic-bezier(.2, .7, .2, 1); }
+.ac-fogo { display: inline-flex; align-items: center; gap: 4px; font-size: 13px; font-weight: 500; color: #E8A15A; }
+.ac-fogo .icon { font-size: 18px; width: 18px; height: 18px; }
+.ac-fogo.apagado { color: var(--ac-label); }
+a.ac-quem { text-decoration: none; color: var(--ac-text); }
+@media (max-width: 900px) { .ac-placar-b { display: none; } .ac-placar { padding: 6px 12px; } }
+@media (max-width: 520px) { a.ac-quem { display: none; } }
+
+.ac-jogo-topo { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 24px; align-items: stretch; }
+@media (max-width: 900px) { .ac-jogo-topo { grid-template-columns: minmax(0, 1fr); } }
+
+/* Nível */
+.ac-nivel { display: flex; flex-direction: column; justify-content: center; gap: 16px; padding: 32px; border-radius: 16px; border: 1px solid var(--ac-line); background: var(--ac-grad); }
+.ac-nivel-h { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; }
+.ac-nivel-h small { display: block; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--ac-label); margin-bottom: 6px; }
+.ac-nivel-h b { font-family: var(--ac-serif); font-weight: 400; font-size: clamp(34px, 4vw, 46px); line-height: 1; letter-spacing: -.02em; color: var(--ac-gold); }
+.ac-nivel-xp { font-family: var(--ac-serif); font-size: 22px; color: var(--ac-text); }
+.ac-nivel-barra { height: 4px; border-radius: 4px; background: var(--ac-surface-3); overflow: hidden; }
+.ac-nivel-barra i { display: block; height: 100%; border-radius: 4px; background: linear-gradient(90deg, #A88A52, var(--ac-gold)); animation: ac-cresce 1s cubic-bezier(.2, .7, .2, 1) both; transform-origin: left; }
+@keyframes ac-cresce { from { transform: scaleX(0); } }
+.ac-nivel p { margin: 0; font-size: 14px; color: var(--ac-muted); }
+.ac-nivel p b { color: var(--ac-text); font-weight: 500; }
+
+/* Comanda: papel marfim com borda serrilhada embaixo */
+.ac-comanda { position: relative; display: flex; flex-direction: column; gap: 12px; padding: 24px 24px 30px; background: #F4F1EC; color: #1E1C1A; border-radius: 6px 6px 0 0; font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace; font-size: 13px;
+  -webkit-mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 14px 100%; mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 14px 100%; }
+.ac-comanda header { display: flex; justify-content: space-between; gap: 8px; padding-bottom: 10px; border-bottom: 1px dashed rgba(30, 28, 26, .35); text-transform: uppercase; letter-spacing: .08em; font-size: 11px; color: #5A544C; }
+.ac-comanda-t { margin: 4px 0 0; font-family: var(--ac-serif); font-style: italic; font-size: 22px; letter-spacing: -.01em; color: #1E1C1A; }
+.ac-comanda ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.ac-comanda li { display: flex; align-items: center; gap: 10px; }
+.ac-comanda .ck { width: 16px; height: 16px; flex: none; border: 1px solid #1E1C1A; border-radius: 3px; display: grid; place-items: center; font-size: 12px; line-height: 1; }
+.ac-comanda .tx { flex: 1; min-width: 0; }
+.ac-comanda .qt { color: #5A544C; font-variant-numeric: tabular-nums; }
+.ac-comanda li.ok .tx { text-decoration: line-through; text-decoration-color: rgba(200, 19, 26, .7); color: #5A544C; }
+.ac-comanda li.ok .ck { background: #1E1C1A; color: #F4F1EC; }
+.ac-comanda footer { display: flex; justify-content: space-between; gap: 8px; padding-top: 10px; border-top: 1px dashed rgba(30, 28, 26, .35); text-transform: uppercase; letter-spacing: .06em; font-size: 12px; }
+.ac-comanda footer b { color: #8A6A2E; }
+.ac-comanda-pe { margin: 0; font-size: 11px; color: #7A746B; text-align: center; }
+.ac-comanda-carimbo { position: absolute; right: 22px; top: 54px; padding: 4px 12px; border: 2px solid var(--ac-red); border-radius: 6px; color: var(--ac-red); font-family: var(--ac-sans); font-weight: 600; font-size: 18px; letter-spacing: .2em; text-transform: uppercase; transform: rotate(-12deg); opacity: .85; animation: ac-carimba .5s cubic-bezier(.3, 1.6, .5, 1) both; }
+@keyframes ac-carimba { from { transform: rotate(-12deg) scale(1.8); opacity: 0; } }
+
+/* Passaporte */
+.ac-passaporte { display: flex; flex-direction: column; gap: 28px; padding: 32px; border-radius: 16px; border: 1px solid var(--ac-line); background: var(--ac-surface); scroll-margin-top: 24px; }
+.ac-passaporte-h { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; }
+.ac-passaporte-h h2 { margin: 6px 0 8px; font-size: clamp(26px, 2.6vw, 32px); }
+.ac-passaporte-h p:not(.ac-eyebrow) { margin: 0; font-size: 15px; color: var(--ac-muted); max-width: 560px; }
+.ac-selo-forma { width: 72px; height: 72px; flex: none; border-radius: 999px; border: 1px dashed var(--ac-line-strong); display: grid; place-items: center; color: var(--ac-label); }
+.ac-selo-forma .icon { font-size: 32px; width: 32px; height: 32px; }
+.ac-selo-forma.ok { border: 2px solid var(--ac-gold); color: var(--ac-gold); box-shadow: inset 0 0 0 4px var(--ac-surface), inset 0 0 0 5px rgba(201, 169, 110, .5); }
+.ac-carimbos { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); gap: 20px; }
+.ac-carimbo { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; aspect-ratio: 1; padding: 14px; border-radius: 999px; border: 1px dashed var(--ac-line-strong); text-align: center; text-decoration: none; color: var(--ac-label); transition: border-color .18s ease-out, transform .18s ease-out; }
+.ac-carimbo:hover { color: var(--ac-text-2); border-color: var(--ac-muted); }
+.ac-carimbo .ini { font-family: var(--ac-serif); font-style: italic; font-size: 26px; line-height: 1; }
+.ac-carimbo .nm { font-size: 11px; line-height: 1.25; max-width: 100%; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.ac-carimbo .dt { font-size: 10px; letter-spacing: .12em; text-transform: uppercase; }
+.ac-carimbo.ok { border: 2px solid var(--ac-gold); color: var(--ac-gold); transform: rotate(var(--giro, -6deg)); box-shadow: inset 0 0 0 4px var(--ac-surface), inset 0 0 0 5px rgba(201, 169, 110, .45); }
+.ac-carimbo.ok:hover { color: #E0C48D; transform: rotate(0deg) scale(1.03); }
+.ac-pass-faixa { display: flex; align-items: center; gap: 14px; padding: 16px 20px; border-radius: 12px; border: 1px solid rgba(201, 169, 110, .3); text-decoration: none; color: var(--ac-text); }
+.ac-pass-faixa:hover { border-color: rgba(201, 169, 110, .6); color: var(--ac-text); }
+.ac-pass-faixa > .icon:first-child { color: var(--ac-gold); }
+.ac-pass-faixa > span:nth-child(2) { flex: 1; min-width: 0; }
+.ac-pass-faixa b { display: block; font-weight: 500; }
+.ac-pass-faixa small { display: block; font-size: 13px; color: var(--ac-muted); }
+
+/* Cardápio de conquistas */
+.ac-cardapio { display: flex; flex-direction: column; gap: 32px; padding: clamp(28px, 4vw, 48px); border-radius: 16px; border: 1px solid var(--ac-line); background: var(--ac-surface); }
+.ac-cardapio > header { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 8px; padding-bottom: 24px; border-bottom: 1px solid var(--ac-line); }
+.ac-cardapio > header h2 { margin: 0; font-size: clamp(32px, 4vw, 44px); }
+.ac-cardapio > header p:not(.ac-eyebrow) { margin: 0; font-size: 14px; color: var(--ac-muted); }
+.ac-cardapio-sec h3 { margin: 0 0 16px; text-align: center; font-family: var(--ac-serif); font-style: italic; font-weight: 400; font-size: 24px; color: var(--ac-gold); }
+.ac-cardapio-sec ul { margin: 0 auto; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 18px; max-width: 760px; }
+.ac-cardapio li { display: flex; align-items: center; gap: 14px; }
+.ac-cardapio .ic { width: 40px; height: 40px; flex: none; border-radius: 999px; border: 1px solid rgba(201, 169, 110, .5); display: grid; place-items: center; color: var(--ac-gold); }
+.ac-cardapio .ic .icon { font-size: 20px; width: 20px; height: 20px; }
+.ac-cardapio .tx { min-width: 0; }
+.ac-cardapio .tx b { display: block; font-family: var(--ac-serif); font-weight: 400; font-size: 19px; color: var(--ac-text); }
+.ac-cardapio .tx small { display: block; font-size: 13px; color: var(--ac-muted); }
+.ac-cardapio .pontos { flex: 1; min-width: 24px; align-self: center; border-bottom: 1px dotted var(--ac-line-strong); transform: translateY(4px); }
+.ac-cardapio .st { flex: none; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--ac-gold); }
+.ac-cardapio li.falta .ic { border-style: dashed; border-color: var(--ac-line-strong); color: var(--ac-label); }
+.ac-cardapio li.falta .tx b { color: var(--ac-label); }
+.ac-cardapio li.falta .st { color: var(--ac-label); }
+@media (max-width: 600px) { .ac-cardapio .pontos, .ac-cardapio .st { display: none; } }
+
+/* Desafio entre turmas */
+.ac-desafio { display: flex; flex-direction: column; gap: 16px; padding: 32px; border-radius: 16px; border: 1px solid var(--ac-line); background: var(--ac-surface); }
+.ac-desafio h2 { margin: 0 0 8px; font-size: clamp(26px, 2.6vw, 32px); }
+.ac-desafio ol { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 14px; }
+.ac-desafio li { display: grid; grid-template-columns: 36px minmax(140px, 220px) minmax(0, 1fr) 52px; align-items: center; gap: 16px; padding: 12px 14px; border-radius: 12px; }
+.ac-desafio li.minha { background: var(--ac-surface-2); }
+.ac-desafio .pos { font-family: var(--ac-serif); font-size: 22px; color: var(--ac-gold); }
+.ac-desafio .nm b { display: block; font-weight: 500; }
+.ac-desafio .nm small { display: block; font-size: 12px; color: var(--ac-label); }
+.ac-desafio .nm b small { display: inline; font-size: 12px; color: var(--ac-gold); font-weight: 400; }
+.ac-desafio .br { height: 4px; border-radius: 4px; background: var(--ac-surface-3); overflow: hidden; }
+.ac-desafio .br i { display: block; height: 100%; background: var(--ac-text-2); border-radius: 4px; }
+.ac-desafio li:first-child .br i { background: var(--ac-gold); }
+.ac-desafio .pc { text-align: right; font-variant-numeric: tabular-nums; }
+.ac-desafio-pe { margin: 0; font-size: 13px; color: var(--ac-label); }
+@media (max-width: 600px) { .ac-desafio li { grid-template-columns: 28px minmax(0, 1fr) 44px; } .ac-desafio .br { grid-column: 2 / 4; } }
+
+/* Perfil */
+.ac-perfil { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+.ac-perfil-av { width: 88px; height: 88px; flex: none; border-radius: 999px; border: 1px solid var(--ac-gold); display: grid; place-items: center; font-family: var(--ac-serif); font-size: 32px; color: var(--ac-text); background: var(--ac-surface-2); box-shadow: inset 0 0 0 4px var(--ac-bg), inset 0 0 0 5px rgba(201, 169, 110, .4); }
+.ac-perfil h1 { margin: 6px 0 8px; font-size: clamp(32px, 4vw, 48px); line-height: 1.05; }
+.ac-perfil-sub { margin: 0; display: flex; gap: 18px; flex-wrap: wrap; align-items: center; font-size: 15px; color: var(--ac-gold); font-family: var(--ac-serif); }
+.ac-perfil-sub .ac-fogo { font-family: var(--ac-sans); }
+.ac-nums { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.ac-nums > div { display: flex; flex-direction: column; justify-content: center; gap: 4px; padding: 20px 22px; border-radius: 16px; border: 1px solid var(--ac-line); background: var(--ac-surface); }
+.ac-nums b { font-family: var(--ac-serif); font-weight: 400; font-size: 36px; line-height: 1; }
+.ac-nums span { font-size: 13px; color: var(--ac-muted); }
+.ac-certs { display: flex; flex-direction: column; gap: 12px; }
+.ac-cert { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; padding: 20px 24px; border-radius: 16px; border: 1px solid rgba(201, 169, 110, .3); background: var(--ac-surface); }
+.ac-cert-i { width: 48px; height: 48px; flex: none; border-radius: 999px; border: 1px solid var(--ac-gold); color: var(--ac-gold); display: grid; place-items: center; }
+.ac-cert > div { flex: 1; min-width: 200px; }
+.ac-cert b { display: block; font-family: var(--ac-serif); font-weight: 400; font-size: 21px; }
+.ac-cert small { display: block; font-size: 13px; color: var(--ac-muted); letter-spacing: .02em; }
+.ac-medalhas { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }
+.ac-medalhas li { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 20px 14px; border-radius: 16px; border: 1px solid var(--ac-line); text-align: center; }
+.ac-medalhas .icon { width: 52px; height: 52px; border-radius: 999px; border: 1px solid var(--ac-gold); color: var(--ac-gold); display: grid; place-items: center; font-size: 24px; }
+.ac-medalhas b { font-family: var(--ac-serif); font-weight: 400; font-size: 16px; }
+.ac-hist, .ac-extrato { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; }
+.ac-hist li, .ac-extrato li { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--ac-line); font-size: 14px; }
+.ac-hist li:last-child, .ac-extrato li:last-child { border-bottom: 0; }
+.ac-hist a { flex: 1; min-width: 0; text-decoration: none; }
+.ac-hist span { color: var(--ac-label); font-size: 13px; white-space: nowrap; }
+.ac-extrato span { flex: 1; color: var(--ac-text-2); }
+.ac-extrato b { font-weight: 500; color: var(--ac-gold); font-variant-numeric: tabular-nums; }
+.ac-muted { margin: 0; color: var(--ac-muted); font-size: 14px; }
+.ac-muted.peq { font-size: 12px; color: var(--ac-label); }
+
+/* Validação pública do certificado */
+.ac-valida-main { position: relative; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 24px 16px 80px; text-align: center; max-width: 720px; margin: 0 auto; }
+.ac-valida-main h1 { margin: 0; font-size: clamp(36px, 5vw, 60px); line-height: 1.05; }
+.ac-valida-main .lead { margin: 0; font-size: 18px; line-height: 1.6; color: var(--ac-text-2); }
+.ac-valida-main .lead b { color: var(--ac-text); font-weight: 500; }
+.ac-valida-i { width: 72px; height: 72px; border-radius: 999px; border: 1px dashed var(--ac-line-strong); display: grid; place-items: center; color: var(--ac-label); }
+.ac-valida-i.ok { border: 2px solid var(--ac-gold); color: var(--ac-gold); }
+.ac-valida-i .icon { font-size: 34px; width: 34px; height: 34px; }
+.ac-valida-cod { margin: 8px 0 0; font-family: ui-monospace, Menlo, Consolas, monospace; letter-spacing: .12em; color: var(--ac-label); }
+
+@media (prefers-reduced-motion: reduce) {
+  .ac-nivel-barra i, .ac-comanda-carimbo { animation: none; }
+  .ac-placar, .ac-carimbo { transition: none; }
+  .ac-carimbo.ok:hover { transform: rotate(var(--giro, -6deg)); }
+}
