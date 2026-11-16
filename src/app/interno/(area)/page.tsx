@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { podeEditarConteudo } from '@/lib/permissoes';
 import { exigirPessoa } from '@/lib/sessao';
 import { trilhasDoUsuario } from '@/lib/trilhas';
-import { DecoCapelo, DecoTrilha, EmBreve, Progresso } from './visual';
+import { EmBreve, Monograma, Progresso } from './visual';
 import './interno.css';
 
 export const metadata = { title: 'Início' };
@@ -15,12 +15,21 @@ const SISTEMA: { icon: string; titulo: string; texto: string; href?: string; mai
   { icon: 'help', titulo: 'Dúvidas frequentes', texto: 'As perguntas mais comuns dos clientes, respondidas.' },
 ];
 
-/* Início da Academy: faixa de boas-vindas, trilhas e o sistema visto como cliente. */
+/** "Bom dia", "Boa tarde" ou "Boa noite" pelo horário de Brasília */
+function saudacao(agora = new Date()) {
+  const h = Number(agora.toLocaleString('en-US', { timeZone: process.env.TZ_AULAS || 'America/Sao_Paulo', hour: 'numeric', hourCycle: 'h23' }));
+  return h < 12 ? 'Bom dia' : h < 18 ? 'Boa tarde' : 'Boa noite';
+}
+
+/* Início da Academy: saudação com o curso atual, trilhas e o sistema visto como cliente. */
 export default async function Inicio({ searchParams }: { searchParams: Promise<{ negado?: string }> }) {
   const u = await exigirPessoa();
   const { negado } = await searchParams;
   const trilhas = await trilhasDoUsuario(u);
   const editor = podeEditarConteudo(u.cargo);
+  // Curso atual: o próximo que falta na primeira trilha que ainda tem curso pendente
+  const atual = trilhas.find((t) => t.proximo);
+  const curso = atual?.proximo ?? null;
 
   return (
     <>
@@ -31,10 +40,25 @@ export default async function Inicio({ searchParams }: { searchParams: Promise<{
 
       <section className="ac-hero">
         <div className="ac-brilho" aria-hidden="true" />
-        <DecoCapelo />
-        <p className="ac-eyebrow">Takeat Academy</p>
-        <h1>Olá, {u.nome.split(' ')[0]}. O que vamos <em>aprender</em> hoje?</h1>
-        <p className="lead">Trilhas e cursos para conhecer como a Takeat funciona, do primeiro dia em diante.</p>
+        <div className="ac-hero-txt">
+          <p className="ac-eyebrow">{curso ? (atual!.comecados.has(curso.id) ? 'Continue de onde parou' : 'Seu próximo curso') : 'Takeat Academy'}</p>
+          <h1>{saudacao()}, {u.nome.split(' ')[0]}.</h1>
+          <p className="lead">{curso
+            ? <>O que vamos <em>aprender</em> hoje? Seu próximo passo é <b>{curso.titulo}</b>, da trilha {atual!.titulo}.</>
+            : <>O que vamos <em>aprender</em> hoje? Trilhas e cursos para conhecer como a Takeat funciona, do primeiro dia em diante.</>}</p>
+          {curso && (
+            <div className="ac-hero-acts">
+              <Link className="ac-btn prim" href={`/interno/cursos/${curso.id}`}><span className="icon" aria-hidden="true">play_arrow</span>{atual!.comecados.has(curso.id) ? 'Continuar curso' : 'Começar curso'}</Link>
+            </div>
+          )}
+        </div>
+        {curso && (
+          <Link className="ac-hero-capa" href={`/interno/cursos/${curso.id}`} tabIndex={-1} aria-hidden="true">
+            {/* eslint-disable-next-line @next/next/no-img-element -- link assinado e temporário do Storage */}
+            {curso.capaUrl ? <img src={curso.capaUrl} alt="" /> : <Monograma texto={curso.titulo} />}
+            <span className="ac-hero-capa-t"><small>{atual!.titulo}</small>{curso.titulo}</span>
+          </Link>
+        )}
       </section>
 
       <section className="ac-sec" aria-labelledby="t-trilhas">
@@ -49,15 +73,14 @@ export default async function Inicio({ searchParams }: { searchParams: Promise<{
                     {t.capaUrl
                       // eslint-disable-next-line @next/next/no-img-element -- link assinado e temporário do Storage
                       ? <img src={t.capaUrl} alt="" />
-                      : <DecoTrilha />}
-                    <span className="ac-tcapa-t">Trilha · {t.total} {t.total === 1 ? 'curso' : 'cursos'}</span>
+                      : <Monograma texto={t.titulo} />}
                     <span className="ac-tcapa-s">
                       {concluida && <span className="ac-selo ok"><span className="icon" aria-hidden="true">check_circle</span>Concluída</span>}
                       {!t.publicada && <span className="ac-selo am">Não publicada</span>}
                     </span>
+                    <div className="ac-tcapa-t"><small>Trilha · {t.total} {t.total === 1 ? 'curso' : 'cursos'}</small><h3>{t.titulo}</h3></div>
                   </div>
                   <div className="ac-tcorpo">
-                    <h3>{t.titulo}</h3>
                     {t.descricao && <p>{t.descricao}</p>}
                     <Progresso feitos={t.concluidos} total={t.total} />
                     <span className="ac-btn prim">{concluida ? 'Rever trilha' : t.concluidos || t.comecados.size ? 'Continuar trilha' : 'Abrir trilha'}<span className="icon" aria-hidden="true">arrow_forward</span></span>

@@ -26,7 +26,7 @@ export function AcademyShell({ usuario, sairAction, aprender, admin, conta, chil
       <nav className={`ac-nav${menu ? ' on' : ''}`} aria-label="Menu da Academy">
         <div className="ac-nav-top">
           <Link href="/interno" className="ac-marca" aria-label="Takeat Academy, início">
-            <span className="ac-marca-t">Takeat</span><span className="ac-marca-s">ACADEMY</span>
+            <span className="ac-marca-t">Takeat</span><span className="ac-marca-s">Academy</span>
           </Link>
           <button type="button" className="ac-menu-btn" onClick={() => setMenu((m) => !m)} aria-expanded={menu} aria-controls="ac-nav-itens" aria-label={menu ? 'Fechar menu' : 'Abrir menu'}>
             <span className="icon" aria-hidden="true">{menu ? 'close' : 'menu'}</span>
@@ -34,13 +34,13 @@ export function AcademyShell({ usuario, sairAction, aprender, admin, conta, chil
         </div>
         <div className="ac-nav-itens" id="ac-nav-itens">
           <div className="ac-grp">
-            <p className="ac-grp-t">APRENDER</p>
+            <p className="ac-grp-t">Aprender</p>
             {aprender.map((i) => link(i))}
           </div>
           {(admin.length > 0 || conta.length > 0) && (
             <div className="ac-grp ac-grp-pe">
-              {admin.length > 0 && <><p className="ac-grp-t">ADMINISTRAÇÃO</p>{admin.map((i) => link(i, true))}</>}
-              {conta.length > 0 && <><p className="ac-grp-t">CONTA</p>{conta.map((i) => link(i, true))}</>}
+              {admin.length > 0 && <><p className="ac-grp-t">Administração</p>{admin.map((i) => link(i, true))}</>}
+              {conta.length > 0 && <><p className="ac-grp-t">Conta</p>{conta.map((i) => link(i, true))}</>}
             </div>
           )}
         </div>
