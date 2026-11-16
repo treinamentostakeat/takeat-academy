@@ -37,7 +37,7 @@ export function EditorTrilha({ trilha, etapas, previaCapa }: { trilha: Trilha; e
     <>
       <div className="rp-head">
         <div><h1>{trilha.titulo}</h1><p>Monte as etapas e os cursos. A ordem abaixo é a ordem sugerida para o colaborador.</p></div>
-        <div className="rp-actions"><Link className="btn btn-l btn-outlined" href={`/interno/trilhas/${trilha.id}`}><span className="icon">visibility</span>Ver como colaborador</Link></div>
+        <div className="rp-actions"><a className="btn btn-l btn-outlined" href={`/interno/certificado/${trilha.id}?previa=1`} target="_blank" rel="noopener noreferrer"><span className="icon">workspace_premium</span>Ver certificado</a><Link className="btn btn-l btn-outlined" href={`/interno/trilhas/${trilha.id}`}><span className="icon">visibility</span>Ver como colaborador</Link></div>
       </div>
 
       <section className="mod ed-bloco">

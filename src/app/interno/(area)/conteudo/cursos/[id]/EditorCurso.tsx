@@ -69,7 +69,7 @@ export function EditorCurso({ inicial, etapas, trilhaId, tentativas, limiteMb, c
     <>
       <div className="rp-head">
         <div><h1>{salvo.titulo}</h1><p>{salvo.publicado ? 'Publicado: os colaboradores já veem este curso.' : 'Oculto: só quem edita vê este curso.'}</p></div>
-        <div className="rp-actions"><Link className="btn btn-l btn-outlined" href={`/interno/cursos/${c.id}`}><span className="icon">visibility</span>Ver como colaborador</Link></div>
+        <div className="rp-actions"><a className="btn btn-l btn-outlined" href={`/interno/certificado/${trilhaId}?previa=1`} target="_blank" rel="noopener noreferrer"><span className="icon">workspace_premium</span>Ver certificado</a><Link className="btn btn-l btn-outlined" href={`/interno/cursos/${c.id}`}><span className="icon">visibility</span>Ver como colaborador</Link></div>
       </div>
 
       <section className="mod ed-bloco">
