@@ -4,7 +4,7 @@ import { iniciais } from '@/lib/formato';
 import { podeEditarConteudo } from '@/lib/permissoes';
 import { exigirPessoa } from '@/lib/sessao';
 import { diaDaJornada, trilhasDoUsuario, turmaDe, vistaDaTrilha } from '@/lib/trilhas';
-import { AnelProgresso, CapaCurso, IconeMedalha, iniciaisDe, EmBreve } from '../../visual';
+import { AnelProgresso, CapaCurso, DecoBlocos, FUNDOS_SETOR, iniciaisDe, EmBreve } from '../../visual';
 import '../../interno.css';
 
 export const metadata = { title: 'Minha trilha' };
@@ -50,13 +50,14 @@ export default async function Trilha({ params }: { params: Promise<{ id: string 
 
       <section className="ac-cont" aria-label="Continue de onde parou">
         <div className="ac-comece">
+          <DecoBlocos />
           {t.proximo && etapaAtual ? (
             <>
               <p className="ac-eyebrow">{t.concluidos || t.comecados.has(t.proximo.id) ? 'Continue de onde parou' : 'Comece por aqui'} · {etapaAtual.nome} {posAtual} de {etapaAtual.cursos.length}</p>
               <h2>{t.proximo.titulo}</h2>
               {t.proximo.resumo && <p className="lead">{t.proximo.resumo}</p>}
               <div className="ac-comece-acts">
-                <Link className="ac-btn prim" href={`/interno/cursos/${t.proximo.id}`}><span className="icon" aria-hidden="true">play_arrow</span>{t.comecados.has(t.proximo.id) ? 'Continuar curso' : 'Começar curso'}</Link>
+                <Link className="ac-btn branco" href={`/interno/cursos/${t.proximo.id}`}><span className="icon" aria-hidden="true">play_arrow</span>{t.comecados.has(t.proximo.id) ? 'Continuar curso' : 'Começar curso'}</Link>
                 {t.proximo._count.perguntas > 0 && <span className="ac-pilula">● Quiz de {t.proximo._count.perguntas} perguntas</span>}
               </div>
             </>
@@ -65,7 +66,7 @@ export default async function Trilha({ params }: { params: Promise<{ id: string 
               <p className="ac-eyebrow">{t.total ? 'Trilha concluída' : 'Em construção'}</p>
               <h2>{t.total ? 'Você se formou nesta trilha' : 'Os cursos desta trilha estão chegando'}</h2>
               <p className="lead">{t.total ? 'Todos os cursos concluídos. Pode rever qualquer um quando quiser.' : 'Assim que o RH publicar os cursos, eles aparecem aqui.'}</p>
-              {t.total > 0 && <div className="ac-comece-acts"><Link className="ac-btn prim" href={`/interno/formatura/${t.id}`}><span className="icon" aria-hidden="true">school</span>Ver minha formatura</Link></div>}
+              {t.total > 0 && <div className="ac-comece-acts"><Link className="ac-btn branco" href={`/interno/formatura/${t.id}`}><span className="icon" aria-hidden="true">school</span>Ver minha formatura</Link></div>}
             </>
           )}
         </div>
@@ -73,7 +74,7 @@ export default async function Trilha({ params }: { params: Promise<{ id: string 
           <p className="ac-label">Seu progresso</p>
           <AnelProgresso feitos={t.concluidos} total={t.total} />
           <div className="ac-pilulas">
-            <span className="ac-pilula ouro"><IconeMedalha />{t.concluidos} {t.concluidos === 1 ? 'medalha' : 'medalhas'}</span>
+            <span className="ac-pilula">{t.concluidos} {t.concluidos === 1 ? 'medalha' : 'medalhas'}</span>
             <span className="ac-pilula">{t.total - t.concluidos === 0 && t.total ? 'Formatura concluída' : 'Formatura ao final'}</span>
           </div>
         </div>
@@ -127,14 +128,14 @@ export default async function Trilha({ params }: { params: Promise<{ id: string 
                   const nota = t.notas.get(c.id);
                   return (
                     <Link key={c.id} className="ac-ccard" href={`/interno/cursos/${c.id}`}>
-                      <CapaCurso titulo={c.titulo} numero={String(k + 1).padStart(2, '0')} imagem={c.capaUrl}
+                      <CapaCurso indice={k} numero={String(k + 1).padStart(2, '0')} imagem={c.capaUrl}
                         selo={nota ? <span className="ac-selo ok"><span className="icon" aria-hidden="true">check_circle</span>{nota.acertos}/{nota.total}</span> : !c.publicado ? <span className="ac-selo am">Não publicado</span> : null} />
                       <div className="ac-ccorpo">
                         <h3>{c.titulo}</h3>
                         <p>{c.resumo}</p>
                         <div className="ac-ccorpo-f">
                           <span>{[c.area, c._count.perguntas ? `${c._count.perguntas} perguntas` : ''].filter(Boolean).join(' · ')}</span>
-                          <span className={`med${nota ? ' ok' : ''}`}><IconeMedalha />{nota ? 'Medalha conquistada' : '+ medalha'}</span>
+                          <span className={`med${nota ? ' ok' : ''}`}>{nota ? 'Medalha conquistada' : '+ medalha'}</span>
                         </div>
                       </div>
                     </Link>
@@ -151,12 +152,12 @@ export default async function Trilha({ params }: { params: Promise<{ id: string 
                 </Link>
               )}
               <div className="ac-setores">
-                {e.cursos.map((c) => {
+                {e.cursos.map((c, k) => {
                   const nota = t.notas.get(c.id);
                   return (
                     <Link key={c.id} className="ac-setor" href={`/interno/cursos/${c.id}`}>
                       <span className="ac-setor-h">
-                        <span className="ac-ini" aria-hidden="true">{iniciaisDe(c.titulo)}</span>
+                        <span className="ac-ini" style={{ background: FUNDOS_SETOR[k % FUNDOS_SETOR.length] }} aria-hidden="true">{iniciaisDe(c.titulo)}</span>
                         {nota ? <span className="ac-selo ok"><span className="icon" aria-hidden="true">check_circle</span>Feito</span> : !c.publicado ? <span className="ac-selo am">Oculto</span> : null}
                       </span>
                       <b>{c.titulo}</b>

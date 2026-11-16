@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter, Tinos } from 'next/font/google';
 import '@/styles/tokens.css';
 import '@/styles/sala.css';
 import '@/styles/equipe.css';
@@ -12,19 +11,14 @@ export const metadata: Metadata = {
 };
 export const viewport: Viewport = { width: 'device-width', initialScale: 1 };
 
-// Fontes da Academy (área interna): Times New Roman nos títulos (Tinos onde o aparelho não tem a Times) e Inter no texto.
-// Sem preload: a área de clientes não usa.
-const serifada = Tinos({ subsets: ['latin'], weight: ['400', '700'], style: ['normal', 'italic'], variable: '--font-tinos', display: 'swap', preload: false });
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap', preload: false });
-
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pt-BR" className={`${serifada.variable} ${inter.variable}`}>
+    <html lang="pt-BR">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
-        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..24,300..400,0..1,0&display=block" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..24,400,0..1,0&display=block" rel="stylesheet" />
       </head>
       <body>{children}</body>
     </html>

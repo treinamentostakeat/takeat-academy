@@ -35,7 +35,7 @@ export default async function Formatura({ params }: { params: Promise<{ id: stri
         <div className="ac-brilho" aria-hidden="true" />
         <Confetes />
         <header className="ac-bv-top">
-          <span className="ac-marca"><span className="ac-marca-t">Takeat</span><span className="ac-marca-s">Academy</span></span>
+          <span className="ac-marca"><span className="ac-marca-t">Takeat</span><span className="ac-marca-s">ACADEMY</span></span>
           <Link className="pular" href={home}>Voltar para a trilha</Link>
         </header>
 
