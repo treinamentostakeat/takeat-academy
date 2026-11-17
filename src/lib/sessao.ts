@@ -31,6 +31,11 @@ export async function entrar(email: string, senha: string): Promise<UsuarioSessa
   (await cookies()).set(COOKIE_EQUIPE, selar({ id: u.id, exp: Date.now() + 14 * 86400e3 }), opcoes(14));
   return { id: u.id, nome: u.nome, email: u.email, cargo: cargoValido(u.cargo), trocarSenha: u.trocarSenha };
 }
+/** Abre a sessão de uma conta já conferida (ex.: depois de criar a senha pelo link de primeiro acesso) */
+export async function iniciarSessao(id: string) {
+  await db.usuario.update({ where: { id }, data: { ultimoAcesso: new Date(), falhasLogin: 0, bloqueadoAte: null } });
+  (await cookies()).set(COOKIE_EQUIPE, selar({ id, exp: Date.now() + 14 * 86400e3 }), opcoes(14));
+}
 export async function sair() { (await cookies()).delete(COOKIE_EQUIPE); }
 
 export async function usuarioAtual(): Promise<UsuarioSessao | null> {

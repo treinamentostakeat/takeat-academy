@@ -1,6 +1,11 @@
 # API do Takeat Academy
 
-API de integração para criar o acesso de novos colaboradores à área interna (trilhas de onboarding) e gerar uma nova senha quando alguém esquecer a sua. Foi pensada para o RPA: a cada colaborador novo, o robô cria a conta e repassa a senha provisória.
+API de integração para criar o acesso de novos colaboradores à área interna (trilhas de onboarding) e gerar uma nova senha quando alguém esquecer a sua. Foi pensada para o RPA: a cada colaborador novo, o robô cria a conta e **a própria Academy manda o primeiro acesso pelo WhatsApp oficial**. A pessoa recebe um link, cria a sua senha e já entra.
+
+## Fluxo do RPA
+
+1. **Carga inicial (uma vez só):** o robô lê os colaboradores ativos do Portal do RH e chama `POST /usuarios` para cada um, com `whatsapp`. Quem já tem conta volta `409` e é pulado, então a carga pode rodar de novo sem duplicar ninguém. Para quem já tinha conta e nunca entrou, chame `POST /usuarios/acesso` para mandar o link.
+2. **A cada admissão:** quando entra alguém no Portal do RH, o robô chama `POST /usuarios` com `whatsapp`. O link de primeiro acesso sai na hora.
 
 - **Endereço base:** `https://takeat-academy.vercel.app/api/v1`
 - **Formato:** JSON, em UTF-8, no corpo e na resposta
@@ -31,6 +36,7 @@ Cria uma conta de **colaborador** com senha provisória. No primeiro acesso, a p
 | `nome` | texto | sim | Nome e sobrenome, de 3 a 80 caracteres |
 | `email` | texto | sim | E-mail válido, de qualquer domínio (inclusive Gmail). É o login da pessoa. |
 | `departamento` | texto | não | Até 60 caracteres. Ex.: `Financeiro` |
+| `whatsapp` | texto | não (recomendado) | Celular com DDD, com ou sem 55, com ou sem máscara. Ex.: `27999998888`. Com ele, a Academy manda o link de primeiro acesso pelo WhatsApp. |
 
 ### Exemplo
 
@@ -38,7 +44,7 @@ Cria uma conta de **colaborador** com senha provisória. No primeiro acesso, a p
 curl -X POST https://takeat-academy.vercel.app/api/v1/usuarios \
   -H "Authorization: Bearer $ACADEMY_API_CHAVE" \
   -H "Content-Type: application/json" \
-  -d '{"nome": "Ana Souza", "email": "ana.souza@gmail.com", "departamento": "Financeiro"}'
+  -d '{"nome": "Ana Souza", "email": "ana.souza@gmail.com", "departamento": "Financeiro", "whatsapp": "27999998888"}'
 ```
 
 ### Resposta `201 Created`
@@ -54,11 +60,28 @@ curl -X POST https://takeat-academy.vercel.app/api/v1/usuarios \
     "criadoEm": "2026-11-10T13:00:00.000Z"
   },
   "senhaProvisoria": "Xk7mPq2RtW9a",
-  "endereco": "https://takeat-academy.vercel.app/interno/entrar"
+  "endereco": "https://takeat-academy.vercel.app/interno/entrar",
+  "linkPrimeiroAcesso": "https://takeat-academy.vercel.app/acesso/eyJ0Ijoi...",
+  "whatsapp": { "status": "enviado" }
 }
 ```
 
-Repasse para a pessoa o `endereco`, o `email` e a `senhaProvisoria`, por um canal seguro (WhatsApp ou e-mail direto). A senha provisória só aparece nesta resposta: não é possível consultá-la depois. Se ela se perder, use **Recuperar senha**.
+- **`whatsapp.status`** (só quando o `whatsapp` foi enviado):
+  - `enviado`: a mensagem saiu e não precisa fazer mais nada.
+  - `erro`: o WhatsApp recusou. O erro fica registrado na Academy e o envio pode ser refeito com `POST /usuarios/acesso`.
+  - `nao_configurado`: o servidor ainda não tem o WhatsApp oficial ligado.
+- **`linkPrimeiroAcesso`:** vale por 7 dias e só funciona uma vez, porque deixa de valer assim que a pessoa cria a senha. Serve para mandar por outro canal quando o WhatsApp não sair. Não guarde o link depois de usar.
+- **`senhaProvisoria`:** continua disponível, para quem prefere passar o login com a senha. Ela só aparece nesta resposta.
+
+### Mensagem que a pessoa recebe
+
+Modelo do WhatsApp `academy_primeiro_acesso` (pt_BR, categoria Utilidade), com 3 variáveis:
+
+> Olá, {{1}}! Seu acesso à Takeat Academy, a plataforma de treinamentos da Takeat, está pronto. Crie sua senha neste link: {{2}}
+>
+> Seu login é o e-mail {{3}}. O link vale por 7 dias.
+
+{{1}} é o primeiro nome, {{2}} é o link de primeiro acesso e {{3}} é o e-mail.
 
 ### Erros
 
@@ -70,6 +93,38 @@ Repasse para a pessoa o `endereco`, o `email` e a `senhaProvisoria`, por um cana
 | `503` | API não configurada no servidor | `{"erro": "API desligada: ..."}` |
 
 Em caso de `409`, não tente de novo: a pessoa já tem acesso. Se ela não lembrar a senha, use **Recuperar senha**. Se a conta estiver desativada, quem reativa é o RH.
+
+## Reenviar o primeiro acesso
+
+`POST /usuarios/acesso`
+
+Manda de novo o link de primeiro acesso pelo WhatsApp. É para quem já tem conta e **ainda não criou a própria senha**, como as contas criadas antes da carga inicial ou alguém que perdeu a mensagem. Quem já criou a senha usa **Recuperar senha**.
+
+### Corpo
+
+| Campo | Tipo | Obrigatório |
+|---|---|---|
+| `email` | texto | sim |
+| `whatsapp` | texto | sim |
+
+### Resposta `200 OK`
+
+```json
+{
+  "usuario": { "id": "cmw4abc123", "nome": "Ana Souza", "email": "ana.souza@gmail.com" },
+  "linkPrimeiroAcesso": "https://takeat-academy.vercel.app/acesso/eyJ0Ijoi...",
+  "whatsapp": { "status": "enviado" }
+}
+```
+
+### Erros
+
+| Status | Quando |
+|---|---|
+| `400` | E-mail ou WhatsApp ausente ou inválido |
+| `401` | Chave ausente ou errada |
+| `404` | Nenhum colaborador com este e-mail |
+| `409` | Conta desativada, ou a pessoa já criou a própria senha (use **Recuperar senha**) |
 
 ## Recuperar senha
 
@@ -116,7 +171,9 @@ curl -X POST https://takeat-academy.vercel.app/api/v1/usuarios/senha \
 
 ## Boas práticas para o RPA
 
-- **Uma chamada por pessoa.** Se a resposta for `409`, a conta já existe: não repita.
+- **Uma chamada por pessoa.** Se a resposta for `409`, a conta já existe: não repita. Se a pessoa ainda não entrou, mande o link com `POST /usuarios/acesso`.
+- **Mande sempre o `whatsapp`.** Sem ele, ninguém recebe o acesso automaticamente.
+- **`whatsapp.status` = `erro`:** tente `POST /usuarios/acesso` mais tarde.
 - **Não guarde a senha provisória** depois de repassá-la. Ela só serve para o primeiro acesso.
 - **Erros `5xx` ou falta de resposta:** tente de novo depois de alguns minutos. O cadastro não duplica: uma segunda tentativa com o mesmo e-mail responde `409`.
 - **Registre o `usuario.id`** retornado, se quiser cruzar com o cadastro do RH depois.
@@ -125,4 +182,4 @@ curl -X POST https://takeat-academy.vercel.app/api/v1/usuarios/senha \
 
 - Consultar, editar ou desativar colaboradores (o RH faz pela tela **Pessoas**).
 - Atribuir trilhas ou prazos.
-- Enviar e-mail com o acesso.
+- Enviar e-mail com o acesso (o envio automático é só pelo WhatsApp).
