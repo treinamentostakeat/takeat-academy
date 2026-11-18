@@ -81,6 +81,7 @@ export async function cursoParaAluno(id: string, u: UsuarioSessao) {
     indiceEtapa: trilha.etapas.findIndex((e) => e.id === c.etapaId),
     posicao: pos + 1, totalCursos: ordem.length,
     proximo: ordem[pos + 1] ?? null,
+    anterior: ordem[pos - 1] ?? null,
     /** Próximo curso ainda não concluído; null quando este é o último que falta (ou todos já foram feitos) */
     seguir: seguir ? { id: seguir.id, titulo: seguir.titulo } : null,
     /** Concluir este curso fecha a trilha */

@@ -56,3 +56,15 @@ export async function salvarPosicao(dados: z.input<typeof Posicao>) {
   const chave = { usuarioId_videoId: { usuarioId: eu.id, videoId: p.data.videoId } };
   await db.videoVisto.upsert({ where: chave, create: { usuarioId: eu.id, videoId: p.data.videoId, segundos: p.data.segundos }, update: { segundos: p.data.segundos } });
 }
+
+/** Conclui um curso que não tem quiz (a pessoa chegou ao fim do conteúdo). Cursos com quiz só concluem passando no quiz. */
+export async function concluirSemQuiz(cursoId: string): Promise<{ ok: boolean; erro?: string }> {
+  const eu = await exigirPessoa();
+  if (typeof cursoId !== 'string' || !cursoId || cursoId.length > 64) return { ok: false, erro: 'Curso inválido.' };
+  if (!(await cursoParaAluno(cursoId, eu))) return { ok: false, erro: 'Curso não encontrado.' };
+  if (await db.pergunta.count({ where: { cursoId } })) return { ok: false, erro: 'Este curso tem quiz: ele é concluído ao passar no quiz.' };
+  const chave = { usuarioId_cursoId: { usuarioId: eu.id, cursoId } };
+  await db.progresso.upsert({ where: chave, create: { usuarioId: eu.id, cursoId, acertos: 0, total: 0 }, update: {} });
+  refresh();
+  return { ok: true };
+}

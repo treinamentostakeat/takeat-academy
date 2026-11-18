@@ -54,7 +54,8 @@ export default async function Formatura({ params }: { params: Promise<{ id: stri
           <p className="ac-fm-data">Concluída em {fmtData(fim)}</p>
 
           <div className="ac-bv-acts">
-            <a className="ac-btn prim grande" href={`/interno/certificado/${t.id}`}><span className="icon" aria-hidden="true">workspace_premium</span>Baixar certificado (PDF)</a>
+            <a className="ac-btn prim grande" href={`/interno/certificado/${t.id}?ver=1`} target="_blank" rel="noopener noreferrer"><span className="icon" aria-hidden="true">workspace_premium</span>Abrir certificado</a>
+            <a className="ac-btn sec grande" href={`/interno/certificado/${t.id}`}><span className="icon" aria-hidden="true">download</span>Baixar certificado</a>
             <Link className="ac-btn sec grande" href="/interno">Ir para o início<span className="icon" aria-hidden="true">arrow_forward</span></Link>
             <Link className="ac-btn sec grande" href={home}><span className="icon" aria-hidden="true">route</span>Rever a trilha</Link>
           </div>
