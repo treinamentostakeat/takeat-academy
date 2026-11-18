@@ -227,3 +227,19 @@ a.in-sis:hover { border-color: var(--brand); }
 
 /* Aviso de que o vídeo continua de onde a pessoa parou */
 .in-retomar { display: flex; align-items: center; gap: 6px; margin: 0; font-size: 13px; color: var(--text-tertiary); }
+
+/* Setas entre cursos e entre vídeos; formatura no fim da trilha */
+.in-cnav { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-top: 4px; }
+.in-cnav-p { font-size: 12px; line-height: 16px; letter-spacing: .4px; color: var(--text-tertiary); }
+.in-vmain { display: grid; gap: 12px; align-content: start; min-width: 0; }
+.in-vnav { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.in-vnav > span { display: grid; text-align: center; font-size: 14px; font-weight: 600; color: var(--text-primary); }
+.in-vnav small { font-size: 12px; font-weight: 400; color: var(--text-tertiary); }
+.in-res-i { font-size: 32px; width: 32px; height: 32px; }
+.in-forma { display: grid; gap: 16px; margin-top: 16px; padding: 24px; border-radius: 16px; background: var(--brand-tint); border: 1px solid var(--brand); }
+.in-forma-i { width: 56px; height: 56px; border-radius: 9999px; display: grid; place-items: center; background: var(--brand); color: var(--text-inverted); }
+.in-forma-i .icon { font-size: 30px; width: 30px; height: 30px; }
+.in-forma-t { display: grid; gap: 4px; }
+.in-forma-t b { font-size: 20px; line-height: 28px; color: var(--text-primary); }
+.in-forma-t > span:last-child { color: var(--text-secondary); }
+@media (max-width: 600px) { .in-cnav .btn, .in-vnav .btn { flex: 1; justify-content: center; } .in-cnav-p { order: -1; flex-basis: 100%; text-align: center; } .in-vnav small { display: none; } }

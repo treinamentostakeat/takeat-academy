@@ -10,7 +10,7 @@ const porExtenso = (d: Date) => d.toLocaleDateString('pt-BR', { day: 'numeric', 
 const nomeDoArquivo = (titulo: string) => `certificado-${titulo.normalize('NFD').replace(/[^\w]+/g, '-').replace(/^-|-$/g, '').toLowerCase() || 'takeat'}.pdf`;
 
 /* Certificado em PDF de uma trilha.
-   - Normal: baixa o certificado da pessoa logada, só se ela concluiu todos os cursos da trilha.
+   - Normal: baixa o certificado da pessoa logada, só se ela concluiu todos os cursos da trilha. Com ?ver=1, abre no navegador.
    - ?previa=1: quem edita conteúdo vê o modelo da trilha (com o próprio nome e a data de hoje), aberto no navegador. */
 export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const u = await usuarioAtual();
@@ -32,6 +32,6 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
   const validarEm = `${req.nextUrl.origin}/certificado/${cert.codigo}`;
   const pdf = await gerarCertificado({ nome: u.nome, trilha: cert.titulo, data: porExtenso(cert.em), codigo: cert.codigo, validarEm });
   return new NextResponse(Buffer.from(pdf), {
-    headers: { 'Content-Type': 'application/pdf', 'Content-Disposition': `attachment; filename="${nomeDoArquivo(cert.titulo)}"`, 'Cache-Control': 'private, no-store' },
+    headers: { 'Content-Type': 'application/pdf', 'Content-Disposition': `${req.nextUrl.searchParams.get('ver') === '1' ? 'inline' : 'attachment'}; filename="${nomeDoArquivo(cert.titulo)}"`, 'Cache-Control': 'private, no-store' },
   });
 }

@@ -24,7 +24,7 @@ export default async function Curso({ params }: { params: Promise<{ id: string }
         <Link href={`/interno/trilhas/${c.trilha.id}`}>{c.trilha.titulo}</Link><span className="icon s16">chevron_right</span>
         <span aria-current="page">{c.titulo}</span>
       </nav>
-      <CursoAluno curso={c} editar={podeEditarConteudo(u.cargo) ? `/interno/conteudo/cursos/${c.id}` : null} />
+      <CursoAluno curso={c} nome={u.nome.split(' ')[0]} editar={podeEditarConteudo(u.cargo) ? `/interno/conteudo/cursos/${c.id}` : null} />
     </div>
   );
 }
