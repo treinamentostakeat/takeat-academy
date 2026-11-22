@@ -5,7 +5,15 @@ API de integração para criar o acesso de novos colaboradores à área interna 
 ## Fluxo do RPA
 
 1. **Carga inicial (uma vez só):** o robô lê os colaboradores ativos do Portal do RH e chama `POST /usuarios` para cada um, com `whatsapp`. Quem já tem conta volta `409` e é pulado, então a carga pode rodar de novo sem duplicar ninguém. Para quem já tinha conta e nunca entrou, chame `POST /usuarios/acesso` para mandar o link.
-2. **A cada admissão:** quando entra alguém no Portal do RH, o robô chama `POST /usuarios` com `whatsapp`. O link de primeiro acesso sai na hora.
+2. **Toda segunda-feira (rotina semanal):** as admissões da Takeat acontecem na segunda. Nesse dia, o robô:
+   1. lê no Portal do RH as pessoas com **data de admissão igual à do dia**;
+   2. chama `POST /usuarios` para cada uma, com `nome`, `email`, `departamento` e `whatsapp`;
+   3. confere o `whatsapp.status` de cada resposta. Para quem voltou `erro`, tenta `POST /usuarios/acesso` mais tarde, no mesmo dia.
+
+   O link de primeiro acesso sai na hora para cada pessoa. Se a rotina rodar duas vezes no mesmo dia, ninguém recebe em dobro: quem já tem conta volta `409`.
+3. **Líderes (gestores de equipe):** entram como colaboradores comuns, pela mesma chamada `POST /usuarios`. Na carga inicial, inclua todos os líderes ativos do Portal do RH junto com os demais colaboradores.
+
+> O cargo "Gestor" da Academy é outra coisa: é quem administra a plataforma. Ele não é dado pela API e continua sendo atribuído pela tela **Usuários e cargos**.
 
 - **Endereço base:** `https://takeat-academy.vercel.app/api/v1`
 - **Formato:** JSON, em UTF-8, no corpo e na resposta
