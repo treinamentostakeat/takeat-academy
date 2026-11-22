@@ -1,6 +1,6 @@
 # API do Takeat Academy
 
-API de integração para criar o acesso de novos colaboradores à área interna (trilhas de onboarding) e gerar uma nova senha quando alguém esquecer a sua. Foi pensada para o RPA: a cada colaborador novo, o robô cria a conta e **a própria Academy manda o primeiro acesso pelo WhatsApp oficial**. A pessoa recebe um link, cria a sua senha e já entra.
+API de integração para criar o acesso de novos colaboradores à área interna (trilhas de onboarding) e gerar uma nova senha quando alguém esquecer a sua. Foi pensada para o RPA: a cada colaborador novo, o robô cria a conta e **a própria Academy manda o primeiro acesso pelo WhatsApp do número de comunicação interna**. A pessoa recebe um link, cria a sua senha e já entra.
 
 ## Fluxo do RPA
 
@@ -77,19 +77,25 @@ curl -X POST https://takeat-academy.vercel.app/api/v1/usuarios \
 - **`whatsapp.status`** (só quando o `whatsapp` foi enviado):
   - `enviado`: a mensagem saiu e não precisa fazer mais nada.
   - `erro`: o WhatsApp recusou. O erro fica registrado na Academy e o envio pode ser refeito com `POST /usuarios/acesso`.
-  - `nao_configurado`: o servidor ainda não tem o WhatsApp oficial ligado.
+  - `nao_configurado`: o servidor ainda não tem o WhatsApp ligado (nem a uazapi, nem a Meta).
 - **`linkPrimeiroAcesso`:** vale por 7 dias e só funciona uma vez, porque deixa de valer assim que a pessoa cria a senha. Serve para mandar por outro canal quando o WhatsApp não sair. Não guarde o link depois de usar.
 - **`senhaProvisoria`:** continua disponível, para quem prefere passar o login com a senha. Ela só aparece nesta resposta.
 
 ### Mensagem que a pessoa recebe
 
-Modelo do WhatsApp `academy_primeiro_acesso` (pt_BR, categoria Utilidade), com 3 variáveis:
+Sai pelo **número de comunicação interna da Takeat** (uazapi), como mensagem de texto comum:
 
-> Olá, {{1}}! Seu acesso à Takeat Academy, a plataforma de treinamentos da Takeat, está pronto. Crie sua senha neste link: {{2}}
+> Olá, Ana! Seu acesso à Takeat Academy, a plataforma de treinamentos da Takeat, está pronto.
 >
-> Seu login é o e-mail {{3}}. O link vale por 7 dias.
+> Crie sua senha neste link: https://takeat-academy.vercel.app/acesso/…
+>
+> Seu login é o e-mail ana.souza@gmail.com. O link vale por 7 dias.
 
-{{1}} é o primeiro nome, {{2}} é o link de primeiro acesso e {{3}} é o e-mail.
+Configuração no servidor:
+- `UAZAPI_TOKEN`: token da instância do número.
+- `UAZAPI_URL`: opcional, o padrão é `https://automate-takeat.uazapi.com`.
+
+Sem a uazapi, a Academy usa a API oficial da Meta, com o modelo `academy_primeiro_acesso` e as mesmas 3 informações (nome, link e e-mail).
 
 ### Erros
 

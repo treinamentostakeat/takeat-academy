@@ -3,8 +3,8 @@ import { numeroWhatsApp } from './acesso-whatsapp';
 import { whatsPrimeiroAcesso } from './integracoes/whatsapp';
 import { linkDeAcesso, tokenDeAcesso } from './primeiro-acesso';
 
-/* Envio automático do primeiro acesso pelo WhatsApp oficial (modelo aprovado pela Meta).
-   status: enviado | erro (fica registrado na fila de integrações) | nao_configurado (sem WHATSAPP_TOKEN no servidor) | numero_invalido */
+/* Envio automático do primeiro acesso pelo WhatsApp: número de comunicação interna (uazapi) ou, sem ele, a API oficial da Meta.
+   status: enviado | erro (fica registrado na fila de integrações) | nao_configurado (nenhum dos dois no servidor) | numero_invalido */
 export type StatusEnvio = 'enviado' | 'erro' | 'nao_configurado' | 'numero_invalido';
 
 /** Endereço público da Academy: APP_URL ou o endereço de quem chamou */
