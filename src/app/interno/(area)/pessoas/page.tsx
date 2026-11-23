@@ -4,6 +4,8 @@ import { db } from '@/lib/db';
 import { cargoValido, cargosQuePodeDar, ehCargo, podeAdministrar } from '@/lib/permissoes';
 import { exigirGestaoPessoas } from '@/lib/sessao';
 import '@/app/equipe/(area)/usuarios/usuarios.css';
+import { uazapiAtivo } from '@/lib/integracoes/uazapi';
+import { whatsappAtivo } from '@/lib/integracoes/whatsapp';
 
 export const metadata = { title: 'Pessoas' };
 
@@ -38,8 +40,9 @@ export default async function Pessoas({ searchParams }: { searchParams: Promise<
         linhas={linhas}
         cargos={cargos}
         titulo="Pessoas"
-        subtitulo="Crie o acesso de cada colaborador. A senha provisória aparece uma vez, para você repassar."
+        subtitulo="Crie o acesso de cada colaborador, ou de vários de uma vez com Importar lista."
         rotuloTabela="Colaboradores"
+        envioAutomatico={uazapiAtivo() || whatsappAtivo()}
         comDepartamento
         filtro={{ q: sp.q ?? '', cargo: ehCargo(sp.cargo) ? sp.cargo : '', sit: sp.sit === 'ativo' || sp.sit === 'off' ? sp.sit : '' }}
       />

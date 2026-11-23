@@ -6,6 +6,8 @@ import { BotaoExportar } from '@/components/equipe/Tabela';
 import { Toaster } from '@/components/equipe/Toast';
 import { UsuariosTabela, type Linha } from './UsuariosTabela';
 import './usuarios.css';
+import { uazapiAtivo } from '@/lib/integracoes/uazapi';
+import { whatsappAtivo } from '@/lib/integracoes/whatsapp';
 
 export const metadata = { title: 'Usuários e cargos' };
 
@@ -57,6 +59,7 @@ export default async function Usuarios({ searchParams }: { searchParams: Promise
         titulo="Usuários e cargos"
         subtitulo="Quem acessa a área da equipe e o que cada cargo pode fazer."
         rotuloTabela="Equipe"
+        envioAutomatico={uazapiAtivo() || whatsappAtivo()}
         filtro={{ q: sp.q ?? '', cargo: ehCargo(sp.cargo) ? sp.cargo : '', sit: sp.sit === 'ativo' || sp.sit === 'off' ? sp.sit : '' }}
       />
       <section className="tcard perm" aria-labelledby="p-h">

@@ -10,11 +10,13 @@ import { Modal } from '@/components/equipe/Modal';
 import { toast } from '@/components/equipe/Toast';
 import '@/components/equipe/equipe-comp.css';
 import { criarUsuario, definirAtivo, gerarNovaSenha, trocarCargo, type ResultadoUsuario } from './acoes';
+import { ModalImportar } from './ModalImportar';
 
 export type Linha = { id: string; nome: string; email: string; cargo: Cargo; ativo: boolean; departamento: string | null; acesso: string | null; eu: boolean; futuras: number; gerenciavel: boolean };
 type Filtro = { q: string; cargo: '' | Cargo; sit: '' | 'ativo' | 'off' };
 type Aberto =
   | { t: 'novo' }
+  | { t: 'importar' }
   | { t: 'cargo' | 'senha' | 'desativar'; u: Linha }
   | { t: 'senhaGerada'; nome: string; email: string; cargo: Cargo; senha: string; nova: boolean; whatsapp: string }
   | null;
@@ -28,7 +30,7 @@ const CARGO: Record<Cargo, { l: string; cls: string }> = {
 const norm = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
 
 /* Lista de contas com filtros e ações. Usada pelo gestor (todos os cargos) e pelo RH (só os cargos que ele administra). */
-export function UsuariosTabela({ linhas, filtro, cargos, titulo, subtitulo, rotuloTabela, comDepartamento }: {
+export function UsuariosTabela({ linhas, filtro, cargos, titulo, subtitulo, rotuloTabela, comDepartamento, envioAutomatico = false }: {
   linhas: Linha[];
   filtro: Filtro;
   /** Cargos que quem está vendo pode dar */
@@ -37,6 +39,8 @@ export function UsuariosTabela({ linhas, filtro, cargos, titulo, subtitulo, rotu
   subtitulo: string;
   rotuloTabela: string;
   comDepartamento?: boolean;
+  /** WhatsApp automático ligado no servidor (uazapi ou Meta): a importação manda o acesso sozinha */
+  envioAutomatico?: boolean;
 }) {
   const [f, setF] = useState<Filtro>(filtro);
   const [aberto, setAberto] = useState<Aberto>(null);
@@ -92,6 +96,7 @@ export function UsuariosTabela({ linhas, filtro, cargos, titulo, subtitulo, rotu
           <p>{subtitulo}</p>
         </div>
         <div className="rp-actions">
+          {cargos.includes('colaborador') && <button type="button" className="btn btn-l btn-outlined" onClick={() => setAberto({ t: 'importar' })}><span className="icon">group_add</span>Importar lista</button>}
           <button type="button" className="btn btn-l btn-filled" onClick={() => setAberto({ t: 'novo' })}><span className="icon">person_add</span>Adicionar pessoa</button>
         </div>
       </div>
@@ -173,6 +178,7 @@ export function UsuariosTabela({ linhas, filtro, cargos, titulo, subtitulo, rotu
 
       {menu && <MenuAcoes u={menu.u} btn={menu.btn} podeTrocarCargo={cargos.length > 1} onFechar={() => setMenu(null)} onAcao={acao} />}
       {aberto?.t === 'novo' && <ModalNovo cargos={cargos} onFechar={() => setAberto(null)} onCriado={(r) => setAberto({ t: 'senhaGerada', nome: r.nome, email: r.email, cargo: r.cargo, senha: r.senha, nova: false, whatsapp: r.whatsapp })} />}
+      {aberto?.t === 'importar' && <ModalImportar envioAutomatico={envioAutomatico} onFechar={() => setAberto(null)} />}
       {aberto?.t === 'cargo' && <ModalCargo u={aberto.u} cargos={cargos} onFechar={() => setAberto(null)} />}
       {aberto?.t === 'desativar' && <ModalDesativar u={aberto.u} onFechar={() => setAberto(null)} />}
       {aberto?.t === 'senha' && <ModalNovaSenha u={aberto.u} onFechar={() => setAberto(null)} onGerada={(senha) => setAberto({ t: 'senhaGerada', nome: aberto.u.nome, email: aberto.u.email, cargo: aberto.u.cargo, senha, nova: true, whatsapp: '' })} />}
